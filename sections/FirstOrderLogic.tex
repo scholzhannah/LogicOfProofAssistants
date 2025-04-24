@@ -188,8 +188,63 @@ Options to achieve this are:
             \AxiomC{$\Gamma, \psi \vdash \theta$}
             \TrinaryInfC{$\Gamma \vdash \theta$}
             \DisplayProof
-            ($\lor$-elimination)
+            ($\lor$-elimination)}
+        \item{
+            \AxiomC{$\Gamma, \varphi \vdash \psi$}
+            \UnaryInfC{$\Gamma \vdash \varphi \to \psi$}
+            \DisplayProof
+            ($\to$-introduction)}
+        \item {
+            \AxiomC{$\Gamma \vdash \varphi \to \psi$}
+            \AxiomC{$\Gamma \vdash \varphi$}
+            \BinaryInfC{$\Gamma \vdash \psi$}
+            \DisplayProof
+            ($\to$-elimination)}
+        \item {
+            \AxiomC{$\Gamma, \neg \varphi \vdash \bot$}
+            \UnaryInfC{$\Gamma \vdash \varphi$}
+            \DisplayProof
+            (proof by contradiction)}
+        \item {
+            \AxiomC{$\Gamma \vdash \varphi$}
+            \UnaryInfC{$\Gamma \vdash \forall x. \varphi$}
+            \DisplayProof
+            for $x \notin \fv{\Gamma}$
+            ($\forall$-introduction)}
+        \item {
+            \AxiomC{$\Gamma \vdash \forall x. \varphi$}
+            \UnaryInfC{$\Gamma \vdash \varphi[t/x]$}
+            \DisplayProof
+            ($\forall$-elimination)}
+        \item{
+            \AxiomC{$\Gamma \vdash \varphi[t/x]$}
+            \UnaryInfC{$\Gamma \vdash \exists x. \varphi$}
+            \DisplayProof
+            ($\exists$-introduction)}
+        \item {
+            \AxiomC{$\Gamma \vdash \exists x. \varphi$}
+            \AxiomC{$\Gamma, \varphi \vdash \psi$}
+            \BinaryInfC{$\Gamma \vdash \psi$}
+            \DisplayProof
+            for $x \in \fv{\Gamma, \psi}$
+            ($\exists$-elimination)}
+        \item {
+            \AxiomC{}
+            \UnaryInfC{$\Gamma \vdash t = t$}
+            \DisplayProof
+            ($=$-introduction)}
+        \item {
+            \AxiomC{$\Gamma \vdash s = t$}
+            \AxiomC{$\Gamma \vdash \varphi[t/x]$}
+            \BinaryInfC{$\Gamma \vdash \varphi[s/x]$}
+            \DisplayProof
+            ($=$-elimination)}
+        \item {
+            \AxiomC{$\Gamma \vdash \varphi$}
+            \UnaryInfC{$\Gamma \vdash \psi$}
+            \DisplayProof
+            for $\varphi \aeq \psi$
+            ($\alpha$-equivalence)
         }
-
     \end{enumerate}
 \end{defi}
