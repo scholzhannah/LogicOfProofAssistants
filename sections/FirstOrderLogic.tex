@@ -81,7 +81,115 @@ When writing formulas we omit some parentheses:
 We want $\forall x. x = x$ and $\forall y. y = y$ to mean the same thing. 
 Options to achieve this are: 
 \begin{enumerate}
-    \item Define $(\forall x. x = x) \equiv_{\alpha} (\forall y. y = y)$ to be \alert{$\alpha$-equivalent}. And then define the set of formulas to be $\Phi_{\fL} / \equiv_{\alpha}$.
+    \item Define $(\forall x. x = x) \aeq (\forall y. y = y)$ to be \alert{$\alpha$-equivalent}. And then define the set of formulas to be $\Phi_{\fL} / \aeq$.
     \item We could not use variable names for bound variables and use \alert{de Bruijn indices} instead.
 \end{enumerate}
 \end{rem}
+
+\begin{rem}
+    $\forall x. x = y$ has \alert{bound variables} $\{x\}$ and \alert{free variables} $\{y\}$. For a formula $\varphi$ or a term $t$ we also write \alert{$\fv{\varphi}$} and \alert{$\fv{t}$} for the set of free variables in $\varphi$ and $t$.
+\end{rem}
+
+\begin{defi}
+    A \alert{sentence} is a formula without free variables.
+\end{defi}
+
+\begin{defi}
+    \alert{Substitution $s[t/x]$} of $x$ by $t$ in a term $s$ is defined recursively by 
+    \begin{enumerate}
+        \item {$ y[t/x] \coloneq 
+                \begin{cases}
+                    t & \text{if } y = x \\
+                    y & \text{otherwise}
+                \end{cases}$}
+        \item $f(s_1, \dotsm s_n)[t/x \coloneq f(s_1[t/x], \dots, s_n[t/x])]$
+    \end{enumerate}
+\end{defi}
+
+\begin{example}
+    Defining substitution in formulas is a little bit harder as we need to avoid \alert{variable capture}:
+    $(\exists x. x \leq z)[(x + 1)/z]$ should not be $\exists x. x \leq x + 1$ but $\exists y. y \leq x + 1$.
+\end{example}
+
+\begin{defi}
+    For a formula $\varphi$ \alert{substitution $\varphi[t/x]$} is defined as: 
+    \begin{enumerate}
+        \item $s = s'[t/x] \coloneq s[t/x] = s'[t/x]$
+        \item $R(t_1, \dots, t_n)[t/x] \coloneq R(t_1[t/x], \dots, t_n[t(x)])$
+        \item $(\varphi \lor \psi)[t/x] \coloneq \varphi[t/x] \lor \psi[t/x]$
+        \item $(\varphi \wedge \psi)[t/x] \coloneq \varphi[t/x] \wedge \psi[t/x]$
+        \item $(\varphi \to \psi)[t/x] \coloneq \varphi[t/x] \to \psi[t/x]$
+        \item {$ (\forall y. \varphi) \coloneq 
+            \begin{cases}
+                \forall y. \varphi & \text{if } y = x \\
+                \forall z. \varphi[z/y][t/x] & \text{otherwise}
+            \end{cases}$}
+        \item {$ (\exists y. \varphi) \coloneq 
+        \begin{cases}
+            \exists y. \varphi & \text{if } y = x \\
+            \exists z. \varphi[z/y][t/x] & \text{otherwise}
+        \end{cases}$}
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}
+    \alert{$\alpha$-equivalence} is the \alert{congruence closure} of 
+    \begin{enumerate}
+        \item $(\forall x. \varphi) \aeq (\forall y. \varphi[y/x])$
+        \item $(\exists x. \varphi) \aeq (\exists y. \varphi[y/x])$
+    \end{enumerate}
+    i.e. it is the smallest equivalence relation containing these two rules and respecting the connectives: 
+    \begin{enumerate}
+        \item $(\varphi_1 \wedge \varphi_2) \aeq (\psi_1 \wedge \psi_2)$ for $\varphi_1 \aeq \psi_1$ and $\varphi_2 \aeq \psi_2$
+        \item $(\varphi_1 \lor \varphi_2) \aeq (\psi_1 \lor \psi_2)$ for $\varphi_1 \aeq \psi_1$ and $\varphi_2 \aeq \psi_2$
+        \item $(\varphi_1 \to \varphi_2) \aeq (\psi_1 \to \psi_2)$ for $\varphi_1 \aeq \psi_1$ and $\varphi_2 \aeq \psi_2$
+        \item $(\forall x. \varphi) \aeq (\forall x. \psi)$ if $\varphi \aeq \psi$
+        \item $(\exists x. \varphi) \aeq (\exists x. \psi)$ if $\varphi \aeq \psi$
+    \end{enumerate}
+\end{defi}
+
+\begin{rem}
+    We will treat $\alpha$-equivalence as an equivalence relation. 
+    You could also define the formulas as $\Phi_{\fL} / \aeq$ and thus treat $\alpha$-equivalence as equality.
+\end{rem}
+
+\subsection{Provability}
+
+\begin{defi}
+    Let $\Gamma$ be a set of formulas and $\varphi$ a formula.
+    Then $\alert{\Gamma \vdash \varphi}$ (read : ``$\Gamma$ proves $\varphi$'') is defined inductively by 
+    \begin{enumerate}
+        \item {
+            \AxiomC{}
+            \UnaryInfC{$\Gamma, \varphi \vdash \varphi$}
+            \DisplayProof
+            (assumption rule)}
+        \item {
+            \AxiomC{$\Gamma \vdash \varphi$}
+            \AxiomC{$\Gamma \vdash \psi$}
+            \BinaryInfC{$\Gamma \vdash \varphi \wedge \psi$}
+            \DisplayProof
+            ($\wedge$-introduction)}
+        \item {
+            \AxiomC{$\Gamma \vdash \varphi_1 \wedge \varphi_2$}
+            \UnaryInfC{$\Gamma \vdash \varphi_i$}
+            \DisplayProof
+            for $i = 1, 2$ 
+            ($\wedge$-elimination)}
+        \item {
+            \AxiomC{$\Gamma \vdash \varphi_i$}
+            \UnaryInfC{$\Gamma \vdash \varphi_1 \lor \varphi_2$}
+            \DisplayProof
+            for $i = 1, 2$
+            ($\lor$-introduction)}
+        \item{
+            \AxiomC{$\Gamma \vdash \varphi \lor \psi$}
+            \AxiomC{$\Gamma, \varphi \vdash \theta$}
+            \AxiomC{$\Gamma, \psi \vdash \theta$}
+            \TrinaryInfC{$\Gamma \vdash \theta$}
+            \DisplayProof
+            ($\lor$-elimination)
+        }
+
+    \end{enumerate}
+\end{defi}

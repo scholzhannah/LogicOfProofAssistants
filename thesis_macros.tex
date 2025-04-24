@@ -31,11 +31,14 @@
 \newcommand{\fR}{\mathcal{R}}
 \newcommand{\fV}{\mathcal{V}}
 
-\newcommand{\alert}[1]{\textbf{\color{blue}{#1}}}
+\DeclareMathOperator{\aeq}{\equiv_{\alpha}}
+
+\newcommand{\alert}[1]{{\color{blue}{\ifmmode\mathbf{#1}\else\textbf{#1}\fi}}}
 
 \DeclareMathOperator{\cupdot}{\dot{\cup}}
 
 \newcommand{\pr}[2]{\text{pr}_{#1}(#2)} %projection
+\newcommand{\fv}[1]{\text{fv}(#1)} %projection
 \newcommand{\compl}[1]{#1^{c}} %complement
 \newcommand{\id}{\text{id}} %identity
 \newcommand{\preim}[2]{#1^{-1}(#2)} %preimage
