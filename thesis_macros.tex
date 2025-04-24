@@ -30,15 +30,22 @@
 \newcommand{\fF}{\mathcal{F}}
 \newcommand{\fR}{\mathcal{R}}
 \newcommand{\fV}{\mathcal{V}}
+\newcommand{\fM}{\mathcal{M}}
+\newcommand{\fP}{\mathcal{P}}
 
-\DeclareMathOperator{\aeq}{\equiv_{\alpha}}
 
+\DeclareMathOperator{\aeq}{\equiv_{\alpha}} %alpha-equivalence
 \newcommand{\alert}[1]{{\color{blue}{\ifmmode\mathbf{#1}\else\textbf{#1}\fi}}}
+\DeclareMathOperator{\cupdot}{\dot{\cup}} % Disjoint union
+\DeclareMathOperator{\smodels}{\models_{\sigma}} %models with variable assignment
 
-\DeclareMathOperator{\cupdot}{\dot{\cup}}
+\newcommand{\pow}[1]{\fP(#1)}
+\newcommand{\fv}[1]{\text{fv}(#1)} %free variables
+\newcommand{\abs}[1]{\lvert #1 \rvert} % abs value (underlying set of a model)
+\newcommand{\interpret}[1]{\llbracket #1 \rrbracket} % interpretation in a model
+\newcommand{\vect}[1]{\bar{#1}}
 
 \newcommand{\pr}[2]{\text{pr}_{#1}(#2)} %projection
-\newcommand{\fv}[1]{\text{fv}(#1)} %projection
 \newcommand{\compl}[1]{#1^{c}} %complement
 \newcommand{\id}{\text{id}} %identity
 \newcommand{\preim}[2]{#1^{-1}(#2)} %preimage

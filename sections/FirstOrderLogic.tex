@@ -102,7 +102,7 @@ Options to achieve this are:
                     t & \text{if } y = x \\
                     y & \text{otherwise}
                 \end{cases}$}
-        \item $f(s_1, \dotsm s_n)[t/x \coloneq f(s_1[t/x], \dots, s_n[t/x])]$
+        \item $f(s_1, \dotsm s_n)[t/x] \coloneq f(s_1[t/x], \dots, s_n[t/x])$
     \end{enumerate}
 \end{defi}
 
@@ -247,3 +247,141 @@ Options to achieve this are:
             ($\alpha$-equivalence)}
     \end{enumerate}
 \end{defi}
+
+\begin{rem}
+    Read ``\AxiomC{A} \UnaryInfC{B} \DisplayProof'' as: ``Under the assumptions A we can prove B''.
+    With ``$\Gamma, \varphi$'' we really mean $\Gamma \cup \{\varphi\}$.
+\end{rem}
+
+\begin{example}
+    If $\varphi$ and $\psi$ are formulas then we can show $\vdash (\varphi \wedge \psi) \to (\psi \wedge \varphi)$ using the following \alert{proof tree} : 
+    \begin{prooftree}
+        \AxiomC{}
+        \RightLabel{Assump.}
+        \UnaryInfC{$\varphi \wedge \psi \vdash \varphi \wedge \psi$}
+        \RightLabel{$\wedge$-elim.}
+        \UnaryInfC{$\varphi \wedge \psi \vdash \psi$}
+        \AxiomC{}
+        \RightLabel{Assump.}
+        \UnaryInfC{$\varphi \wedge \psi \vdash \varphi \wedge \psi$}
+        \RightLabel{$\wedge$-elim.}
+        \UnaryInfC{$\varphi \wedge \psi \vdash \varphi$}
+        \RightLabel{$\wedge$-intro.}
+        \BinaryInfC{$\varphi \wedge \psi \vdash \psi \wedge \varphi$}
+        \RightLabel{$\to$-intro.}
+        \UnaryInfC{$\vdash (\varphi \wedge \psi) \to (\psi \wedge \varphi)$}
+    \end{prooftree}
+\end{example}
+
+\subsection{Semantics}
+
+\begin{defi}
+    An \alert{$\fL$-structure} $\fM$ consists of 
+    \begin{enumerate}
+        \item a non-empty set $\abs{\fM}$
+        \item for any $n$-ary function symbol $f$ a function $f_{\fM} \colon \abs{\fM}^n \to \abs{\fM}$
+        \item for any $n$-ary relation symbol $R$ a set $R_{\fM} \subseteq \abs{\fM}^n$
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}
+    If $t$ is an $\fL$-term and $\sigma \colon \fV \to \abs{\fM}$ we define \alert{$\interpret{t}_{\fM, \sigma}$} as: 
+    \begin{enumerate}
+        \item $\interpret{x}_{\fM, \sigma} \coloneq \sigma(x)$
+        \item $\interpret{f(t_1, \dots, t_n)}_{\fM, \sigma} \coloneq f_{\fM}(\interpret{t_1}_{\fM, \sigma}, \dots, \interpret{t_n}_{\fM, \sigma})$
+    \end{enumerate}
+    For formulas we define \alert{$\fM \smodels \varphi$} holds as 
+    \begin{enumerate}
+        \item $\fM \smodels R(t_1, \dots, t_n)$ iff $R_{\fM}(\interpret{t_1}_{\fM, \sigma}, \dots, \interpret{t_n}_{\fM, \sigma})$
+        \item $\fM \smodels \bot$ never holds
+        \item $\fM \smodels s = t$ iff $\interpret{s}_{\fM, \sigma} = \interpret{t}_{\fM, \sigma}$
+        \item $\fM \smodels \varphi \wedge \psi$ iff $\fM \smodels \varphi$ and $\fM \smodels \psi$
+        \item $\fM \smodels \varphi \lor \psi$ iff $\fM \smodels \varphi$ or $\fM \smodels \psi$
+        \item $\fM \smodels \varphi \to \psi$ iff $\fM \smodels \varphi$ implies $\fM \smodels \psi$
+        \item $\fM \smodels \forall x. \varphi$ iff for all $a \in \abs{\fM}$ we know that $\fM \operatorname{\models_{\sigma, x \mapsto a}} \varphi$ where 
+        
+        $(\sigma, x \mapsto a)(y) \coloneq
+        \begin{cases}
+            a & y = x \\
+            \sigma(y) & \text{otherwise}
+        \end{cases}$
+        \item $\fM \smodels \exists x. \varphi$ iff there is $a \in \abs{\fM}$ such that $\fM \operatorname{\models_{\sigma, x \mapsto a}} \varphi$
+    \end{enumerate}
+\end{defi}
+
+\begin{rem}
+    We write \alert{$\varphi(\vect{x})$} to mean that $\fv{\varphi} \subseteq \vect{x}$ and \alert{$\varphi(\vect{t})$} for $\varphi[\vect{t}/\vect{x}]$.
+\end{rem}
+
+\begin{rem}
+    $\interpret{t}_{\fM, \sigma}$ and $\fM \smodels \varphi$ only depend on the values $\sigma(x)$ where $x \in \fv{t}$ and $x \in \fv{\varphi}$ respectively.
+    If $\varphi$ is a sentence then $\fM \smodels \varphi$ does not depend on $\sigma$ and is denoted \alert{$\fM \models \varphi$} (read: ``$\fM$ realizes $\varphi$'').
+\end{rem}
+
+\begin{defi}
+    If $\Gamma$ is a set of formulas and $\varphi$ is a formula then \alert{$\Gamma \models \varphi$} means that for any $\fL$-structure $\fM$ and assignment $\sigma \colon \fV \to \abs{\fM}$ such that $\fM \smodels \psi$ for all $\psi \in \Gamma$ we have $\fM \smodels \varphi$.
+\end{defi}
+
+\begin{thm}[Soundness theorem]
+    If $\Gamma \vdash \varphi$ then $\Gamma \models \varphi$.
+\end{thm}
+
+\begin{thm}[Completeness theorem]
+    If $\Gamma \models \varphi$ then $\Gamma \vdash \varphi$.
+\end{thm}
+
+\begin{thm}[Compactness theorem]
+    If $\Gamma \models \varphi$ then for some finite $\Gamma' \subseteq \Gamma$ we have $\Gamma' \models \varphi$.
+\end{thm}
+
+\subsection{Definite descriptions}
+
+\begin{defi}
+    $\alert{\exists!}x. \varphi(x, \vect{z}) \coloneq \exists x. (\varphi(x, \vect{z}) \wedge \forall y. \varphi(y, \vect{z}) \to y = x)$.
+\end{defi}
+
+\begin{defi}
+    Suppose $\Gamma$ is a set of $\fL$-sentences, $\Gamma'$ a set of $\fL'$-sentences and $\fL \subseteq \fL'$.
+    Then \alert{$\Gamma'$ is conservative over $\Gamma$} if $\Gamma \subseteq \Gamma'$ and for all $\fL$-formulas $\psi$ such that $\Gamma' \vdash \psi$ we have $\Gamma \vdash \psi$. 
+\end{defi}
+
+\begin{thm}
+    Suppose that $\Gamma \vdash \forall \vect{x}. \exists! \varphi(\vect{x}, y)$ and that $f$ is a fresh function symbol (i.e. not among the function symbols of $\fL$) then $\Gamma \cup \{\forall \vect{x}. \varphi(\vect{x}, f(\vect{x}))\}$ is conservative over $\Gamma$.
+\end{thm}
+
+\begin{defi}[Axioms of ZFC]
+    \alert{$\fL_{ZFC}$} has no function symbol and one binary relation ``$\in$''. 
+    The axioms of ZFC are
+    \begin{enumerate}
+        \item Extensionality : $\forall x \forall y. (\forall z. z \in x \leftrightarrow z \in y) \to x = y$
+        \item Pairing: $\forall x \forall y \exists z \forall w. w \in z \leftrightarrow w = x \lor w = y$ (``$z = \{x,y\}$'')
+        
+        This allows us to define $\{x\} \coloneq \{x, x\}$.
+        \item Union: $\forall x \exists y \forall z. z \in y \leftrightarrow \exists w. (w \in x \wedge z \in w)$ (``$y = \bigcup x$'')
+        
+        This allows us to define $x \cup y \coloneq \bigcup \{x, y\}$.
+        \item Power set: $\forall x \exists y \forall z. z \in y \leftrightarrow w \in x$ (``$y = \pow{x}$'')
+        \item Separation (axiom schema): for any formula $\varphi(\vect{x}, y)$ we have $\forall \vect{x} \forall y \exists z \forall w. w \in z \leftrightarrow (w \in y \wedge \varphi(\vect{x}, w))$ (``$z = \{ w \in y \mid \varphi(\vect{x}, w)\}$'')
+        \item Infinity: $\exists x. \varnothing \in x \wedge \forall y. y \in x \to y \cup \{y\} \in x$ where $\varnothing \coloneq \{w \in y \mid \bot\}$
+        \item Foundation: $\forall x. (\exists y. y \in x) \to \exists y. y \in x \wedge \forall z. z \in x \to z \notin y$ (``Every set $x$ contains an element $y$ disjoint from $x$'')
+        \item Replacement (axiom schema): For any formula $\varphi(z, w, \vect{y})$ we have $\forall x \forall \vect{y} (\forall z. z \in x \to \exists! w \varphi(z, w, \vect{y})) \to \exists u \forall w. w \in u \leftrightarrow \exists z. z \in x \wedge \varphi(z, w, \vect{y})$ (``If $\varphi$ is a function with domain $x$ then the image of $\varphi$ is a set.'')
+        \item Choice: $\forall x. \varnothing \notin x \to \exists f. f \in (x \to \bigcup x) \wedge \forall y. y \in x  \to f(y) \in y$
+        
+        where we define $(x , y) \coloneq \{\{x\}, \{x, y\}\}$, 
+        
+        $A \times B \coloneq \{ z \in \pow{\pow{A \cup B}} \mid \exists x \in A \exists y \in B. z = (x, y)\}$, 
+        
+        $(A \to B) \coloneq \{f \in \pow{A \times B} \mid \forall x \in A \exists! y. (x, y) \in f \}$ and
+        
+        $f(x) \coloneq 
+        \begin{cases}
+            y & \text{if } (x, y) \in f \\
+            \varnothing & \text{if no such $y$ exists} \\
+        \end{cases}$
+    \end{enumerate}
+\end{defi}
+
+\begin{rem}
+    The existence of at least one set is provable and therefore the empty set also exists. 
+    Nonetheless, the existence of the empty set is often added as an axiom.
+\end{rem}
