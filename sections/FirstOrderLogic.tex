@@ -129,11 +129,11 @@ Options to achieve this are:
 \begin{defi}
     For a formula $\varphi$ \alert{substitution $\varphi[t/x]$} is defined as: 
     \begin{enumerate}
-        \item $s = s'[t/x] \coloneq s[t/x] = s'[t/x]$
+        \item $(s = s')[t/x] \coloneq (s[t/x] = s'[t/x])$
         \item $R(t_1, \dots, t_n)[t/x] \coloneq R(t_1[t/x], \dots, t_n[t(x)])$
-        \item $(\varphi \lor \psi)[t/x] \coloneq \varphi[t/x] \lor \psi[t/x]$
-        \item $(\varphi \wedge \psi)[t/x] \coloneq \varphi[t/x] \wedge \psi[t/x]$
-        \item $(\varphi \to \psi)[t/x] \coloneq \varphi[t/x] \to \psi[t/x]$
+        \item $(\varphi \lor \psi)[t/x] \coloneq (\varphi[t/x] \lor \psi[t/x])$
+        \item $(\varphi \wedge \psi)[t/x] \coloneq (\varphi[t/x] \wedge \psi[t/x])$
+        \item $(\varphi \to \psi)[t/x] \coloneq (\varphi[t/x] \to \psi[t/x])$
         \item {$ (\forall y. \varphi) \coloneq 
             \begin{cases}
                 \forall y. \varphi & \text{if } y = x \\
