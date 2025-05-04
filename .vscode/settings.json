@@ -1,8 +1,8 @@
 {
     "latex-workshop.latex.tools": [
         {
-            "name": "pdflatex",
-            "command": "pdflatex",
+            "name": "xelatex",
+            "command": "xelatex",
             "args": [
                 "-synctex=1",
                 "-interaction=nonstopmode",
@@ -40,14 +40,10 @@
     ],
     "latex-workshop.latex.recipes": [
         {
-            "name": "pdflatex -> biber -> makeindex1 -> makeindex2 -> pdflatex * 2",
+            "name": "xelatex * 2",
             "tools": [
-                "pdflatex",
-                "biber",
-                "makeindex1",
-                "makeindex2",
-                "pdflatex",
-                "pdflatex"
+                "xelatex",
+                "xelatex"
             ]
         },
     ]
