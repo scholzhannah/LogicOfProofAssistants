@@ -134,16 +134,16 @@ Options to achieve this are:
         \item $(\varphi \lor \psi)[t/x] \coloneq (\varphi[t/x] \lor \psi[t/x])$
         \item $(\varphi \wedge \psi)[t/x] \coloneq (\varphi[t/x] \wedge \psi[t/x])$
         \item $(\varphi \to \psi)[t/x] \coloneq (\varphi[t/x] \to \psi[t/x])$
-        \item {$ (\forall y. \varphi) \coloneq 
+        \item {$ (\forall y. \varphi)[t/x] \coloneq 
             \begin{cases}
                 \forall y. \varphi & \text{if } y = x \\
                 \forall z. \varphi[z/y][t/x] & \text{otherwise}
-            \end{cases}$}
-        \item {$ (\exists y. \varphi) \coloneq 
+            \end{cases}$ where $z$ does not occur in $t$.}
+        \item {$ (\exists y. \varphi)[t/x] \coloneq 
         \begin{cases}
             \exists y. \varphi & \text{if } y = x \\
             \exists z. \varphi[z/y][t/x] & \text{otherwise}
-        \end{cases}$}
+        \end{cases}$ where $z$ does not occur in $t$.}
     \end{enumerate}
 \end{defi}
 \end{boxdef}
