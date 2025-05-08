@@ -381,11 +381,9 @@ Options to achieve this are:
 \end{defi}
 \end{boxdef}
 
-\begin{boxthe}
-\begin{thm}
+\begin{boxthm}
     Suppose that $\Gamma \vdash \forall \vect{x}. \exists! \varphi(\vect{x}, y)$ and that $f$ is a fresh function symbol (i.e. not among the function symbols of $\fL$) then $\Gamma \cup \{\forall \vect{x}. \varphi(\vect{x}, f(\vect{x}))\}$ is conservative over $\Gamma$.
-\end{thm}
-\end{boxthe}
+\end{boxthm}
 
 \begin{boxdef}
 \begin{defi}[Axioms of ZFC]
@@ -424,4 +422,15 @@ Options to achieve this are:
 \begin{rem}
     The existence of at least one set is provable and therefore the empty set also exists. 
     Nonetheless, the existence of the empty set is often added as an axiom.
+\end{rem}
+
+\begin{rem}
+    In principle, you can do almost all math in the combination of FOL and ZFC.
+    In practice, you want to do meta-logical operations (e.g. quantifying over formulas). 
+    For example: 
+    \begin{enumerate}
+        \item You want to be able to define new definitions with definite descriptions.
+        \item You want to be able to talk about theorem schemes.
+    \end{enumerate}
+    Mizar and Metamath are two proof systems implementing FOL + ZFC in a metalogic.
 \end{rem}

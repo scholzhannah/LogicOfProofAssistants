@@ -1,0 +1,223 @@
+\section{\texorpdfstring{$\lambda$}{lambda}-calculus}
+
+\begin{boxdefi}
+    Let $\alert{\fV} = \{ x_0, x_1, \dots \} $ a countably infinite set of variables and $\alert{C} = \{ c_0, c_1, \dots \}$ be any set of constants. 
+    The terms of the $\lambda$-calculus are given by the following BNF: 
+    \begin{equation*}
+        s,t \Coloneqq x \mid c \mid (s t) \mid (\lambda x. t)
+    \end{equation*}
+    where $x$ is a variable and $c$ a constant.
+\end{boxdefi}
+
+\begin{rem}
+    \hfill
+    \begin{enumerate}
+        \item Think of $(\lambda x. t)$ as the function $x \mapsto t(x)$ and $(s t)$ as function application. 
+        \item Anything can apply to any term, e.g. $(x x)$ is a term.
+        \item Abbreviate $((rs)t)u$ to $rstu$ and $\lambda x. \lambda y. \lambda z. t$ to $\lambda x y z. t$. For example $\lambda xy. xy$ means $(\lambda x. (\lambda y. (x y)))$.
+        \item $\lambda x.t$ binds the variable $x$. Like in first-order logic we can define $\alpha$-equivalence ($\aeq$) and substitution ($t[s/x]$). Here we identify $\alpha$-equivalent terms, i.e. $\lambda x.x = \lambda y.y$.
+    \end{enumerate}
+\end{rem}
+
+\begin{example}
+    $(x(\lambda x.x))[s/x] = s(\lambda x.x)$
+\end{example}
+
+\begin{rem}
+    Consider $(\lambda x. t) s$. 
+    We want this to correspond to $t[s/x]$. 
+\end{rem}
+
+\begin{boxdefi}
+    \hfill
+    \begin{enumerate}
+        \item \alert{$\beta$-contraction ($\becont$)} is defined as $(\lambda x. t) s \becont t [s/x]$.
+        \item {\alert{One-step-$\beta$-reduction ($\beored$)} is defined as the compatible closure if $\becont$, i.e.
+            \begin{enumerate}
+                \item If $s \becont t$ then $s \beored t$.
+                \item If $s \beored t$ then $su \beored tu$, $us \beored ut$ and $\lambda x. s \beored \lambda x. t$.
+            \end{enumerate}}
+        \item \alert{$\beta$-reduction ($\bered$)} is the reflexive transitive closure of $\beored$, i.e. it is the smallest relation that is reflexive, transitive and contains $\beored$.
+        \item \alert{$\beta$-equivalence ($\beq$)} is the smallest equivalence relation containing $bered$.
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{example}\label{ex:betared}
+    \hfill
+    \begin{enumerate}
+        \item $(\lambda x. xxy)(yz) \becont yz(yz)y$
+        \item \adjustbox{valign=t}{
+            \begin{tikzcd}
+                (\lambda x. xx)y((\lambda z. yz)(ww))  \ar[r, "{\beta , 1}"] \ar[d, "{\beta , 1}"] & (\lambda x.xx)y(y(ww)) \ar[d, "{\beta , 1}"] \\
+                yy ((\lambda z. yz)(ww)) \ar[r, "{\beta , 1}"] & yy (y(ww)) \\
+            \end{tikzcd}}
+            \vspace{-2em}
+        \item $(\lambda x.xx) (\lambda x. xx) \beored (\lambda x.xx) (\lambda x. xx)$
+    \end{enumerate}
+\end{example}
+
+\begin{boxdefi}
+    We define the following combinators: 
+    \begin{enumerate}
+        \item $\alert{I} = \lambda x.x$
+        \item $\alert{K} = \lambda xy.x$
+        \item $\alert{K_*} = \lambda xy.y$
+        \item $\alert{S} = \lambda xyz.xz(yz)$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{rem}
+    Every term can be defined using $K$ and $S$ up to $\beta$-equivalence.
+\end{rem}
+
+\begin{example}
+    $SKK \bered \lambda z. Kz(Kz) \bered \lambda z.z = I$.
+\end{example}
+
+\begin{boxprop} \label{prop:fixpoi}
+    There exists a \alert{fixed-point combinator} $Y$ such that $Y t \bered t(Yt)$.
+\end{boxprop}
+\begin{proof}
+    Let $A \coloneq \lambda fx. x(ffx)$ and let $Y \coloneq AA$ be the \alert{Turing operator}.
+    Then $Yt = AAt \bered t (AAt) = t(Yt)$.
+\end{proof}
+
+\begin{boxdefi}
+    We can define the \alert{pairing} $\alert{P} = \lambda stx.xst$ and denote $\alert{(s, t)} \coloneq Pst \bered \lambda x. xst$.
+\end{boxdefi}
+
+\begin{rem}
+    Naming this a pairing makes sense because we have $(s, t) K \bered Kst \bered s$ and $(s, t) K_* \bered K*(s, t) \bered t$.
+\end{rem}
+
+\begin{boxdefi}
+    We can define \alert{Church numerals}. 
+    If $n$ is a natural number we encode it as $\alert{[n]} \coloneq \lambda fx. f^n x$ where $f^0 x \coloneq x$ and $f^{n+1} x = f(f^nx) = f^n(fx)$.
+\end{boxdefi}
+
+\begin{boxdefi}
+    Let $A$ be a set and $\ored$ a binary relation on $A$ with reflective transitive closure $\to$.
+    \begin{enumerate}
+        \item $t \in A$ is \alert{in normal form} if there is no $s$ such that $t \ored s$.
+        \item $t \in A$ \alert{has normal form $s$} if $s$ is in normal form and $t \to s$.
+        \item $t \in A$ is \alert{strongly normalizing} if there exists no infinite sequence $t \ored t_1 \ored t_2 \ored t_3 \ored \cdots$.
+        \item $\ored$ is \alert{(weakly) normalizing} if every $t \in A$ has a normal form.
+        \item $\ored$ is \alert{strongly normalizing} if every $t \in A$ is strongly normalizing.
+        \item {$\ored$ is \alert{confluent} (has the \alert{Church-Rosser property}) if whenever $u \leftarrow t \to v$ there is an $s \in A$ with $u \to s \leftarrow v$.
+            \begin{equation*}
+            \begin{tikzcd}[ampersand replacement=\&]
+                t \ar[r] \ar[d] \& v \ar[d, dashed] \\
+                u \ar[r, dashed] \& s 
+            \end{tikzcd}
+        \end{equation*}}
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{rem}
+    $\beta$-reduction is neither weakly nor strongly normalizing.
+\end{rem}
+\begin{proof}
+    See the counterexamples presented in Example \ref{ex:betared} (iii) and Proposition \ref{prop:fixpoi}.
+\end{proof}
+
+\begin{boxthm}[Church-Rosser] \label{thm:ChurchRosser}
+    $\beored$ is confluent.
+\end{boxthm}
+
+\begin{rem}
+    It does not suffices to prove 
+    \begin{equation*}
+        \begin{tikzcd}
+            t \ar[r, "{\beta, 1}"] \ar[d, "{\beta, 1}"] & v \ar[d, dashed, "\beta"] \\
+            u \ar[r, dashed, "\beta"] & s 
+        \end{tikzcd}
+    \end{equation*}
+    i.e. for a general binary relation Theorem \ref{thm:ChurchRosser} does not follow from this.
+\end{rem}
+
+\begin{boxdefi} \label{def:parared}
+    \alert{Parallel reduction ($\Rightarrow$)} is defined inductively as
+    \begin{enumerate}
+        \item $x \Rightarrow x$ and $c \Rightarrow c$ where $x$ is a variable and $c$ is a constant.
+        \item If $t \Rightarrow t'$ then $\lambda x.t \Rightarrow \lambda x. t'$.
+    \end{enumerate}
+    If $t \Rightarrow t'$ and $u \Rightarrow u'$ then 
+    \begin{enumerate}[resume]
+        \item $tu \Rightarrow t'u'$.
+        \item $(\lambda x.t)u \Rightarrow t'[u'/x]$.
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxlem}
+    Parallel induction is reflexive, i.e. $t \Rightarrow t$.
+\end{boxlem}
+\begin{proof}
+    We show this by induction on $t$. 
+    Consider $t = \lambda x.s$. 
+    Then by induction hypothesis $s \Rightarrow s$, so by Definition \ref{def:parared} (ii) $\lambda x.s \Rightarrow \lambda x.s$.
+    The rest of the cases are similar.
+\end{proof}
+
+\begin{boxlem}
+    If $t \beored s$ then $t \Rightarrow s$.
+\end{boxlem}
+\begin{proof}
+    We show this by induction on $t \beored s$.
+    If $t \becont s$, say $(\lambda x.u)v \becont u [v/x]$. 
+    Then $(\lambda x. u)v \Rightarrow u [v/x]$ by Definition \ref{def:parared} (iv).
+    The other cases are also easy to show.
+\end{proof}
+
+\begin{boxlem}
+    If $t \Rightarrow t'$ then $t \bered t'$.
+\end{boxlem}
+\begin{proof}
+    We show this by induction on $t \Rightarrow t'$.
+    Suppose the last rule was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t)u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$.
+    By induction hypothesis we have $t \bered t'$ and $u \bered u'$.
+    Then $(\lambda x.t)u \bered (\lambda x.t') u \bered (\lambda x. t') u' \beored t'[u'/x]$.
+    The other cases are similar.
+\end{proof}
+
+\begin{boxlem}
+    If $t \Rightarrow t'$ and $w \Rightarrow w'$ then $t[w/x] \Rightarrow t'[w'/y]$.
+\end{boxlem}
+\begin{proof}
+    We show this by induction on $t \Rightarrow t'$.
+    Suppose the last step was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t)u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$.
+    By induction hypothesis we know that $t[w/y] \Rightarrow t'[w/y]$ and $u[w /y] \Rightarrow u'[w/y]$.
+    We have to show $(\lambda x.t [w/y])u[w/y] \Rightarrow t'[u'/x][w'/y]$.
+    $x$ is bound so we may assume that $x$ is not free in $w'$. 
+    Then one can prove that $t'[u'/x][w'/y] = t'[w'/y][(u'[w'/y])/x]$.
+    Now the claim follows from Definition \ref{def:parared} (iv).
+    The rest of the cases are similar.
+\end{proof}
+
+\begin{boxdefi}
+    If $t$ is a term then $t^*$ is recursively defined as 
+    \begin{enumerate}
+        \item $x^* = x$ and $c^* = c$ for variables $x$ and constants $c$.
+        \item $(\lambda x.t)^* = \lambda x. t^*$.
+        \item $(ts)^* = t^*s^*$ if $t$ is not a $\lambda$.
+        \item $((\lambda x.t) s)^* = t^*[s^*/x]$.
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxlem}
+    If $s \Rightarrow t$ then $t \Rightarrow s^*$.
+\end{boxlem}
+\begin{proof}
+    We show this by induction of the length of the derivation for $s \Rightarrow t$.
+
+    If the last step was Definition \ref{def:parared} (iii), i.e. concluding $tu \Rightarrow t'u'$ from $t \Rightarrow t'$ and $u \Rightarrow u'$.
+    By induction hypothesis $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
+    We need to show that $t'u' \Rightarrow (t u)^*$.
+    If $t$ is not a $\lambda$ then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
+    If $t = \lambda x. s$ then $(tu)^* = s^* [u*/x]$.
+    We know $\lambda x.s \Rightarrow t'$ which could only be derived from Definition \ref{def:parared} (ii). 
+    So $t' = \lambda x. s'$ with $s \Rightarrow s'$.
+    By induction hypothesis $s' \Rightarrow s^*$. 
+    Then $(\lambda x. s') u' \Rightarrow s^* [u*/x]$ follows from (iv).
+
+    To be continued...
+\end{proof}

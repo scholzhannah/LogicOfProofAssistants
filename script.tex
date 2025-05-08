@@ -67,6 +67,8 @@
 \usepackage{mathspec} 			        % for FONTS
 \usepackage{setspace}                   % for LINE SPACING
 \usepackage{multicol}                   % for MULTICOLUMNS
+\usepackage{environ}                    % better custom enviroments
+\usepackage{adjustbox}                  % to get custom alignment of diagrams
 
 \graphicspath{{pictures/}}              % Pfad in dem die mit Inkscape erstellen Bilder liegen (relativ zum Hauptverzeichnis).
 
@@ -179,6 +181,38 @@
 \newtheorem*{thm*}{Theorem}
 \newtheorem{exercise}[defi]{Exercise}
 
+% things with boxes build in
+\NewEnviron{boxthm}[1][]{
+    \begin{boxthe}
+        \begin{thm}[#1]
+            \BODY
+        \end{thm}
+    \end{boxthe}
+}
+
+\NewEnviron{boxdefi}{
+    \begin{boxdef}
+        \begin{defi}
+            \BODY
+        \end{defi}
+    \end{boxdef}
+}
+
+\NewEnviron{boxprop}{
+    \begin{boxthe}
+        \begin{prop}
+            \BODY
+        \end{prop}
+    \end{boxthe}
+}
+
+\NewEnviron{boxlem}[1][]{
+    \begin{boxthe}
+        \begin{lem}[#1]
+            \BODY
+        \end{lem}
+    \end{boxthe}
+}
 
 %       Makros
 \input{thesis_macros}
@@ -196,5 +230,8 @@
 
 \clearpage
 \input{sections/FirstOrderLogic.tex}
+
+\clearpage
+\input{sections/LambdaCalculus.tex}
 
 \end{document}
