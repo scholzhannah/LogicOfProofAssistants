@@ -2,7 +2,7 @@
 
 \begin{boxdefi}
     Let $\alert{\fV} = \{ x_0, x_1, \dots \} $ a countably infinite set of variables and $\alert{C} = \{ c_0, c_1, \dots \}$ be any set of constants. 
-    The terms of the $\lambda$-calculus are given by the following BNF: 
+    The terms of the \alert{$\lambda$-calculus} are given by the following BNF: 
     \begin{equation*}
         s,t \Coloneqq x \mid c \mid (s t) \mid (\lambda x. t)
     \end{equation*}
@@ -14,7 +14,7 @@
     \begin{enumerate}
         \item Think of $(\lambda x. t)$ as the function $x \mapsto t(x)$ and $(s t)$ as function application. 
         \item Anything can apply to any term, e.g. $(x x)$ is a term.
-        \item Abbreviate $((rs)t)u$ to $rstu$ and $\lambda x. \lambda y. \lambda z. t$ to $\lambda x y z. t$. For example $\lambda xy. xy$ means $(\lambda x. (\lambda y. (x y)))$.
+        \item Abbreviate $((rs)t)u$ to $rstu$ and $\lambda x. \lambda y. \lambda z. t$ to $\lambda x y z. t$. For example, $\lambda xy. xy$ means $(\lambda x. (\lambda y. (x y)))$.
         \item $\lambda x.t$ binds the variable $x$. Like in first-order logic we can define $\alpha$-equivalence ($\aeq$) and substitution ($t[s/x]$). Here we identify $\alpha$-equivalent terms, i.e. $\lambda x.x = \lambda y.y$.
     \end{enumerate}
 \end{rem}
@@ -38,7 +38,7 @@
                 \item If $s \beored t$ then $su \beored tu$, $us \beored ut$ and $\lambda x. s \beored \lambda x. t$.
             \end{enumerate}}
         \item \alert{$\beta$-reduction ($\bered$)} is the reflexive transitive closure of $\beored$, i.e. it is the smallest relation that is reflexive, transitive and contains $\beored$.
-        \item \alert{$\beta$-equivalence ($\beq$)} is the smallest equivalence relation containing $bered$.
+        \item \alert{$\beta$-equivalence ($\beq$)} is the smallest equivalence relation containing $\bered$.
     \end{enumerate}
 \end{boxdefi}
 
@@ -83,7 +83,7 @@
 \end{proof}
 
 \begin{boxdefi}
-    We can define the \alert{pairing} $\alert{P} = \lambda stx.xst$ and denote $\alert{(s, t)} \coloneq Pst \bered \lambda x. xst$.
+    We can define the \alert{pairing} $\alert{P} \coloneq \lambda stx.xst$ and denote $\alert{(s, t)} \coloneq Pst \bered \lambda x. xst$.
 \end{boxdefi}
 
 \begin{rem}
@@ -125,7 +125,7 @@
 \end{boxthm}
 
 \begin{rem}
-    It does not suffices to prove 
+    It does not suffice to prove 
     \begin{equation*}
         \begin{tikzcd}
             t \ar[r, "{\beta, 1}"] \ar[d, "{\beta, 1}"] & v \ar[d, dashed, "\beta"] \\
@@ -158,7 +158,7 @@
     The rest of the cases are similar.
 \end{proof}
 
-\begin{boxlem}
+\begin{boxlem} \label{lem:beoredtoarrow}
     If $t \beored s$ then $t \Rightarrow s$.
 \end{boxlem}
 \begin{proof}
@@ -168,7 +168,7 @@
     The other cases are also easy to show.
 \end{proof}
 
-\begin{boxlem}
+\begin{boxlem} \label{lem:arrowbered}
     If $t \Rightarrow t'$ then $t \bered t'$.
 \end{boxlem}
 \begin{proof}
@@ -179,8 +179,8 @@
     The other cases are similar.
 \end{proof}
 
-\begin{boxlem}
-    If $t \Rightarrow t'$ and $w \Rightarrow w'$ then $t[w/x] \Rightarrow t'[w'/y]$.
+\begin{boxlem} \label{lem:arrowsubst}
+    If $t \Rightarrow t'$ and $w \Rightarrow w'$ then $t[w/y] \Rightarrow t'[w'/y]$.
 \end{boxlem}
 \begin{proof}
     We show this by induction on $t \Rightarrow t'$.
@@ -193,8 +193,8 @@
     The rest of the cases are similar.
 \end{proof}
 
-\begin{boxdefi}
-    If $t$ is a term then $t^*$ is recursively defined as 
+\begin{boxdefi} \label{def:star}
+    If $t$ is a term then \alert{$t^*$} is recursively defined as 
     \begin{enumerate}
         \item $x^* = x$ and $c^* = c$ for variables $x$ and constants $c$.
         \item $(\lambda x.t)^* = \lambda x. t^*$.
@@ -203,21 +203,74 @@
     \end{enumerate}
 \end{boxdefi}
 
-\begin{boxlem}
+\begin{boxlem} \label{lem:arrowstar}
     If $s \Rightarrow t$ then $t \Rightarrow s^*$.
 \end{boxlem}
 \begin{proof}
     We show this by induction of the length of the derivation for $s \Rightarrow t$.
 
-    If the last step was Definition \ref{def:parared} (iii), i.e. concluding $tu \Rightarrow t'u'$ from $t \Rightarrow t'$ and $u \Rightarrow u'$.
-    By induction hypothesis $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
+    If the last step was Definition \ref{def:parared} (iii), i.e. concluding $tu \Rightarrow t'u'$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
     We need to show that $t'u' \Rightarrow (t u)^*$.
     If $t$ is not a $\lambda$ then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
     If $t = \lambda x. s$ then $(tu)^* = s^* [u*/x]$.
-    We know $\lambda x.s \Rightarrow t'$ which could only be derived from Definition \ref{def:parared} (ii). 
+    We know $\lambda x.s \Rightarrow t'$ which can only be derived using Definition \ref{def:parared} (ii). 
     So $t' = \lambda x. s'$ with $s \Rightarrow s'$.
     By induction hypothesis $s' \Rightarrow s^*$. 
-    Then $(\lambda x. s') u' \Rightarrow s^* [u*/x]$ follows from (iv).
+    Then $(\lambda x. s') u' \Rightarrow s^* [u*/x]$ follows from Definition \ref{def:star} (iv).
 
-    To be continued...
+    If the last step was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t) u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis we know that $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
+    Then $t'[u'/x] \Rightarrow ((\lambda x.t)u)^* = t^*[u^* /x]$ by Lemma \ref{lem:arrowsubst}.
+
+    The rest of the cases are easy.
 \end{proof}
+
+\begin{boxlem}\label{lem:almostconfluence}
+    If $t \beored u$ and $t \bered v$ then there is an $s$ with $u \bered s \prescript{}{\beta}{\leftarrow} v$.
+    \begin{equation*}
+        \begin{tikzcd}[ampersand replacement=\&]
+            t \ar[r, "\beta"] \ar[d, "{\beta, 1}"] \& v \ar[d, dashed, "\beta"] \\
+            u \ar[r, dashed, "\beta"] \& s 
+        \end{tikzcd}
+    \end{equation*}
+\end{boxlem}
+\begin{proof}
+    Decomposing $t \bered v$ into individual steps gives us
+    \begin{equation*}
+        \begin{tikzcd}[/tikz/cells={/tikz/nodes={shape=asymmetrical
+            rectangle,text width=0.5cm,text height=2ex,text depth=0.3ex,align=center}}]
+            & t \ar[dl, "{\beta, 1}"] \ar[dr, "{\beta, 1}"] & \\
+            u && v_1 \ar[dr, "{\beta, 1}"] \\
+            &&& v_2 \ar[dr, "{\beta, 1}"] \\
+            &&&& \ddots \ar[dr, "{\beta, 1}"] \\
+            &&&&& \mathllap{v_n} = \mathrlap{v}
+        \end{tikzcd}
+    \end{equation*}
+    which with Lemma \ref{lem:beoredtoarrow} becomes
+    \begin{equation*}
+        \begin{tikzcd}[/tikz/cells={/tikz/nodes={shape=asymmetrical
+            rectangle,text width=0.5cm,text height=2ex,text depth=0.3ex,align=center}}]
+            & t \ar[dl, Rightarrow] \ar[dr, Rightarrow] & \\
+            u && v_1 \ar[dr, Rightarrow] \\
+            &&& v_2 \ar[dr, Rightarrow] \\
+            &&&& \ddots \ar[dr, Rightarrow] \\
+            &&&&& \mathllap{v_n} = \mathrlap{v}
+        \end{tikzcd}
+    \end{equation*}
+    which with Lemma \ref{lem:arrowstar} yields
+    \begin{equation*}
+        \begin{tikzcd}[/tikz/cells={/tikz/nodes={shape=asymmetrical
+            rectangle,text width=0.5cm,text height=2ex,text depth=0.3ex,align=center}}]
+            & t \ar[dl, Rightarrow] \ar[dr, Rightarrow] & \\
+            u \ar[dr, Rightarrow] && v_1 \ar[dr, Rightarrow] \ar[dl, Rightarrow] \\
+            & t^* \ar[dr, Rightarrow] && v_2 \ar[dr, Rightarrow] \ar[dl, Rightarrow] \\
+            && v_1^* \ar[dr, Rightarrow] && \ddots \ar[dr, Rightarrow] \\
+            &&& \ddots \ar[dr, Rightarrow] && \mathllap{v_n} = \mathrlap{v} \ar[dl, Rightarrow]\\
+            &&&&\mathllap{v}_{n\mathrlap{-1}}^*
+        \end{tikzcd}
+    \end{equation*}
+    which implies our desired statement since by Lemma \ref{lem:arrowbered} parallel induction implies $\beta$-induction and $\beta$-induction is transitive. 
+\end{proof}
+
+\begin{exercise}
+    Derive Theorem \ref{thm:ChurchRosser} (Church-Rosser) from Lemma \ref{lem:almostconfluence}.
+\end{exercise}
