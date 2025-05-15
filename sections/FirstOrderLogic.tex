@@ -401,7 +401,7 @@ Options to achieve this are:
         \item Separation (axiom schema): for any formula $\varphi(\vect{x}, y)$ we have $\forall \vect{x} \forall y \exists z \forall w. w \in z \leftrightarrow (w \in y \wedge \varphi(\vect{x}, w))$ (``$z = \{ w \in y \mid \varphi(\vect{x}, w)\}$'')
         \item Infinity: $\exists x. \varnothing \in x \wedge \forall y. y \in x \to y \cup \{y\} \in x$ where $\varnothing \coloneq \{w \in y \mid \bot\}$
         \item Foundation: $\forall x. (\exists y. y \in x) \to \exists y. y \in x \wedge \forall z. z \in x \to z \notin y$ (``Every set $x$ contains an element $y$ disjoint from $x$'')
-        \item Replacement (axiom schema): For any formula $\varphi(z, w, \vect{y})$ we have $\forall x \forall \vect{y} (\forall z. z \in x \to \exists! w \varphi(z, w, \vect{y})) \to \exists u \forall w. w \in u \leftrightarrow \exists z. z \in x \wedge \varphi(z, w, \vect{y})$ (``If $\varphi$ is a function with domain $x$ then the image of $\varphi$ is a set.'')
+        \item Replacement (axiom schema): For every formula $\varphi(z, w, \vect{y})$ we have $\forall x \forall \vect{y} (\forall z. z \in x \to \exists! w \varphi(z, w, \vect{y})) \to \exists u \forall w. w \in u \leftrightarrow \exists z. z \in x \wedge \varphi(z, w, \vect{y})$ (``If $\varphi$ is a function with domain $x$ then the image of $\varphi$ is a set.'')
         \item Choice: $\forall x. \varnothing \notin x \to \exists f. f \in (x \to \bigcup x) \wedge \forall y. y \in x  \to f(y) \in y$
         
         where we define $(x , y) \coloneq \{\{x\}, \{x, y\}\}$, 
