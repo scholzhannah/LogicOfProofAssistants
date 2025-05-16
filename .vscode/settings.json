@@ -51,6 +51,7 @@
         "metalogic",
         "Metamath",
         "Mizar",
+        "redex",
         "Rosser"
     ]
 }
