@@ -31,7 +31,7 @@
 \begin{boxdefi}
     \hfill
     \begin{enumerate}
-        \item \alert{$\beta$-contraction ($\becont$)} is defined as $(\lambda x. t) s \becont t [s/x]$.
+        \item \alert{$\beta$-contraction ($\becont$)} is defined as $(\lambda x. t) s \becont t [s/x]$. $(\lambda x. t) s$ is called a \alert{$\beta$-redex} and $t [s/x]$ is called its \alert{$\beta$-reduct}.
         \item {\alert{One-step-$\beta$-reduction ($\beored$)} is defined as the compatible closure if $\becont$, i.e.
             \begin{enumerate}
                 \item If $s \becont t$ then $s \beored t$.
@@ -388,36 +388,32 @@ Thus $[n + 1]T([0], F_0) \beq ([n + 1], G[n + 1])$ and consequently $G[n + 1] \b
 Now onto the general case.
 For minimization we use the Turing operator $Y$ from the proof of Proposition \ref{prop:fixpoi} and the term $D$ with $Dst[0] \bered s$ and $Dst[n + 1] \bered t$.
 (The existence of $D$ is an exercise.) 
-Let $T$ be a term. 
+Let $T$ be a term and $\vec{x}$ be a sequence of variables. 
 We define 
 \begin{equation*}
-    W \coloneq Y (\lambda vy. Dy (v (\suc{y}))(Ty))
+    W \coloneq Y (\lambda vy. Dy (v (\suc{y}))(Ty \vec{x}))
 \end{equation*}
 Then we get 
 \begin{equation*}
-    W[n] \bered D[n](W[n + 1])(T[n]) \bered 
+    W[n] \bered D[n](W[n + 1])(T[n]\vec{x}) \bered 
     \begin{cases}
-        [n] & \text{if } T[n] \bered [0] \\
-        W[n + 1] & \text{if } T[n] \bered [m + 1] \text{ for some } m \in \bN
+        [n] & \text{if } T[n]\vec{x} \bered [0] \\
+        W[n + 1] & \text{if } T[n] \vec{x} \bered [m + 1] \text{ for some } m \in \bN
     \end{cases}
 \end{equation*}
 By the previous proposition we can take primitive recursive functions $u$ and $t$ such that $f = u \circ \mu_t$. 
 Suppose that $U$ represents $u$ and $T$ represents $t$.
 Now we set 
 \begin{equation*}
-    W' \coloneq \lambda \vec{x}. Y(\lambda vy. Dy(v(\suc{y})) (Ty\vec{x}))
-\end{equation*}
-and 
-\begin{equation*}
-    F \coloneq \lambda \vec{x}. U (W' \vec{x} [0])
+    F \coloneq \lambda \vec{x}. U (W[0])
 \end{equation*}
 If $f(\vec{x})\down$ then 
 \begin{equation*}
-    F[\vec{n}] \bered U(W'[n][0]) \bered U([\mu_t(\vec{n})]) \bered [f(\vec{n})]
+    F[\vec{x}] \bered U(W[0]) \bered U([\mu_t(\vec{x})]) \bered [f(\vec{x})]
 \end{equation*}
 and if $f(\vec{x})\up$ then 
 \begin{equation*}
-    F[\vec{x}] \bered U(W'[0]) \bered U(W'[1]) \bered \dots
+    F[\vec{x}] \bered U(W[0]) \bered U(W[1]) \bered \dots
 \end{equation*}
 which is an infinite reduction sequence. 
 We would have to show that no way of reduction leads to a normal form. 
