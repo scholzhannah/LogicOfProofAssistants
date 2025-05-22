@@ -69,6 +69,7 @@
 \usepackage{multicol}                   % for MULTICOLUMNS
 \usepackage{environ}                    % better custom enviroments
 \usepackage{adjustbox}                  % to get custom alignment of diagrams
+\usepackage{xparse}                     % to define the claim environment
 
 \graphicspath{{pictures/}}              % Pfad in dem die mit Inkscape erstellen Bilder liegen (relativ zum Hauptverzeichnis).
 
@@ -198,9 +199,9 @@
     \end{boxdef}
 }
 
-\NewEnviron{boxprop}{
+\NewEnviron{boxprop}[1][]{
     \begin{boxthe}
-        \begin{prop}
+        \begin{prop}[#1]
             \BODY
         \end{prop}
     \end{boxthe}
@@ -221,6 +222,39 @@
         \end{cor}
     \end{boxthe}
 }
+
+% Claim environment (nestable once)
+\begin{comment}
+    The syntax si: 
+    \begin{claim}
+        Claim statement
+        \begin{proof}
+            Proof of claim.
+        \end{proof}
+    \end{claim}
+\end{comment}
+
+\newlist{Claim}{description}{2}
+\setlist[Claim]{labelindent=2em,leftmargin=*}
+\newif\ifInsideClaim
+\newcounter{claim}[defi]
+\newcounter{cclaim}[claim]
+\renewcommand\theclaim{\arabic{claim}}
+\renewcommand\thecclaim{\arabic{claim}.\arabic{cclaim}}
+\let\originalqedsymbol\qedsymbol
+\newenvironment{claim}{%
+  % disable qed symbol if there is no star
+  \let\qedsymbol\relax%
+  \ifInsideClaim% we have a nested environment
+    \refstepcounter{cclaim}%
+    \let\theclaimcounter\thecclaim%
+  \else%
+    \refstepcounter{claim}%
+    \let\theclaimcounter\theclaim%
+    \InsideClaimtrue%
+  \fi%
+  \Claim\item[\textbf{Claim \theclaimcounter:}]%
+}{\endClaim\InsideClaimfalse\let\qedsymbol\originalqedsymbol}
 
 %       Makros
 \input{thesis_macros}

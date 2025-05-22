@@ -102,7 +102,7 @@
         \item $t \in A$ \alert{has normal form $s$} if $s$ is in normal form and $t \to s$.
         \item $t \in A$ is \alert{strongly normalizing} if there exists no infinite sequence $t \ored t_1 \ored t_2 \ored t_3 \ored \cdots$.
         \item $\ored$ is \alert{(weakly) normalizing} if every $t \in A$ has a normal form.
-        \item $\ored$ is \alert{strongly normalizing} if every $t \in A$ is strongly normalizing.
+        \item $\ored$ is \alert{strongly normalizing (S.N.)} if every $t \in A$ is strongly normalizing.
         \item {$\ored$ is \alert{confluent} (has the \alert{Church-Rosser property}) if whenever $u \leftarrow t \to v$ there is an $s \in A$ with $u \to s \leftarrow v$.
             \begin{equation*}
             \begin{tikzcd}[ampersand replacement=\&]
@@ -493,10 +493,14 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
     Thus one term can have multiple type judgements.
 \end{example}
 
+\begin{example}
+    One can show that $\vdash [n] : (\sigma \to \sigma) \to \sigma \to \sigma$.
+\end{example}
+
 \begin{boxdefi}
     \alert{$\lamcur + \bN$} is an extension of $\lamcur$ with
     \begin{enumerate}
-        \item one constant type $\bN$ or Nat
+        \item one constant type $\bN$ (or Nat)
         \item constant terms $0$, Succ and $R_\tau$ for any type $\tau$
         \item {three additional typing rules: 
             \begin{enumerate}
@@ -517,7 +521,198 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
                 }
             \end{enumerate}}
     \end{enumerate}
-    Additionally, we define \alert{$\iota$-contraction ($\iocont$)} as $R_{\tau}xf0 \iocont x$ and $R_{\tau}f\suc{n} \iocont fn(Rxfn)$.
-    Then be can define \alert{one-step-$\iota$-reduction ($\ioored$)} as the compatible closure of $\iota$-contraction and \alert{one-step-$\beta$-$\iota$-reduction ($\beioored$)} as the compatible closure of $\iota$- and $\beta$-contraction. 
-    Lastly, we define \alert{$\iota$-reduction ($\iored$)} as reflexive transitive closure of one-step-$\iota$-reduction and \alert{$\beta$-$\iota$-reduction ($\beiored$)} as the reflexive transitive closure of one-step-$\beta$-$\iota$-reduction. 
+    Additionally, we define: 
+    \begin{enumerate}
+        \item \alert{$\iota$-contraction ($\iocont$)} as $R_{\tau}xf0 \iocont x$ and $R_{\tau}xf\suc{n} \iocont fn(Rxfn)$.
+        \item \alert{one-step-$\iota$-reduction ($\ioored$)} as the compatible closure of $\iota$-contraction
+        \item \alert{one-step-$\beta$-$\iota$-reduction ($\beioored$)} as the compatible closure of $\iota$- and $\beta$-contraction
+        \item \alert{$\iota$-reduction ($\iored$)} as reflexive transitive closure of one-step-$\iota$-reduction
+        \item \alert{$\beta$-$\iota$-reduction ($\beiored$)} as the reflexive transitive closure of one-step-$\beta$-$\iota$-reduction
+    \end{enumerate}
 \end{boxdefi}
+
+\begin{boxlem}
+    \hfill
+    \begin{enumerate}
+        \item In $\lamcur$, if $\Gamma \vdash t : \tau$ then $\fv{t} \subseteq \domain{\Gamma}$. 
+        \item {If $\Gamma \vdash t : \tau$ and $\Gamma'$ is context such that
+            \begin{equation} \label{eq:context}
+                \forall x \in \fv{t}, \Gamma(x) = \Gamma'(x) \tag{$*$}
+            \end{equation}
+            then $\Gamma' \vdash t : \tau$}
+    \end{enumerate}
+\end{boxlem}
+\begin{proof}
+    We prove both statements by induction on $\Gamma \vdash t : \tau$. 
+    We only show ABS. 
+    Suppose the last rule was 
+    \begin{prooftree}
+        \AxiomC{$\Gamma, x : \sigma \vdash t' : \tau$}
+        \UnaryInfC{$\Gamma \vdash \lambda x. t' : \sigma \to \tau$}
+    \end{prooftree}
+    For (i), we know by induction hypothesis that $\fv{t'} \subseteq \domain{\Gamma, x : \sigma} = \domain{\Gamma} \cup \{x\}$.
+    Then $\fv{\lambda x. t'} = \fv{t'} \setminus \{x\} \subseteq \domain{\Gamma}$.
+    For (ii), let $\Gamma'$ be another context satisfying (\ref{eq:context}).
+    Then for all $y \in \fv{t'}$, we have $(\Gamma, x : \sigma)(y) = (\Gamma', x : \sigma) (y)$. 
+    So by induction hypothesis $\Gamma', x : \sigma \vdash t' : \tau$ and then with ABS we get $\Gamma' \vdash \lambda x. t' : \sigma \to \tau$.
+\end{proof}
+
+\begin{boxlem}[Generation]\label{lem:generation}
+    \hfill
+    \begin{enumerate}
+        \item If $\Gamma \vdash x : \tau$ then $\Gamma(x) = \tau$.
+        \item If $\Gamma \vdash ts : \tau$ then for some type $\sigma$ we have that $\Gamma \vdash t : \sigma \to \tau$ and $\Gamma \vdash s : \sigma$.
+        \item If $\Gamma \vdash \lambda x.t : \tau$ then for some $\tau_1$ and $\tau_2$, we have $\tau = \tau_1 \to \tau_2$ and $\Gamma, x : \tau_1 \vdash t : \tau_2$.
+    \end{enumerate}
+\end{boxlem}
+\begin{proof}
+    We show this by induction on the derivation of the typing judgement. Only one rule can apply in each case.
+\end{proof}
+
+\begin{boxdefi}
+    We can define \alert{substitution} on types \alert{$\tau[\sigma/\alpha]$} as 
+    \begin{enumerate}
+        \item $\alpha [\sigma / \alpha] \coloneq \sigma$
+        \item $\beta [\sigma / \alpha] \coloneq \beta$ if $\beta \ne \alpha$
+        \item $(\tau_1 \to \tau_2)[\sigma / \alpha] \coloneq \tau_1[\sigma / \alpha] \to \tau_2 [\sigma / \alpha]$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxprop}
+    \hfill
+    \begin{enumerate}
+        \item Type substitution: if $\Gamma \vdash t : \tau$ then $\Gamma [\sigma / \alpha] \vdash t : \tau [\sigma / \alpha]$.
+        \item Term substitution: if $\Gamma, x : \sigma \vdash t : \tau$ and $\Gamma \vdash s : \sigma$ then $\Gamma \vdash t [s/x] : \tau$.
+        \item Subject reduction: if $\Gamma \vdash t : \tau$ and $t \bered t'$ then $\Gamma \vdash t' : \tau$.
+    \end{enumerate}
+\end{boxprop}
+\begin{proof}
+    Proving (i) and (ii) is an exercise.
+    We show (iii) by induction on $t \bered t'$.
+    We only consider the case $t \becont t'$, i.e. $t = (\lambda x. t_1)t_2$ and $t ' = t_1[t_2/x]$.
+    So $\Gamma \vdash (\lambda x. t_1) t_2 : \tau$. 
+    By generation (Lemma \ref{lem:generation}) we have $\Gamma \vdash \lambda x. t_1 : \sigma \to \tau$ and $\Gamma \vdash t_2 : \sigma$.
+    So $\Gamma x : \sigma \vdash t_1 : \tau$, and thus by term substitution $\Gamma \vdash t_1[t_2/x] : \tau$.
+\end{proof}
+
+\begin{rem}
+    If $t \bered t'$ and $\Gamma \vdash t' : \sigma$, then $t$ is not necessarily typeable.
+\end{rem}
+
+\begin{boxdefi}
+    $\Gamma \vdash t : \tau$ is a \alert{principal typing judgement} if for any $\Gamma'$ and $\tau'$ with $\Gamma \vdash t : \tau'$ there is a type substitution $S = [\sigma_1 / \alpha_1, \dots, \sigma_k / \alpha_k]$ with $S(\tau) = \tau'$ and $S(\Gamma) \subseteq \Gamma'$.
+\end{boxdefi}
+
+\begin{boxthm}
+    If $t$ is well-typed, then $t$ has a principal typing judgement.
+\end{boxthm}
+
+\begin{example}
+    Let's find a principal typing judgement for $S = \lambda x y z. x z (y z)$. 
+    First, assign to each $\lambda$-abstraction a type variable: $x : \alpha_x$, $y : \alpha_y$ and $z : \alpha_z$. 
+    Then consider the constraints to these variables that follow from the application: from $xz$ we know $\alpha_x = (\alpha_z \to \beta)$, from $yz$ we $\alpha_y = (\alpha_z \to \gamma)$ and from $(xz)(yz)$ we know $\beta =(\gamma  \to \varrho)$.
+    Then we get 
+    \begin{equation*}
+        x : \alpha_z \to \gamma \to \varrho, y : \alpha_z \to \gamma, z : \alpha_z \vdash (xz)(yz) : \varrho
+    \end{equation*}
+    which using abstraction gives us 
+    \begin{equation*}
+        \vdash S : (\alpha_z \to \gamma \to \varrho) \to (\alpha_z \to \gamma) \to \alpha_z \to \varrho
+    \end{equation*}
+    One can show that this is a principal judgement.
+\end{example}
+
+\begin{boxthm}
+    There are (polynomial-time) algorithms for 
+    \begin{enumerate}
+        \item typeability: given $t$, construct $\Gamma$ and $\tau$ such that $\Gamma \vdash t : \tau$.
+        \item type-checking: given $t$, $\Gamma$ and $\tau$ does $\Gamma \vdash t : \tau$ hold?
+    \end{enumerate}
+\end{boxthm}
+
+\begin{boxdefi}
+    $\alert{\lamchu}$ has the same types as $\lamcur$.
+    We change the \alert{preterms} to be
+    \begin{equation*}
+        s, t \Coloneqq x \mid c \mid (st) \mid \lambda x : \tau .t
+    \end{equation*}
+    where $x$ is a variable, $c$ a constant and $\tau$ a type. 
+    Additionally we keep the \alert{typing judgements} VAR and APP but change ABS to be 
+    \begin{prooftree}
+        \AxiomC{$\Gamma, x : \sigma \vdash t : \tau$}
+        \UnaryInfC{$\Gamma \vdash \lambda x : \sigma .t : \sigma \to \tau$}
+    \end{prooftree}
+\end{boxdefi}
+
+\begin{rem}
+    We have substitution and $\beta$-reduction as usual, i.e. $(\lambda x : \tau . t)s \becont t[s/x]$ generates $\beta$-reduction.
+\end{rem}
+
+\begin{rem}
+    Term substitution and subject reduction hold the same way as before. 
+\end{rem}
+
+\begin{boxprop}[Unique typing]
+    In $\lamchu$, if $\Gamma \vdash t : \tau$ and $\Gamma \vdash t : \sigma$ then $\sigma = \tau$. 
+\end{boxprop}
+\begin{proof}
+    We prove this by induction on $\Gamma \vdash t : \tau$.
+    Showing it for VAR and APP is easy. 
+    If the last rule was ABS, i.e. 
+    \begin{prooftree}
+        \AxiomC{$\Gamma, x : \sigma' \vdash t' : \tau'$}
+        \UnaryInfC{$\Gamma \vdash \lambda x : \sigma'. t' : \sigma' \to \tau'$}
+    \end{prooftree}
+    with $\tau = (\sigma' \to \tau')$ and $t = \lambda x : \sigma'. t'$, 
+    then $\Gamma \vdash t : \sigma$ must have ABS as its last rule. 
+    $t$ specifies that the domains are equal. 
+    By induction hypothesis the codomains are equal.
+\end{proof}
+
+\begin{rem}
+    We write $t^\tau$ to say $t : \tau$ in an implicitly given context.
+\end{rem}
+
+\begin{boxthm}
+    $\beored$ is strongly normalizing among well-typed terms in both $\lamcur$ and $\lamchu$.
+\end{boxthm}
+
+\begin{exercise}
+    Prove that the two claims in the previous theorem are equivalent. 
+\end{exercise}
+
+\begin{boxlem}
+    A term $t$ (in $\lamchu$) is strongly normalizing iff there is a natural reduction number $n = h(t)$ such that every reduction sequence $t \beored t_1 \beored t_2 \beored \dots$ has length at most $n$. 
+\end{boxlem}
+\begin{proof}
+    The backward direction is trivial.
+    For the forward direction consider $\down t \coloneq \{s \mid t \bered s\}$ and let $A \coloneq \{ s \in \down t \mid \down s \text{ is finite}\}$.
+    \begin{claim}
+        Let $s \in \down t$. 
+        If for every $s \beored s'$ we have $s' \in A$ then $s \in A$.
+        \begin{proof}
+            The claim follows from the following observations: 
+            \begin{enumerate}
+                \item $\#\{s' \mid s \beored s'\}$ is finite because $s$ has finitely many $\beta$-redexes. 
+                \item $\down s = \{s\} \cup \bigcup_{s \beored s'} \down s'$
+            \end{enumerate}
+            By assumption $\down s'$ is finite for all $s \beored s'$. 
+            Thus $\down s$ is a finite union of finite sets and therefore $s \in A$.
+        \end{proof}
+    \end{claim}
+    \begin{claim}
+        $t \in A$
+        \begin{proof}
+            Suppose $t \notin A$.
+            Then $t \beored t_1$ with $t_1 \notin A$ and $t_1 \beored t_2$ with $t_2 \notin A$. 
+            Repeating this we get
+            \begin{equation*}
+                t \beored t_1 \beored t_2 \beored \dots
+            \end{equation*}
+            which contradicts that $t$ is strongly normalizing.
+            So $t \in A$.
+        \end{proof}
+    \end{claim}
+    Take $n(t) \coloneq \# A$.
+    Then the claim of the lemma follows. 
+\end{proof}

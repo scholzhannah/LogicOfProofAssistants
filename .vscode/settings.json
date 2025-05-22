@@ -52,6 +52,9 @@
         "Metamath",
         "Mizar",
         "redex",
-        "Rosser"
+        "redexes",
+        "Rosser",
+        "typeability",
+        "typeable"
     ]
 }
