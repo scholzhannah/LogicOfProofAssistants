@@ -1,8 +1,8 @@
 \section{\texorpdfstring{$\lambda$}{lambda}-calculus}
 
 \begin{boxdefi}
-    Let $\alert{\fV} = \{ x_0, x_1, \dots \} $ a countably infinite set of variables and $\alert{C} = \{ c_0, c_1, \dots \}$ be any set of constants. 
-    The terms of the \alert{$\lambda$-calculus} are given by the following BNF: 
+    Let $\alert{\fV} = \{ x_0, x_1, \dots \} $ a countably infinite set of variables and $\alert{C} = \{ c_0, c_1, \dots \}$ be any set of constants.
+    The terms of the \alert{$\lambda$-calculus} are given by the following BNF:
     \begin{equation*}
         s,t \Coloneqq x \mid c \mid (s t) \mid (\lambda x. t)
     \end{equation*}
@@ -12,7 +12,7 @@
 \begin{rem}
     \hfill
     \begin{enumerate}
-        \item Think of $(\lambda x. t)$ as the function $x \mapsto t(x)$ and $(s t)$ as function application. 
+        \item Think of $(\lambda x. t)$ as the function $x \mapsto t(x)$ and $(s t)$ as function application.
         \item Anything can apply to any term, e.g. $(x x)$ is a term.
         \item Abbreviate $((rs)t)u$ to $rstu$ and $\lambda x. \lambda y. \lambda z. t$ to $\lambda x y z. t$. For example, $\lambda xy. xy$ means $(\lambda x. (\lambda y. (x y)))$.
         \item $\lambda x.t$ binds the variable $x$. Like in first-order logic we can define $\alpha$-equivalence ($\aeq$) and substitution ($t[s/x]$). Here we identify $\alpha$-equivalent terms, e.g. $\lambda x.x = \lambda y.y$.
@@ -24,8 +24,8 @@
 \end{example}
 
 \begin{rem}
-    Consider $(\lambda x. t) s$. 
-    We want this to correspond to $t[s/x]$. 
+    Consider $(\lambda x. t) s$.
+    We want this to correspond to $t[s/x]$.
 \end{rem}
 
 \begin{boxdefi}
@@ -57,7 +57,7 @@
 \end{example}
 
 \begin{boxdefi}\label{defi:IKS}
-    We define the following combinators: 
+    We define the following combinators:
     \begin{enumerate}
         \item $\alert{I} = \lambda x.x$
         \item $\alert{K} = \lambda xy.x$
@@ -91,7 +91,7 @@
 \end{rem}
 
 \begin{boxdefi}
-    We can define \alert{Church numerals}. 
+    We can define \alert{Church numerals}.
     If $n$ is a natural number we encode it as $\alert{[n]} \coloneq \lambda fx. f^n x$ where $f^0 x \coloneq x$ and $f^{n+1} x = f(f^nx) = f^n(fx)$.
 \end{boxdefi}
 
@@ -107,7 +107,7 @@
             \begin{equation*}
             \begin{tikzcd}[ampersand replacement=\&]
                 t \ar[r] \ar[d] \& v \ar[d, dashed] \\
-                u \ar[r, dashed] \& s 
+                u \ar[r, dashed] \& s
             \end{tikzcd}
         \end{equation*}}
     \end{enumerate}
@@ -125,11 +125,11 @@
 \end{boxthm}
 
 \begin{rem}
-    It does not suffice to prove 
+    It does not suffice to prove
     \begin{equation*}
         \begin{tikzcd}
             t \ar[r, "{\beta, 1}"] \ar[d, "{\beta, 1}"] & v \ar[d, dashed, "\beta"] \\
-            u \ar[r, dashed, "\beta"] & s 
+            u \ar[r, dashed, "\beta"] & s
         \end{tikzcd}
     \end{equation*}
     i.e. for a general binary relation Theorem \ref{thm:ChurchRosser} does not follow from this.
@@ -141,7 +141,7 @@
         \item $x \Rightarrow x$ and $c \Rightarrow c$ where $x$ is a variable and $c$ is a constant.
         \item If $t \Rightarrow t'$ then $\lambda x.t \Rightarrow \lambda x. t'$.
     \end{enumerate}
-    If $t \Rightarrow t'$ and $u \Rightarrow u'$ then 
+    If $t \Rightarrow t'$ and $u \Rightarrow u'$ then
     \begin{enumerate}[resume]
         \item $tu \Rightarrow t'u'$.
         \item $(\lambda x.t)u \Rightarrow t'[u'/x]$.
@@ -152,8 +152,8 @@
     Parallel induction is reflexive, i.e. $t \Rightarrow t$.
 \end{boxlem}
 \begin{proof}
-    We show this by induction on $t$. 
-    Consider $t = \lambda x.s$. 
+    We show this by induction on $t$.
+    Consider $t = \lambda x.s$.
     Then by induction hypothesis $s \Rightarrow s$, so by Definition \ref{def:parared} (ii) $\lambda x.s \Rightarrow \lambda x.s$.
     The rest of the cases are similar.
 \end{proof}
@@ -163,7 +163,7 @@
 \end{boxlem}
 \begin{proof}
     We show this by induction on $t \beored s$.
-    If $t \becont s$, say $(\lambda x.u)v \becont u [v/x]$. 
+    If $t \becont s$, say $(\lambda x.u)v \becont u [v/x]$.
     Then $(\lambda x. u)v \Rightarrow u [v/x]$ by Definition \ref{def:parared} (iv).
     The other cases are also easy to show.
 \end{proof}
@@ -187,14 +187,14 @@
     Suppose the last step was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t)u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$.
     By induction hypothesis we know that $t[w/y] \Rightarrow t'[w/y]$ and $u[w /y] \Rightarrow u'[w/y]$.
     We have to show $(\lambda x.t [w/y])u[w/y] \Rightarrow t'[u'/x][w'/y]$.
-    $x$ is bound so we may assume that $x$ is not free in $w'$. 
+    $x$ is bound so we may assume that $x$ is not free in $w'$.
     Then one can prove that $t'[u'/x][w'/y] = t'[w'/y][(u'[w'/y])/x]$.
     Now the claim follows from Definition \ref{def:parared} (iv).
     The rest of the cases are similar.
 \end{proof}
 
 \begin{boxdefi} \label{def:star}
-    If $t$ is a term then \alert{$t^*$} is recursively defined as 
+    If $t$ is a term then \alert{$t^*$} is recursively defined as
     \begin{enumerate}
         \item $x^* = x$ and $c^* = c$ for variables $x$ and constants $c$.
         \item $(\lambda x.t)^* = \lambda x. t^*$.
@@ -213,9 +213,9 @@
     We need to show that $t'u' \Rightarrow (t u)^*$.
     If $t$ is not a $\lambda$ then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
     If $t = \lambda x. s$ then $(tu)^* = s^* [u*/x]$.
-    We know $\lambda x.s \Rightarrow t'$ which can only be derived using Definition \ref{def:parared} (ii). 
+    We know $\lambda x.s \Rightarrow t'$ which can only be derived using Definition \ref{def:parared} (ii).
     So $t' = \lambda x. s'$ with $s \Rightarrow s'$.
-    By induction hypothesis $s' \Rightarrow s^*$. 
+    By induction hypothesis $s' \Rightarrow s^*$.
     Then $(\lambda x. s') u' \Rightarrow s^* [u*/x]$ follows from Definition \ref{def:star} (iv).
 
     If the last step was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t) u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis we know that $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
@@ -229,7 +229,7 @@
     \begin{equation*}
         \begin{tikzcd}[ampersand replacement=\&]
             t \ar[r, "\beta"] \ar[d, "{\beta, 1}"] \& v \ar[d, dashed, "\beta"] \\
-            u \ar[r, dashed, "\beta"] \& s 
+            u \ar[r, dashed, "\beta"] \& s
         \end{tikzcd}
     \end{equation*}
 \end{boxlem}
@@ -268,7 +268,7 @@
             &&&&\mathllap{v}_{n\mathrlap{-1}}^*
         \end{tikzcd}
     \end{equation*}
-    which implies our desired statement since by Lemma \ref{lem:arrowbered} parallel reduction implies $\beta$-reduction and $\beta$-reduction is transitive. 
+    which implies our desired statement since by Lemma \ref{lem:arrowbered} parallel reduction implies $\beta$-reduction and $\beta$-reduction is transitive.
 \end{proof}
 
 \begin{exercise}
@@ -301,7 +301,7 @@
         \item $\text{Succ} \colon \bN \to \bN, x \mapsto x + 1$ is P.R.
         \item The projection $\proj{i}{k} \colon \bN^k \to \bN,  \proj{i}{k}(x_0, \dots, x_{k-1}) = x_i$ is P.R. for $0 \le i < k$.
         \item Composition: if $f \colon \bN^k \to \bN$ is P.R. and $g_0, \dots, g_{k-1} \colon \bN^l \to \bN$ are P.R. then $f \circ \vec{g} \colon \bN^l \to \bN, x \mapsto f(g_0(\vec{x}), \dots, g_{k-1}(\vec{x}))$ is P.R. and $\vec{x} \in \domain{f \circ \vec{g}}$ iff $\vec{x} \in \domain{g_i}$ for all $i$ and $(g_0(\vec{x}), \dots, g_{k-1}(\vec{x})) \in \domain{f}$.
-    \item Primitive recursion: if $f_0 \colon \bN^k \to \bN$ and $f_s \colon \bN^{k+2} \to \bN$ are P.R. then the function $g$ defined by $g(0, \vec{x}) \coloneq f_0(\vec{x})$ and $g(n+1, \vec{x}) \coloneq f_s(n, g(n, \vec{x}), \vec{x})$ is P.R., $g(0, \vec{x})\down$ iff $f_0(\vec{x})\down$, and $g(n + 1, \vec{x})\down$ iff $g(n, \vec{x})\down$ and $f_s(n, g(n, \vec{x}), \vec{x})\down$. 
+    \item Primitive recursion: if $f_0 \colon \bN^k \to \bN$ and $f_s \colon \bN^{k+2} \to \bN$ are P.R. then the function $g$ defined by $g(0, \vec{x}) \coloneq f_0(\vec{x})$ and $g(n+1, \vec{x}) \coloneq f_s(n, g(n, \vec{x}), \vec{x})$ is P.R., $g(0, \vec{x})\down$ iff $f_0(\vec{x})\down$, and $g(n + 1, \vec{x})\down$ iff $g(n, \vec{x})\down$ and $f_s(n, g(n, \vec{x}), \vec{x})\down$.
     \item Minimization (unbounded search): if $f \colon \bN^{k + 1} \to \bN$ is P.R. then $\mu_f \colon \bN^k \to \bN$ is P.R. where we set $\mu_f(\vec{x}) = n$ iff $f(i, \vec{x})\down$ for $i \le n$, $f(i, \vec{x}) > 0$ for $i < n$ and $f(n, \vec{x}) = 0$, and we set $\mu_f(\vec{x})\up$ if no such $n$ exists.
     \end{enumerate}
 \end{boxdefi}
@@ -339,14 +339,14 @@
 Then we can show that there is a partial recursive function that searches for a reduction sequence $t \beored t_1 \beored t_2 \beored \dots \beored [m]$.
 
 For the forward direction we first show that the claim is true for a primitive recursive function $f$.
-We now proceed inductively over the first five constructors of Definition \ref{def:pr}. 
+We now proceed inductively over the first five constructors of Definition \ref{def:pr}.
 For (i) we see that $[0]$ represents $0 \colon \bN^0 \to \bN$.
-Constructor (ii) is an exercise. 
+Constructor (ii) is an exercise.
 For (iii) we can show that the projection $\proj{i}{k}$ is represented by $\lambda x_0 x_1 \dots x_{k-1}. x_i$.
-For (iv) assume that $F$ represents $f$ and $G_i$ represents $g_i$ for all $i$. 
+For (iv) assume that $F$ represents $f$ and $G_i$ represents $g_i$ for all $i$.
 Then $f \circ \vec{g}$ is represented by $\lambda \vec{x}. F (G_0 \vec{x}) (G_1 \vec{x}) \dots (G_{k-1} \vec{x})$.
-Lastly, for (v) suppose that $F_0$ represents $f_0$ and $F_s$ represents $f_s$. 
-We want to find $G$ such that 
+Lastly, for (v) suppose that $F_0$ represents $f_0$ and $F_s$ represents $f_s$.
+We want to find $G$ such that
 \begin{align*}
     G[0]\vec{x} &\beq F_0 \vec{x} & G[n + 1]\vec{x} &\beq F_s [n] (G[n] \vec{x})\vec{x} \\
     \intertext{This is sufficient because $G[0][\vec{n}] \beq F_0[\vec{n}] \bered [f_0(\vec{n})]$ so $G[0][\vec{n}] \bered [f_0(\vec{n})]$ since $[f_0(\vec{n})]$ is in normal form. It is even enough to show that }
@@ -354,18 +354,18 @@ We want to find $G$ such that
 \end{align*}
 by $\lambda$-abstraction.
 We want to try to encode the sequence $([0], G[0]), ([1], G[1]), \dots$
-We set 
+We set
 \begin{equation*}
 T \coloneq \lambda u. (\suc{uK}, F_s(uK)(uK_*))
 \end{equation*}
 Note that $T([n], t) \bered (\suc{[n]}, F_s[n]t) \bered ([n + 1], F_s[n]t)$.
-We will show later that means that $T$ produces the next pair in the sequence. 
+We will show later that means that $T$ produces the next pair in the sequence.
 So we want to iterate $T$.
-Let 
+Let
 \begin{equation*}
     G \coloneq \lambda v.vT([0], F_0)K_*
 \end{equation*}
-Then 
+Then
 \begin{equation*}
     G[0] \bered [0]T([0], F_0)K_* \bered ([0], F_0) K_* \bered F_0
 \end{equation*}
@@ -377,7 +377,7 @@ For $n + 1$ we get
 \begin{equation*}
     [n + 1]T([0], F_0) \bered T([n]T([0], F_0)) \stackrel{IH}{\beq} T([n], G[n]) \bered ([n + 1], F_s [n](G[n]))
 \end{equation*}
-and 
+and
 \begin{equation*}
     G[n + 1] \bered [n + 1]T([0], F_0)K_*  \beq ([n + 1], F_s [n](G[n]))K_* \bered F_s[n](G[n])
 \end{equation*}
@@ -387,86 +387,86 @@ Thus $[n + 1]T([0], F_0) \beq ([n + 1], G[n + 1])$ and consequently $G[n + 1] \b
 
 Now onto the general case.
 For minimization we use the Turing operator $Y$ from the proof of Proposition \ref{prop:fixpoi} and the term $D$ with $Dst[0] \bered s$ and $Dst[n + 1] \bered t$.
-(The existence of $D$ is an exercise.) 
-Let $T$ be a term and $\vec{x}$ be a sequence of variables. 
-We define 
+(The existence of $D$ is an exercise.)
+Let $T$ be a term and $\vec{x}$ be a sequence of variables.
+We define
 \begin{equation*}
     W \coloneq Y (\lambda vy. Dy (v (\suc{y}))(Ty \vec{x}))
 \end{equation*}
-Then we get 
+Then we get
 \begin{equation*}
-    W[n] \bered D[n](W[n + 1])(T[n]\vec{x}) \bered 
+    W[n] \bered D[n](W[n + 1])(T[n]\vec{x}) \bered
     \begin{cases}
         [n] & \text{if } T[n]\vec{x} \bered [0] \\
         W[n + 1] & \text{if } T[n] \vec{x} \bered [m + 1] \text{ for some } m \in \bN
     \end{cases}
 \end{equation*}
-By the previous proposition we can take primitive recursive functions $u$ and $t$ such that $f = u \circ \mu_t$. 
+By the previous proposition we can take primitive recursive functions $u$ and $t$ such that $f = u \circ \mu_t$.
 Suppose that $U$ represents $u$ and $T$ represents $t$.
-Now we set 
+Now we set
 \begin{equation*}
     F \coloneq \lambda \vec{x}. U (W[0])
 \end{equation*}
-If $f(\vec{x})\down$ then 
+If $f(\vec{x})\down$ then
 \begin{equation*}
     F[\vec{x}] \bered U(W[0]) \bered U([\mu_t(\vec{x})]) \bered [f(\vec{x})]
 \end{equation*}
-and if $f(\vec{x})\up$ then 
+and if $f(\vec{x})\up$ then
 \begin{equation*}
     F[\vec{x}] \bered U(W[0]) \bered U(W[1]) \bered \dots
 \end{equation*}
-which is an infinite reduction sequence. 
-We would have to show that no way of reduction leads to a normal form. 
+which is an infinite reduction sequence.
+We would have to show that no way of reduction leads to a normal form.
 This is true but we omit the proof.
 \end{proof}
 
 \begin{boxthm}[Normalization theorem]
-    If $t$ has a $\beta$-normal form, then iterated contraction of the leftmost $\beta$-redex leads to its normal form. 
+    If $t$ has a $\beta$-normal form, then iterated contraction of the leftmost $\beta$-redex leads to its normal form.
 \end{boxthm}
 
 \subsection{Simply typed \texorpdfstring{$\lambda$}{lambda}-calculus}
 
-We want to introduce type judgements such as $t : \sigma \to \tau$ specifying the behaviour of $t$. 
+We want to introduce type judgements such as $t : \sigma \to \tau$ specifying the behaviour of $t$.
 For example, for $st$ to make sense we need $t : \sigma \to \tau$ and $s : \sigma$.
-We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
+We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu$.
 
 \begin{boxdefi}
     \alert{$\lamcur$} consists of the following.
     \begin{enumerate}
-        \item  {For \alert{types}, let $\{ \alpha, \beta, \gamma, \dots\}$ be an infinite set of \alert{type variables} and $\{B, C, \dots\}$ a set of \alert{type constants}. 
-        The types are then given by 
+        \item  {For \alert{types}, let $\{ \alpha, \beta, \gamma, \dots\}$ be an infinite set of \alert{type variables} and $\{B, C, \dots\}$ a set of \alert{type constants}.
+        The types are then given by
         \begin{equation*}
             \sigma, \tau \Coloneqq \alpha \mid C \mid (\sigma \to \tau)
         \end{equation*}
         where $\alpha$ is a type variable and $C$ a type constant.}
         \item As \alert{preterms} or \alert{raw terms} we have precisely the terms of the $\lambda$-calculus.
-        \item {A \alert{context} $\Gamma$ is a finite set $\{ x_1 : \tau_1, \dots, x_n : \tau_n\}$ where the $x_i$ are distinct term-variables and the $\tau_i$ are types. 
+        \item {A \alert{context} $\Gamma$ is a finite set $\{ x_1 : \tau_1, \dots, x_n : \tau_n\}$ where the $x_i$ are distinct term-variables and the $\tau_i$ are types.
         $\Gamma$ is a partial function with $\alert{\domain{\Gamma}} \coloneq \{x_1, \dots, x_n \}$ and $\Gamma(x_i) = \tau_i$.}
-        \item {A \alert{typing judgement} is a triple \alert{$\Gamma \vdash t : \tau$} (read: ``$t$ is a (well-typed) term of type $\tau$ in the context $\Gamma$.'') generated by: 
+        \item {A \alert{typing judgement} is a triple \alert{$\Gamma \vdash t : \tau$} (read: ``$t$ is a (well-typed) term of type $\tau$ in the context $\Gamma$.'') generated by:
         \begin{enumerate}
             \item {
-                VAR: 
+                VAR:
                 \AxiomC{}
                 \UnaryInfC{$\Gamma, x : \tau \vdash x : \tau$}
                 \DisplayProof
                 where $x \notin \domain{\Gamma}$.
             }
-            \item{ 
-                APP: 
+            \item{
+                APP:
                 \AxiomC{$\Gamma \vdash t : \sigma \to \tau$}
                 \AxiomC{$\Gamma \vdash s : \sigma$}
                 \BinaryInfC{$\Gamma \vdash ts: \tau$}
                 \DisplayProof
             }
             \item{
-                ABS: 
+                ABS:
                 \AxiomC{$\Gamma, x : \sigma \vdash t : \tau$}
                 \UnaryInfC{$\Gamma \vdash \lambda x.t : \sigma \to \tau$}
                 \DisplayProof
                 where $x \notin \domain{\Gamma}$.
             }
         \end{enumerate}}
-    \end{enumerate} 
+    \end{enumerate}
 \end{boxdefi}
 
 \begin{rem}
@@ -502,7 +502,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
     \begin{enumerate}
         \item one constant type $\bN$ (or Nat)
         \item constant terms $0$, Succ and $R_\tau$ for any type $\tau$
-        \item {three additional typing rules: 
+        \item {three additional typing rules:
             \begin{enumerate}
                 \item {
                     \AxiomC{}
@@ -521,7 +521,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
                 }
             \end{enumerate}}
     \end{enumerate}
-    Additionally, we define: 
+    Additionally, we define:
     \begin{enumerate}
         \item \alert{$\iota$-contraction ($\iocont$)} as $R_{\tau}xf0 \iocont x$ and $R_{\tau}xf\suc{n} \iocont fn(Rxfn)$.
         \item \alert{one-step-$\iota$-reduction ($\ioored$)} as the compatible closure of $\iota$-contraction
@@ -534,7 +534,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
 \begin{boxlem}
     \hfill
     \begin{enumerate}
-        \item In $\lamcur$, if $\Gamma \vdash t : \tau$ then $\fv{t} \subseteq \domain{\Gamma}$. 
+        \item In $\lamcur$, if $\Gamma \vdash t : \tau$ then $\fv{t} \subseteq \domain{\Gamma}$.
         \item {If $\Gamma \vdash t : \tau$ and $\Gamma'$ is context such that
             \begin{equation} \label{eq:context}
                 \forall x \in \fv{t}, \Gamma(x) = \Gamma'(x) \tag{$*$}
@@ -543,9 +543,9 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
     \end{enumerate}
 \end{boxlem}
 \begin{proof}
-    We prove both statements by induction on $\Gamma \vdash t : \tau$. 
-    We only show ABS. 
-    Suppose the last rule was 
+    We prove both statements by induction on $\Gamma \vdash t : \tau$.
+    We only show ABS.
+    Suppose the last rule was
     \begin{prooftree}
         \AxiomC{$\Gamma, x : \sigma \vdash t' : \tau$}
         \UnaryInfC{$\Gamma \vdash \lambda x. t' : \sigma \to \tau$}
@@ -553,7 +553,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
     For (i), we know by induction hypothesis that $\fv{t'} \subseteq \domain{\Gamma, x : \sigma} = \domain{\Gamma} \cup \{x\}$.
     Then $\fv{\lambda x. t'} = \fv{t'} \setminus \{x\} \subseteq \domain{\Gamma}$.
     For (ii), let $\Gamma'$ be another context satisfying (\ref{eq:context}).
-    Then for all $y \in \fv{t'}$, we have $(\Gamma, x : \sigma)(y) = (\Gamma', x : \sigma) (y)$. 
+    Then for all $y \in \fv{t'}$, we have $(\Gamma, x : \sigma)(y) = (\Gamma', x : \sigma) (y)$.
     So by induction hypothesis $\Gamma', x : \sigma \vdash t' : \tau$ and then with ABS we get $\Gamma' \vdash \lambda x. t' : \sigma \to \tau$.
 \end{proof}
 
@@ -570,7 +570,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
 \end{proof}
 
 \begin{boxdefi}
-    We can define \alert{substitution} on types \alert{$\tau[\sigma/\alpha]$} as 
+    We can define \alert{substitution} on types \alert{$\tau[\sigma/\alpha]$} as
     \begin{enumerate}
         \item $\alpha [\sigma / \alpha] \coloneq \sigma$
         \item $\beta [\sigma / \alpha] \coloneq \beta$ if $\beta \ne \alpha$
@@ -590,7 +590,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
     Proving (i) and (ii) is an exercise.
     We show (iii) by induction on $t \bered t'$.
     We only consider the case $t \becont t'$, i.e. $t = (\lambda x. t_1)t_2$ and $t ' = t_1[t_2/x]$.
-    So $\Gamma \vdash (\lambda x. t_1) t_2 : \tau$. 
+    So $\Gamma \vdash (\lambda x. t_1) t_2 : \tau$.
     By generation (Lemma \ref{lem:generation}) we have $\Gamma \vdash \lambda x. t_1 : \sigma \to \tau$ and $\Gamma \vdash t_2 : \sigma$.
     So $\Gamma x : \sigma \vdash t_1 : \tau$, and thus by term substitution $\Gamma \vdash t_1[t_2/x] : \tau$.
 \end{proof}
@@ -608,14 +608,14 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
 \end{boxthm}
 
 \begin{example}
-    Let's find a principal typing judgement for $S = \lambda x y z. x z (y z)$. 
-    First, assign to each $\lambda$-abstraction a type variable: $x : \alpha_x$, $y : \alpha_y$ and $z : \alpha_z$. 
+    Let's find a principal typing judgement for $S = \lambda x y z. x z (y z)$.
+    First, assign to each $\lambda$-abstraction a type variable: $x : \alpha_x$, $y : \alpha_y$ and $z : \alpha_z$.
     Then consider the constraints to these variables that follow from the application: from $xz$ we know $\alpha_x = (\alpha_z \to \beta)$, from $yz$ we $\alpha_y = (\alpha_z \to \gamma)$ and from $(xz)(yz)$ we know $\beta =(\gamma  \to \varrho)$.
-    Then we get 
+    Then we get
     \begin{equation*}
         x : \alpha_z \to \gamma \to \varrho, y : \alpha_z \to \gamma, z : \alpha_z \vdash (xz)(yz) : \varrho
     \end{equation*}
-    which using abstraction gives us 
+    which using abstraction gives us
     \begin{equation*}
         \vdash S : (\alpha_z \to \gamma \to \varrho) \to (\alpha_z \to \gamma) \to \alpha_z \to \varrho
     \end{equation*}
@@ -623,7 +623,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
 \end{example}
 
 \begin{boxthm}
-    There are (polynomial-time) algorithms for 
+    There are (polynomial-time) algorithms for
     \begin{enumerate}
         \item typeability: given $t$, construct $\Gamma$ and $\tau$ such that $\Gamma \vdash t : \tau$.
         \item type-checking: given $t$, $\Gamma$ and $\tau$ does $\Gamma \vdash t : \tau$ hold?
@@ -636,8 +636,8 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
     \begin{equation*}
         s, t \Coloneqq x \mid c \mid (st) \mid \lambda x : \tau .t
     \end{equation*}
-    where $x$ is a variable, $c$ a constant and $\tau$ a type. 
-    Additionally we keep the \alert{typing judgements} VAR and APP but change ABS to be 
+    where $x$ is a variable, $c$ a constant and $\tau$ a type.
+    Additionally we keep the \alert{typing judgements} VAR and APP but change ABS to be
     \begin{prooftree}
         \AxiomC{$\Gamma, x : \sigma \vdash t : \tau$}
         \UnaryInfC{$\Gamma \vdash \lambda x : \sigma .t : \sigma \to \tau$}
@@ -649,23 +649,23 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
 \end{rem}
 
 \begin{rem}
-    Term substitution and subject reduction hold the same way as before. 
+    Term substitution and subject reduction hold the same way as before.
 \end{rem}
 
 \begin{boxprop}[Unique typing]
-    In $\lamchu$, if $\Gamma \vdash t : \tau$ and $\Gamma \vdash t : \sigma$ then $\sigma = \tau$. 
+    In $\lamchu$, if $\Gamma \vdash t : \tau$ and $\Gamma \vdash t : \sigma$ then $\sigma = \tau$.
 \end{boxprop}
 \begin{proof}
     We prove this by induction on $\Gamma \vdash t : \tau$.
-    Showing it for VAR and APP is easy. 
-    If the last rule was ABS, i.e. 
+    Showing it for VAR and APP is easy.
+    If the last rule was ABS, i.e.
     \begin{prooftree}
         \AxiomC{$\Gamma, x : \sigma' \vdash t' : \tau'$}
         \UnaryInfC{$\Gamma \vdash \lambda x : \sigma'. t' : \sigma' \to \tau'$}
     \end{prooftree}
-    with $\tau = (\sigma' \to \tau')$ and $t = \lambda x : \sigma'. t'$, 
-    then $\Gamma \vdash t : \sigma$ must have ABS as its last rule. 
-    $t$ specifies that the domains are equal. 
+    with $\tau = (\sigma' \to \tau')$ and $t = \lambda x : \sigma'. t'$,
+    then $\Gamma \vdash t : \sigma$ must have ABS as its last rule.
+    $t$ specifies that the domains are equal.
     By induction hypothesis the codomains are equal.
 \end{proof}
 
@@ -678,25 +678,26 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
 \end{boxthm}
 
 \begin{exercise}
-    Prove that the two claims in the previous theorem are equivalent. 
+    Prove that the two claims in the previous theorem are equivalent.
 \end{exercise}
 
 \begin{boxlem}
-    A term $t$ (in $\lamchu$) is strongly normalizing iff there is a natural reduction number $n = h(t)$ such that every reduction sequence $t \beored t_1 \beored t_2 \beored \dots$ has length at most $n$. 
+    A term $t$ (in $\lamchu$) is strongly normalizing iff there is a natural reduction number $n$ such that every reduction sequence $t \beored t_1 \beored t_2 \beored \dots$ has length at most $n$.
 \end{boxlem}
+For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a reduction sequence starting with $t$.
 \begin{proof}
     The backward direction is trivial.
     For the forward direction consider $\down t \coloneq \{s \mid t \bered s\}$ and let $A \coloneq \{ s \in \down t \mid \down s \text{ is finite}\}$.
     \begin{claim}
-        Let $s \in \down t$. 
+        Let $s \in \down t$.
         If for every $s \beored s'$ we have $s' \in A$ then $s \in A$.
         \begin{proof}
-            The claim follows from the following observations: 
+            The claim follows from the following observations:
             \begin{enumerate}
-                \item $\#\{s' \mid s \beored s'\}$ is finite because $s$ has finitely many $\beta$-redexes. 
+                \item $\#\{s' \mid s \beored s'\}$ is finite because $s$ has finitely many $\beta$-redexes.
                 \item $\down s = \{s\} \cup \bigcup_{s \beored s'} \down s'$
             \end{enumerate}
-            By assumption $\down s'$ is finite for all $s \beored s'$. 
+            By assumption $\down s'$ is finite for all $s \beored s'$.
             Thus $\down s$ is a finite union of finite sets and therefore $s \in A$.
         \end{proof}
     \end{claim}
@@ -704,7 +705,7 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
         $t \in A$
         \begin{proof}
             Suppose $t \notin A$.
-            Then $t \beored t_1$ with $t_1 \notin A$ and $t_1 \beored t_2$ with $t_2 \notin A$. 
+            Then $t \beored t_1$ with $t_1 \notin A$ and $t_1 \beored t_2$ with $t_2 \notin A$.
             Repeating this we get
             \begin{equation*}
                 t \beored t_1 \beored t_2 \beored \dots
@@ -713,6 +714,6 @@ We define two simply-typed $\lambda$-calculus' $\lamcur$ and $\lamchu$.
             So $t \in A$.
         \end{proof}
     \end{claim}
-    Take $n(t) \coloneq \# A$.
-    Then the claim of the lemma follows. 
+    Take $n \coloneq \# A$.
+    Then the claim of the lemma follows.
 \end{proof}
