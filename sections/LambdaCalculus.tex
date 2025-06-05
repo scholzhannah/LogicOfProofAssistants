@@ -673,7 +673,7 @@ We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu
     We write $t^\tau$ to say $t : \tau$ in an implicitly given context.
 \end{rem}
 
-\begin{boxthm}
+\begin{boxthm}\label{thm:typedSN}
     $\beored$ is strongly normalizing among well-typed terms in both $\lamcur$ and $\lamchu$.
 \end{boxthm}
 
@@ -719,7 +719,7 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
 \end{proof}
 
 \begin{boxdefi}
-    We define the \alert{computable} terms of type $\tau$ \alert{$C(\tau)$} by recursion on $\tau$:
+    We define the \alert{computable} terms of type $\tau$ which we write \alert{$C(\tau)$} by recursion on $\tau$:
     \begin{enumerate}
         \item if $\tau$ is a variable or a constant, then $t \in C(\tau)$ iff $t : \tau$ and $t$ is strongly normalizing.
         \item $t \in C(\sigma \to \tau)$ iff $t : \sigma \to \tau$ and for every $s \in C(\sigma)$ we have $ts \in C(\tau)$.
@@ -770,7 +770,7 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
     This finishes (iii).
 \end{proof}
 
-\begin{boxlem}
+\begin{boxlem}\label{lem:lambdaconstruct}
     Suppose $t : \tau$, $x : \sigma$ and
     \begin{equation}\label{eq:subst}
         \forall x \in C(\sigma), t[s/x] \in C(\tau) \tag{$*$}
@@ -808,3 +808,28 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
     If $t \in C(\tau)$, $x_0 : \sigma_0, \dots, x_{k-1} : \sigma_{k-1}$ are variables and $s_0 \in C(\sigma_0), \dots, s_{k-1} \in C(\sigma_{k-1})$. 
     Then $t[\vec{s}/\vec{x}] = t [s_0 / x_0] \dots [s_{k-1} / x_{k - 1}] \in C(\tau)$.
 \end{boxlem}
+\begin{proof}
+    We show this by induction on $t$.
+    If $t$ is a variable or a constant, this is easy. 
+
+    If $t = \lambda x. t'$, then by Lemma \ref{lem:generation} (iii) $\tau = (\sigma' \to \tau')$, $x' : \tau'$ and $t' : \tau'$ for some $\sigma'$ and $\tau'$.
+    We want to show $(\lambda x'.t')[\vec{s}/\vec{x}] = \lambda x'. (t'[\vec{s}/\vec{x}]) \in C(\sigma' \to \tau')$.
+    By Lemma \ref{lem:lambdaconstruct} it is enough to show that for every $s' \in C(\sigma)$, $t'[\vec{s}/\vec{x}][s' / x']$. 
+    This follows by induction hypothesis. 
+
+    Lastly, let us consider $t = t's'$.
+    By Lemma \ref{lem:generation} (ii) there is $\sigma$ such that $t' : \sigma \to \tau$ and $s' : \sigma$. 
+    Then $t[\vec{s}/\vec{x}] = (t'[\vec{s}/\vec{x}])(s' [\vec{s}/\vec{x}])$.
+    By induction hypothesis on $t'$ and $s'$, we know that $t'[\vec{s}/\vec{x}] \in C(\sigma \to \tau)$ and $s'[\vec{s} / \vec{x}] \in C(\sigma)$. 
+    By definition, $t[\vec{s} / \vec{x}] \in C(\tau)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:typedSN}]
+    Let $t : \tau$.
+    By Lemma \ref{lem:computableSN} (i) it is enough to show that $t \in C(\tau)$. 
+    But this is true by the previous lemma for $k = 0$.
+\end{proof}
+
+\begin{rem}
+    Theorem \ref{thm:typedSN} implies that for well-typed terms $s$ and $t$ we can decide $s \beq t$ by reducing both $s$ and $t$ to their normal forms and checking whether those are the same.
+\end{rem}

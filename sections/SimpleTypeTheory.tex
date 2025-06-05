@@ -1,0 +1,34 @@
+\section{Simple Type Theory}
+
+Simple type theory was first presented by Church in 1940. 
+
+\begin{boxdefi}
+    We add to $\lamchu$ the type constants 
+    \begin{enumerate}
+        \item \alert{$I$} (``\alert{individuals}'')
+        \item \alert{$\proptype$}
+    \end{enumerate}
+    and the term constants 
+    \begin{enumerate}
+        \item $\alert{\forallterm{\tau}} : (\tau \to \proptype) \to \proptype$
+        \item $\alert{{\Rightarrow}} : \proptype \to \proptype \to \proptype$
+        \item $\alert{=_\tau} : \tau \to \tau \to \proptype$
+        \item $\alert{\varepsilon_\tau} : (\tau \to \proptype) \to \tau$
+    \end{enumerate}
+    We view $A : \proptype$ as a formula. 
+    We write: 
+    \begin{enumerate}
+        \item $\forall x : \tau. A$ for $\forallterm{\tau}(\lambda x : \tau.A)$
+        \item $A \Rightarrow B : \proptype$ for ${\Rightarrow} (A)(B)$ where $A, B : \proptype$
+        \item $s =_\tau t : \proptype$ for ${=_\tau}(s)(t)$ where $s, t : \tau$
+    \end{enumerate}
+    Now we can define: 
+    \begin{enumerate}
+        \item $\alert{\bot} \coloneq \forall P : \proptype. P$
+        \item $\alert{\neg A} \coloneq A \Rightarrow \bot$
+        \item $\alert{A \vee B} \coloneq \neg A \Rightarrow B$
+        \item $\alert{A \wedge B} \coloneq \neg (\neg A \vee \neg B)$
+        \item $\alert{A \Leftrightarrow B} \coloneq (A \Rightarrow B) \wedge (B \Rightarrow A)$
+        \item $\alert{\exists x : \tau. A} \coloneq \neg (\forall x : \tau. \neg A)$
+    \end{enumerate}
+\end{boxdefi}
