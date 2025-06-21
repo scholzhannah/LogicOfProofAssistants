@@ -12,7 +12,7 @@ A language for groups $\fL_{\text{Group}}$ has $\fF \coloneq \{\cdot, ^{-1}, 1 \
 
 \begin{boxdef}
 \begin{defi}
-We fix an infinite set of \alert{variables} $\fV \coloneq \{ x_0, x_1, \dots \}$.
+We fix an infinite set of \alert{variables} $\alert{\fV} \coloneq \{ x_0, x_1, \dots \}$.
 \end{defi}
 \end{boxdef}
 
@@ -22,7 +22,7 @@ We use $x$ for variables, $f$ and $g$ for functions and $R$ and $S$ for relation
 
 \begin{boxdef}
 \begin{defi}
-We can define the \alert{terms $T_{\fL}$} in the language $\fL$ using the \alert{Backus–Naur form (BNF)} : 
+We can define the \alert{terms $T_{\fL}$} in the language $\fL$ using the \alert{Backus–Naur form (BNF)}: 
 \begin{equation*}
     s, t \Coloneqq x \mid f(t_1, \dots, t_n)
 \end{equation*}
@@ -60,7 +60,7 @@ They are however necessary when you use infix notation.
 \begin{defi}
 First-order \alert{formulas $\Phi_{\fL}$} are specified by
 \begin{equation*}
-    \varphi, \psi \Coloneqq \bot \mid s = t \mid R(t_1, \dots t_n) \mid (\varphi \wedge \psi) \mid (\varphi \lor \psi) \mid (\varphi \to \psi) \mid (\forall x. \varphi) \mid (\exists x. \varphi)
+    \varphi, \psi \Coloneqq \bot \mid s = t \mid R(t_1, \dots ,t_n) \mid (\varphi \wedge \psi) \mid (\varphi \lor \psi) \mid (\varphi \to \psi) \mid (\forall x. \varphi) \mid (\exists x. \varphi)
 \end{equation*}
 where $\fR$ is an $n$-ary relation symbol and $t_1, \dots, t_n \in T_{\fL}$.
 \end{defi}
@@ -313,7 +313,7 @@ Options to achieve this are:
         \item $\interpret{x}_{\fM, \sigma} \coloneq \sigma(x)$
         \item $\interpret{f(t_1, \dots, t_n)}_{\fM, \sigma} \coloneq f_{\fM}(\interpret{t_1}_{\fM, \sigma}, \dots, \interpret{t_n}_{\fM, \sigma})$
     \end{enumerate}
-    For formulas we define \alert{$\fM \smodels \varphi$} holds as 
+    For formulas we define recursively that \alert{$\fM \smodels \varphi$} holds if
     \begin{enumerate}
         \item $\fM \smodels R(t_1, \dots, t_n)$ iff $R_{\fM}(\interpret{t_1}_{\fM, \sigma}, \dots, \interpret{t_n}_{\fM, \sigma})$
         \item $\fM \smodels \bot$ never holds
@@ -344,7 +344,7 @@ Options to achieve this are:
 
 \begin{boxdef}
 \begin{defi}
-    If $\Gamma$ is a set of formulas and $\varphi$ is a formula then \alert{$\Gamma \models \varphi$} means that for any $\fL$-structure $\fM$ and assignment $\sigma \colon \fV \to \abs{\fM}$ such that $\fM \smodels \psi$ for all $\psi \in \Gamma$ we have $\fM \smodels \varphi$.
+    If $\Gamma$ is a set of formulas and $\varphi$ is a formula, then \alert{$\Gamma \models \varphi$} means that for any $\fL$-structure $\fM$ and assignment $\sigma \colon \fV \to \abs{\fM}$ such that $\fM \smodels \psi$ for all $\psi \in \Gamma$ we have $\fM \smodels \varphi$.
 \end{defi}
 \end{boxdef}
 
@@ -382,7 +382,7 @@ Options to achieve this are:
 \end{boxdef}
 
 \begin{boxthm}
-    Suppose that $\Gamma \vdash \forall \vec{x}. \exists! \varphi(\vec{x}, y)$ and that $f$ is a fresh function symbol (i.e. not among the function symbols of $\fL$) then $\Gamma \cup \{\forall \vec{x}. \varphi(\vec{x}, f(\vec{x}))\}$ is conservative over $\Gamma$.
+    Suppose that $\Gamma \vdash \forall \vec{x}. \exists! y. \varphi(\vec{x}, y)$ and that $f$ is a fresh function symbol (i.e.\ not among the function symbols of $\fL$) then $\Gamma \cup \{\forall \vec{x}. \varphi(\vec{x}, f(\vec{x}))\}$ is conservative over $\Gamma$.
 \end{boxthm}
 
 \begin{boxdef}
@@ -397,7 +397,9 @@ Options to achieve this are:
         \item Union: $\forall x \exists y \forall z. z \in y \leftrightarrow \exists w. (w \in x \wedge z \in w)$ (``$y = \bigcup x$'')
         
         This allows us to define $x \cup y \coloneq \bigcup \{x, y\}$.
-        \item Power set: $\forall x \exists y \forall z. z \in y \leftrightarrow w \in x$ (``$y = \pow{x}$'')
+        \item {Power set: $\forall x \exists y \forall z. z \in y \leftrightarrow z \subseteq x$ (``$y = \pow{x}$'')
+            
+        where $z \subseteq x$ means $\forall w. w \in z \to w \in x$}
         \item Separation (axiom schema): for any formula $\varphi(\vec{x}, y)$ we have $\forall \vec{x} \forall y \exists z \forall w. w \in z \leftrightarrow (w \in y \wedge \varphi(\vec{x}, w))$ (``$z = \{ w \in y \mid \varphi(\vec{x}, w)\}$'')
         \item Infinity: $\exists x. \varnothing \in x \wedge \forall y. y \in x \to y \cup \{y\} \in x$ where $\varnothing \coloneq \{w \in y \mid \bot\}$
         \item Foundation: $\forall x. (\exists y. y \in x) \to \exists y. y \in x \wedge \forall z. z \in x \to z \notin y$ (``Every set $x$ contains an element $y$ disjoint from $x$'')

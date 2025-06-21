@@ -96,7 +96,7 @@
 \end{boxdefi}
 
 \begin{boxdefi}
-    Let $A$ be a set and $\ored$ a binary relation on $A$ with reflective transitive closure $\to$.
+    Let $A$ be a set and $\ored$ a binary relation on $A$ with reflexive transitive closure $\to$.
     \begin{enumerate}
         \item $t \in A$ is \alert{in normal form} if there is no $s$ such that $t \ored s$.
         \item $t \in A$ \alert{has normal form $s$} if $s$ is in normal form and $t \to s$.
@@ -132,7 +132,7 @@
             u \ar[r, dashed, "\beta"] & s
         \end{tikzcd}
     \end{equation*}
-    i.e. for a general binary relation Theorem \ref{thm:ChurchRosser} does not follow from this.
+    i.e. for a general binary relation, Theorem \ref{thm:ChurchRosser} does not follow from this.
 \end{rem}
 
 \begin{boxdefi} \label{def:parared}
@@ -291,7 +291,7 @@
 \end{boxdefi}
 
 \begin{notation}
-    We set $\alert{f(\vec{x})\down} \coloneq \vec{x} \in \domain{f}$ and $\alert{f(\vec{x})\up} \coloneq \vec{x} \notin \domain{f}$.
+    We set $\alert{f(\vect{x})\down} \coloneq (\vect{x} \in \domain{f})$ and $\alert{f(\vect{x})\up} \coloneq (\vect{x} \notin \domain{f})$.
 \end{notation}
 
 \begin{boxdefi}\label{def:pr}
@@ -300,7 +300,7 @@
         \item $0 \colon \bN^0 \to \bN$ is P.R.
         \item $\text{Succ} \colon \bN \to \bN, x \mapsto x + 1$ is P.R.
         \item The projection $\proj{i}{k} \colon \bN^k \to \bN,  \proj{i}{k}(x_0, \dots, x_{k-1}) = x_i$ is P.R. for $0 \le i < k$.
-        \item Composition: if $f \colon \bN^k \to \bN$ is P.R. and $g_0, \dots, g_{k-1} \colon \bN^l \to \bN$ are P.R. then $f \circ \vec{g} \colon \bN^l \to \bN, x \mapsto f(g_0(\vec{x}), \dots, g_{k-1}(\vec{x}))$ is P.R. and $\vec{x} \in \domain{f \circ \vec{g}}$ iff $\vec{x} \in \domain{g_i}$ for all $i$ and $(g_0(\vec{x}), \dots, g_{k-1}(\vec{x})) \in \domain{f}$.
+        \item Composition: if $f \colon \bN^k \to \bN$ is P.R. and $g_0, \dots, g_{k-1} \colon \bN^l \to \bN$ are P.R. then $f \circ \vec{g} \colon \bN^l \to \bN, \vec{x} \mapsto f(g_0(\vec{x}), \dots, g_{k-1}(\vec{x}))$ is P.R. and $\vec{x} \in \domain{f \circ \vec{g}}$ iff $\vec{x} \in \domain{g_i}$ for all $i$ and $(g_0(\vec{x}), \dots, g_{k-1}(\vec{x})) \in \domain{f}$.
     \item Primitive recursion: if $f_0 \colon \bN^k \to \bN$ and $f_s \colon \bN^{k+2} \to \bN$ are P.R. then the function $g$ defined by $g(0, \vec{x}) \coloneq f_0(\vec{x})$ and $g(n+1, \vec{x}) \coloneq f_s(n, g(n, \vec{x}), \vec{x})$ is P.R., $g(0, \vec{x})\down$ iff $f_0(\vec{x})\down$, and $g(n + 1, \vec{x})\down$ iff $g(n, \vec{x})\down$ and $f_s(n, g(n, \vec{x}), \vec{x})\down$.
     \item Minimization (unbounded search): if $f \colon \bN^{k + 1} \to \bN$ is P.R. then $\mu_f \colon \bN^k \to \bN$ is P.R. where we set $\mu_f(\vec{x}) = n$ iff $f(i, \vec{x})\down$ for $i \le n$, $f(i, \vec{x}) > 0$ for $i < n$ and $f(n, \vec{x}) = 0$, and we set $\mu_f(\vec{x})\up$ if no such $n$ exists.
     \end{enumerate}
@@ -335,7 +335,7 @@
     $f \colon \bN^k \to \bN$ is P.R. iff it is represented by some $\lambda$-term.
 \end{boxthm}
 \begin{proof}[Proof sketch]
-    For the backward direction of the proof first notice that primitive recursive functions are expressive enough to encode: pairs of natural numbers, finite sequences of natural numbers, $\lambda$-terms, substitution in $\lambda$-terms and $\beta$-reduction.
+    For the backward direction of the proof, first notice that primitive recursive functions are expressive enough to encode: pairs of natural numbers, finite sequences of natural numbers, $\lambda$-terms, substitution in $\lambda$-terms and $\beta$-reduction.
 Then we can show that there is a partial recursive function that searches for a reduction sequence $t \beored t_1 \beored t_2 \beored \dots \beored [m]$.
 
 For the forward direction we first show that the claim is true for a primitive recursive function $f$.
@@ -427,7 +427,7 @@ This is true but we omit the proof.
 \subsection{Simply typed \texorpdfstring{$\lambda$}{lambda}-calculus}
 
 We want to introduce type judgements such as $t : \sigma \to \tau$ specifying the behaviour of $t$.
-For example, for $st$ to make sense we need $t : \sigma \to \tau$ and $s : \sigma$.
+For example, for $ts$ to make sense we need $t : \sigma \to \tau$ and $s : \sigma$.
 We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu$.
 
 \begin{boxdefi}
@@ -446,7 +446,7 @@ We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu
         \begin{enumerate}
             \item {
                 VAR:
-                \AxiomC{}
+                \AxiomC{ }
                 \UnaryInfC{$\Gamma, x : \tau \vdash x : \tau$}
                 \DisplayProof
                 where $x \notin \domain{\Gamma}$.
@@ -523,7 +523,7 @@ We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu
     \end{enumerate}
     Additionally, we define:
     \begin{enumerate}
-        \item \alert{$\iota$-contraction ($\iocont$)} as $R_{\tau}xf0 \iocont x$ and $R_{\tau}xf\suc{n} \iocont fn(Rxfn)$.
+        \item \alert{$\iota$-contraction ($\iocont$)} as $R_{\tau}xf0 \iocont x$ and $R_{\tau}xf\suc{n} \iocont fn(R_\tau xfn)$.
         \item \alert{one-step-$\iota$-reduction ($\ioored$)} as the compatible closure of $\iota$-contraction
         \item \alert{one-step-$\beta$-$\iota$-reduction ($\beioored$)} as the compatible closure of $\iota$- and $\beta$-contraction
         \item \alert{$\iota$-reduction ($\iored$)} as reflexive transitive closure of one-step-$\iota$-reduction
@@ -600,7 +600,7 @@ We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu
 \end{rem}
 
 \begin{boxdefi}
-    $\Gamma \vdash t : \tau$ is a \alert{principal typing judgement} if for any $\Gamma'$ and $\tau'$ with $\Gamma \vdash t : \tau'$ there is a type substitution $S = [\sigma_1 / \alpha_1, \dots, \sigma_k / \alpha_k]$ with $S(\tau) = \tau'$ and $S(\Gamma) \subseteq \Gamma'$.
+    $\Gamma \vdash t : \tau$ is a \alert{principal typing judgement} if for any $\Gamma'$ and $\tau'$ with $\Gamma' \vdash t : \tau'$ there is a type substitution $S = [\sigma_1 / \alpha_1, \dots, \sigma_k / \alpha_k]$ with $S(\tau) = \tau'$ and $S(\Gamma) \subseteq \Gamma'$.
 \end{boxdefi}
 
 \begin{boxthm}

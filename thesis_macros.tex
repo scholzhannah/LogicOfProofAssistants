@@ -36,7 +36,7 @@
 
 \newcommand{\aeq}{\equiv_{\alpha}} %alpha-equivalence
 \newcommand{\alert}[1]{{\color{blue}{\relax\ifmmode\mathbf{#1}\else\textbf{#1}\fi}}}
-\newcommand{\cupdot}{\dot{\cup}} % Disjoint union
+\newcommand{\cupdot}{\mathrel{\dot{\cup}}} % Disjoint union
 \newcommand{\smodels}{\models_{\sigma}} %models with variable assignment
 \newcommand{\becont}{\triangleright_{\beta}} %beta contraction
 \newcommand{\bered}{\to_{\beta}} %beta reduction
@@ -44,8 +44,8 @@
 \newcommand{\beq}{\equiv_{\beta}} %beta-equivalence
 \newcommand{\ored}{\to_1} %one-reduction
 \newcommand{\iocont}{\triangleright_{\iota}} %iota contraction
-\newcommand{\iored}{\to_{\beta}} %iota reduction
-\newcommand{\ioored}{\to_{\beta, 1}} %iota-one-reduction
+\newcommand{\iored}{\to_{\iota}} %iota reduction
+\newcommand{\ioored}{\to_{\iota, 1}} %iota-one-reduction
 \newcommand{\beiored}{\to_{\beta \iota}} %beta-iota reduction
 \newcommand{\beioored}{\to_{\beta \iota, 1}} %beta-iota-one-reduction
 
@@ -57,13 +57,13 @@
 \newcommand{\interpret}[1]{\llbracket #1 \rrbracket} % interpretation in a model
 \newcommand{\vect}[1]{\bar{#1}} % alternative vector line, not in use currently
 \newcommand{\menquote}[1]{\ensuremath{\text{``} #1 \text{''}}} % quotes in math mode
-\newcommand{\domain}[1]{\text{dom}(#1)} %domain
+\newcommand{\domain}[1]{\mathrm{dom}(#1)} %domain
 \newcommand{\down}{{\downarrow}} %downarrow without space around it
 \newcommand{\up}{{\uparrow}} %uparrow without space around it
 \DeclareMathOperator{\sucOP}{Succ}
 \newcommand{\suc}[1]{\sucOP(#1)} %successor function
-\newcommand{\lamcur}{\lambda_{\to}^{\text{Curry}}} % Curry-style typed lambda calculus
-\newcommand{\lamchu}{\lambda_{\to}^{\text{Church}}} % Church-style typed lambda calculus
+\newcommand{\lamcur}{\lambda_{\to}^{\textnormal{Curry}}} % Curry-style typed lambda calculus
+\newcommand{\lamchu}{\lambda_{\to}^{\textnormal{Church}}} % Church-style typed lambda calculus
 \newcommand{\proptype}{\mathrm{Prop}} % type of propositions
 \newcommand{\forallterm}[1]{\mathrm{Forall}_{#1}} % term constant forall
 
