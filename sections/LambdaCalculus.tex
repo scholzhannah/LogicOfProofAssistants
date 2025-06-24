@@ -642,6 +642,7 @@ We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu
         \AxiomC{$\Gamma, x : \sigma \vdash t : \tau$}
         \UnaryInfC{$\Gamma \vdash \lambda x : \sigma .t : \sigma \to \tau$}
     \end{prooftree}
+    where $x \notin \domain{\Gamma}$.
 \end{boxdefi}
 
 \begin{rem}
