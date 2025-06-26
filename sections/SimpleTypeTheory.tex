@@ -32,3 +32,62 @@ Simple type theory was first presented by Church in 1940.
         \item $\alert{\exists x : \tau. A} \coloneq \neg (\forall x : \tau. \neg A)$
     \end{enumerate}
 \end{boxdefi}
+
+\begin{rem}
+    See sheet 6 exercise 6 for a different (equivalent) way to define $A \wedge B$, $A \vee B$ and $\exists x : \tau. A$.
+\end{rem}
+
+\begin{boxdefi}
+    In addition to the typing judgements $\Gamma \vdash t : \tau$ we can now define \alert{provability judgements} $\alert{\Delta \mathrel{\vdash_\Gamma} A}$ (or $\Delta \vdash A$ for short) where $\Delta$ is a set of terms $B$ such that $\Gamma \vdash B : \proptype$ and $\Gamma \vdash A : \proptype$.
+    This gives a proof system with the following rules where the typing constraints are marked in gray: 
+    \begin{enumerate}
+        \item {(Ass)
+            \AxiomC{}
+            \UnaryInfC{$\Delta, A \vdash A$}
+            \DisplayProof} 
+        \item {($\Rightarrow$ I)
+            \AxiomC{$\Delta, A \vdash B$}
+            \UnaryInfC{$\Delta \vdash A \Rightarrow B$}
+            \DisplayProof}
+        \item {($\Rightarrow$ E)
+            \AxiomC{$\Delta \vdash A \Rightarrow B$}
+            \AxiomC{$\Delta \vdash A$}
+            \BinaryInfC{$\Delta \vdash B$}
+            \DisplayProof}
+        \item {($\forall$ I) 
+            \AxiomC{$\Delta \vdash A$}
+            \AxiomC{$x \notin \fv{\Delta}$}
+            \AxiomC{$\color{gray}\Gamma \vdash x : \tau$}
+            \TrinaryInfC{$\Delta \vdash \forall x : \tau. A$}
+            \DisplayProof}
+        \item {($\forall$ E)
+            \AxiomC{$\Delta \vdash \forall x : \tau. A$}
+            \AxiomC{$\color{gray}\Gamma \vdash t : \tau$}
+            \BinaryInfC{$\Delta \vdash A [t/x]$}
+            \DisplayProof}
+        \item {($=$ Refl)
+            \AxiomC{$\color{gray} \Gamma \vdash t : \tau$}
+            \UnaryInfC{$\Delta \vdash t \mathrel{=_\tau} t$}
+            \DisplayProof}
+        \item {($=$ Symm)
+            \AxiomC{$\Delta \vdash t \mathrel{=_\tau} s$}
+            \UnaryInfC{$\Delta \vdash s \mathrel{=_\tau} t$}
+            \DisplayProof}
+        \item {($=$ Trans)
+            \AxiomC{$\Delta \vdash t \mathrel{=_\tau} s$}
+            \AxiomC{$\Delta \vdash s \mathrel{=_\tau} r$}
+            \BinaryInfC{$\Delta \vdash t \mathrel{=_\tau} r$}
+            \DisplayProof}
+        \item {(${\to}$ Congr)
+            \AxiomC{$\Delta \vdash t \mathrel{=_{\sigma \to \tau}} t'$}
+            \AxiomC{$\Delta \vdash s \mathrel{=_{\sigma}} s'$}
+            \BinaryInfC{$\Delta \vdash t s \mathrel{=_\tau} t' s'$}
+            \DisplayProof}
+        \item {($\beta$ Equiv)
+            \AxiomC{$\color{gray} \Gamma, x : \sigma \vdash t : \tau$}
+            \AxiomC{$\color{gray} \Gamma \vdash s : \sigma$}
+            \BinaryInfC{$\Delta \vdash (\lambda x : \sigma. t) s \mathrel{=_\tau} t [s/x]$}
+            \DisplayProof}
+        \item To be continued\dots
+    \end{enumerate}
+\end{boxdefi}
