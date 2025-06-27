@@ -102,12 +102,12 @@ Simple type theory was first presented by Church in 1940.
         \item {(Functional extensionality)
 
             \AxiomC{}
-            \UnaryInfC{$\Delta \vdash \forall f, g : \sigma \to \tau. (\forall x : \sigma. f x \mathrel{=_\tau} g x) \Rightarrow f \mathrel{=_{\sigma \to \tau}}$}
+            \UnaryInfC{$\Delta \vdash \forall f, g : \sigma \to \tau. (\forall x : \sigma. f x \mathrel{=_\tau} g x) \Rightarrow f \mathrel{=_{\sigma \to \tau}} g$}
             \DisplayProof}
         \item {(Infinity) 
             
             \AxiomC{}
-            \UnaryInfC{$\Delta \vdash \exists f : I \to I. (\forall x, x' : I. f x \mathrel{=_I} f x' \Rightarrow x = x') \wedge \exists y : I. \forall x : I. \neg (f x \mathrel{=_I} y)$}
+            \UnaryInfC{$\Delta \vdash \exists f : I \to I. (\forall x, x' : I. f x \mathrel{=_I} f x' \Rightarrow x \mathrel{=_I} x') \wedge \exists y : I. \forall x : I. \neg (f x \mathrel{=_I} y)$}
             \DisplayProof}
         \item {(Hilbert $\varepsilon_\tau$ function / global choice operator)
             
@@ -119,7 +119,7 @@ Simple type theory was first presented by Church in 1940.
 
 \begin{rem}
     Interpret $\varepsilon$ as a choice operator. 
-    $\varepsilon_\tau P$ for $P : \tau \to \proptype$ is an arbitrary choice of a $t : \tau$ such that $P t$ holds if such that $t$ exists. 
+    $\varepsilon_\tau P$ for $P : \tau \to \proptype$ is an arbitrary choice of a $t : \tau$ such that $P t$ holds if such a $t$ exists. 
     One could also define the rule to be:
     \begin{prooftree}
         \AxiomC{}
@@ -141,7 +141,7 @@ Simple type theory was first presented by Church in 1940.
     \hfill
     \begin{enumerate}
         \item {All types are non-empty.
-            This is shown by applying the choice operator to $\varepsilon_\tau(\lambda x : \tau. \bot)$ which has type $\tau$ in any context.}
+            Consider $\varepsilon_\tau(\lambda x : \tau. \bot)$ which has type $\tau$ in any context.}
         \item {Given a type $\tau$, we can define the collection of subsets of $\tau$ as $\alert{(\set \tau)} \coloneq (\tau \to \proptype)$. 
         We view $P : \tau \to \proptype$ as the set $\{ x : \tau \mid P x\}$.}
         \item {Proof assistants that implement simple type theory/higher order logic: HOL4, HOL Light, Isabelle/HOL.}
@@ -158,7 +158,7 @@ Simple type theory was first presented by Church in 1940.
 \end{example}
 
 \begin{rem}
-    If you remove $\varepsilon$ from Definition \ref{def:provejudge}, you get a constructive version of type theory.
+    If you remove $\varepsilon$ from Definition \ref{def:provejudge}, you get a constructive version of simple type theory.
 \end{rem}
 
 \begin{exercise}\label{exe:topnebot}
@@ -166,12 +166,12 @@ Simple type theory was first presented by Church in 1940.
 \end{exercise}
 
 \begin{boxprop}[Diaconescu]
-    $\forall P : \proptype. P \wedge \neg P$
+    $\forall P : \proptype. P \wedge \neg P$.
 \end{boxprop}
 \begin{proof}
     We give an informal argument.
     Let $P : \proptype$.
-    We define
+    Define
     \begin{equation*}
         U \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \top) \wedge P : \proptype \to \proptype
     \end{equation*}
@@ -193,7 +193,76 @@ Simple type theory was first presented by Church in 1940.
     Do case distinctions on both of these disjunctions.
     In three cases $P$ holds and we are done. 
     In the last case we know $\varepsilon U = \top$ and $\varepsilon V = \bot$.
-    Thus by Exercise \ref{exe:topnebot} $\varepsilon U \neq \varepsilon V$.
+    Thus by Exercise \ref{exe:topnebot}, $\varepsilon U \neq \varepsilon V$.
     If $P$ holds, then $\varepsilon U = \varepsilon V$ which is a contradiction. 
     So we conclude $\neg P$.
 \end{proof}
+
+\begin{rem}
+    \hfill
+    \begin{enumerate}
+        \item {
+            \AxiomC{$\Delta, P \vdash \bot$}
+            \UnaryInfC{$\Delta \vdash \neg P$}
+            \DisplayProof
+            is constructively valid.}
+        \item {
+            \AxiomC{$\Delta, \neg P \vdash \bot$}
+            \UnaryInfC{$\Delta \vdash P$}
+            \DisplayProof
+            is constructively false. 
+        }
+    \end{enumerate} 
+\end{rem}
+
+\begin{example}
+    Define $(\exists x : \tau. A) \coloneq \forall P : \proptype. (\forall x : \tau. A \Rightarrow P) \Rightarrow P$. 
+    We will prove
+    \begin{prooftree}
+        \AxiomC{$\Gamma \vdash t : \tau$}
+        \AxiomC{$\Delta \vdash A [t/x]$}
+        \BinaryInfC{$\exists x : \tau. A$}
+    \end{prooftree}
+    as an example. 
+    First one would need to show a weakening rule, i.e.\ that for $\Delta \subseteq \Delta'$ we know 
+    \begin{prooftree}
+        \AxiomC{$\Delta \vdash P$} 
+        \UnaryInfC{$\Delta' \vdash P$}
+    \end{prooftree}
+    for any $P : \proptype$.
+    Set $B \coloneq (\forall x : \tau. A \Rightarrow P)$.
+    Then we can prove that claim by the following proof tree
+    \begin{prooftree}
+        \AxiomC{}
+        \LeftLabel{Ass}
+        \UnaryInfC{$\Delta, B \vdash B$}
+        \AxiomC{$\Gamma \vdash t : \tau$}
+        \LeftLabel{$\forall$ E}
+        \BinaryInfC{$\Delta, B \vdash A[t/x] \Rightarrow P$}
+        \AxiomC{$\Delta \vdash A[t/x]$}
+        \LeftLabel{Weak}
+        \UnaryInfC{$\Delta, B \vdash A[t/x]$}
+        \LeftLabel{$\Rightarrow$ E}
+        \BinaryInfC{$\Delta, B \vdash P$}
+        \LeftLabel{$\Rightarrow$ I}
+        \UnaryInfC{$\Delta \vdash (\forall x : \tau. A \Rightarrow P) \Rightarrow P$}
+        \LeftLabel{$\forall$ I}
+        \UnaryInfC{$\Delta \vdash \exists x : \tau. A$}
+    \end{prooftree}
+\end{example}
+
+\begin{example}
+    We can define $\tau$ having a group structure by considering 
+    \begin{equation*}
+        \groupstruct \alpha \coloneq (\alpha \to \alpha \to \alpha) \times \alpha \times (\alpha \to \alpha)
+    \end{equation*}
+    and a predicate $\groupstruct \alpha \to \proptype$ expressing that the group axioms are satisfied where we use the first component to represent the group operation, the second for the identity and the third for the inverse.
+\end{example}
+
+\begin{rem}
+    Differentiating types and terms can have annoying consequences. 
+    While we can define $\groupstruct \bZ$, we cannot define the group $\bZ / n \bZ$ as a type for a general $n$.
+    This is because $\bZ /n\bZ$ cannot be a type as it depends on a term.
+    In the same way we can define $\bR^2$ and $\bR^3$ but cannot define $\bR^n$ as a type for a general $n$.
+    Due to the distinction of types and terms, we also cannot quantify over types.
+\end{rem}
