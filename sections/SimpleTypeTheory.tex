@@ -79,12 +79,12 @@ Simple type theory was first presented by Church in 1940.
             \AxiomC{$\Delta \vdash s \mathrel{=_\tau} r$}
             \BinaryInfC{$\Delta \vdash t \mathrel{=_\tau} r$}
             \DisplayProof}
-        \item {(${\to}$ Congr)
+        \item {(App Congr)
             \AxiomC{$\Delta \vdash t \mathrel{=_{\sigma \to \tau}} t'$}
             \AxiomC{$\Delta \vdash s \mathrel{=_{\sigma}} s'$}
             \BinaryInfC{$\Delta \vdash t s \mathrel{=_\tau} t' s'$}
             \DisplayProof}
-        \item {($\beta$ Equiv)
+        \item {($\beta$ Reduce)
             \AxiomC{$\color{gray} \Gamma, x : \sigma \vdash t : \tau$}
             \AxiomC{$\color{gray} \Gamma \vdash s : \sigma$}
             \BinaryInfC{$\Delta \vdash (\lambda x : \sigma. t) s \mathrel{=_\tau} t [s/x]$}
