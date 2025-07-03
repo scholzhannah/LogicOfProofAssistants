@@ -26,14 +26,141 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
         \item $\fR \subseteq \fS \times \fS \times \fS$ is a set of \alert{relations}
     \end{enumerate}
     We additionally have an infinite set of variables. 
-    A PTS has \alert{preterms} 
-    \begin{equation*}
-        A, B, M, N \Coloneqq x  \mid s \mid (MN) \mid (\lambda x : A. M) \mid \prod x : A, B.
-    \end{equation*}
-    If $B$ does not depend on $x$, we write $\prod x : A. B$ as $\alert{A \to B}$.
-    \alert{Contexts} are lists if the form $\Gamma \coloneq x_1 : A_1, x_2 : A_2, \dots, x_n : A_n$.
-    Here, the order of the context matters. 
-    We set $\alert{\domain{\Gamma}} \coloneq \{x_1, \dots, x_n\}$. 
-    We identify terms up to $\alpha$-equivalence, so e.g.\ $\lambda x : \tau. x \aeq \lambda y : \tau. y$ and $\prod x : \tau. B(x) \aeq \prod y : \tau. B(y)$.
-    To be continued\dots 
+    We can define a lot of things we have seen before again:
+    \begin{enumerate}[resume]
+        \item{ A PTS has \alert{preterms} 
+            \begin{equation*}
+                A, B, M, N \Coloneqq x  \mid s \mid (MN) \mid (\lambda x : A. M) \mid \prod x : A, B
+            \end{equation*}
+            where $x$ is a variable and $s$ a sort.
+            If $B$ does not depend on $x$, we write $\prod x : A. B$ as $\alert{A \to B}$.}
+        \item {\alert{Contexts} are lists of the form $\Gamma \coloneq x_1 : A_1, x_2 : A_2, \dots, x_n : A_n$.
+            Here, the order of the context matters. 
+            We set $\alert{\domain{\Gamma}} \coloneq \{x_1, \dots, x_n\}$. }
+        \item {We identify terms up to \alert{$\alpha$-equivalence}, so e.g.\ $\lambda x : \tau. x \aeq \lambda y : \tau. y$ and $\prod x : \tau. B(x) \aeq \prod y : \tau. B(y)$.}
+        \item {We define \alert{$\beta$-reduction} as before.}
+        \item {The \alert{types} are precisely the terms that have a sort as its type.}
+    \end{enumerate} 
+    We write $s$ for sorts, $A$, $B$ for types and $M$, $N$ for terms (that could be types).
+    The typing rules are: 
+    \begin{enumerate}[resume]
+        \item {(ax) \AxiomC{} \UnaryInfC{$\vdash s_1 : s_2$} \DisplayProof for $(s_1, s_2) \in \fA$}
+        \item {(var) \AxiomC{$\Gamma \vdash A : s$} \UnaryInfC{$\Gamma, x : A \vdash x : A$} \DisplayProof where $x \notin \domain{\Gamma}$}
+        \item {(weak) \AxiomC{$\Gamma \vdash M : A$} \AxiomC{$\Gamma \vdash B : s$} \BinaryInfC{$\Gamma, x : B \vdash M : A$} \DisplayProof where $x \notin \domain{\Gamma}$}
+        \item {(prod) \AxiomC{$\Gamma \vdash A : s_1$} \AxiomC{$\Gamma, x : A \vdash B : s_2$} \BinaryInfC{$\Gamma \vdash \prod x : A. B : s_3$} \DisplayProof for $(s_1, s_2, s_3) \in \fR$}
+        \item {(abs) \AxiomC{$\Gamma, x : A \vdash M : B$} \AxiomC{$\Gamma \vdash \prod x : A. B : s$} \BinaryInfC{$\Gamma \vdash \lambda x : A. M : \prod x : A.B$} \DisplayProof}
+        \item {(app) \AxiomC{$\Gamma \vdash M : \prod x : A.B$} \AxiomC{$\Gamma \vdash N : A$} \BinaryInfC{$\Gamma \vdash MN : B[N/x]$} \DisplayProof}
+        \item {(conv) \AxiomC{$\Gamma \vdash M : A$} \AxiomC{$\Gamma \vdash A' : s$} \BinaryInfC{$\Gamma \vdash M : A'$} \DisplayProof for $A \beq A'$}
+    \end{enumerate}
 \end{boxdefi}
+
+\begin{example}
+    If $\tau : s$, then $(\lambda x : s. x) \tau \beq \tau$. 
+    It depends on the PTS whether $(\lambda x : s. x)\tau$ is a well-formed type.
+\end{example}
+
+\begin{rem}
+    A rule $(s_1, s_2, s_2)$ is abbreviated as $(s_1, s_2)$ and axioms $(s_1, s_2)$ are denoted $s_1 : s_2$.
+\end{rem}
+
+\begin{example}
+    \begin{enumerate}
+        \item {
+            Let $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *)\}$.
+            The only term of type $\square$ is $*$.
+            In this system, types cannot depend on terms. 
+            This system corresponds to simply-typed $\lambda$-calculus. 
+            An example of a derivation in this system is: 
+            \begin{prooftree}
+                \AxiomC{}
+                \LeftLabel{ax}
+                \UnaryInfC{$* : \square$}
+                \LeftLabel{var}
+                \UnaryInfC{$\sigma : * \vdash \sigma : *$}
+                \LeftLabel{weak}
+                \UnaryInfC{$\sigma : *, \tau : * \vdash \sigma : *$}
+                \AxiomC{}
+                \LeftLabel{ax}
+                \UnaryInfC{$\vdash * : \square$}
+                \LeftLabel{weak}
+                \UnaryInfC{$\sigma : * \vdash * : \square$}
+                \LeftLabel{var}
+                \UnaryInfC{$\sigma : *, \tau : * \vdash \tau : *$}
+                \LeftLabel{weak}
+                \UnaryInfC{$\sigma : *, \tau : *, x : \sigma \vdash \tau : *$}
+                \LeftLabel{prod}
+                \BinaryInfC{$\sigma : *, \tau : * \vdash \sigma \to \tau : *$}
+            \end{prooftree} 
+            We can also proof things like
+            \begin{equation*}
+                \sigma : *, \tau : * \vdash (\sigma \to \sigma) \to \tau \to \sigma : *
+            \end{equation*}
+            and 
+            \begin{equation*}
+                \tau : *, \sigma : *, f : \sigma \to \tau, g : \tau \to \tau, x : \tau \vdash g(g(f(x))) : \tau.
+            \end{equation*}
+            }
+        \item {
+            Consider $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (\square, *)\}$. 
+            This is called \alert{system F}.
+            We can now derive $\vdash \prod \alpha : *. \alpha \to \alpha : *$. 
+            The last step of that derivation is 
+            \begin{prooftree}
+                \AxiomC{$\vdots$}
+                \UnaryInfC{$\vdash * : \square$}
+                \AxiomC{$\vdots$}
+                \UnaryInfC{$\alpha : * \vdash \alpha \to \alpha : *$}
+                \LeftLabel{prod}
+                \BinaryInfC{$\vdash \prod \alpha : *, \alpha \to \alpha : *$}
+            \end{prooftree}
+            This is a \alert{polymorphic type}. 
+            An inhabitant of this type is $\lambda \alpha : *. \lambda x : \alpha. x$. 
+            This is called the \alert{polymorphic identity function}. 
+            The word ``\alert{polymorphic}'' means ``for all types at the same time''.
+            
+            We can give impredicative encodings of connectives. 
+            For example, $\bot \coloneq \prod_{\alpha : *} \alpha$ and $A \wedge B \coloneq \prod_{\alpha : *}(A \to B \to \alpha) \to \alpha$.
+        }
+        \item {
+            Let $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (*, \square)\}$.
+            This is called \alert{$\lambda$P}.
+            In this system $\alpha : * \vdash \alpha \to * : \square$. 
+            This system is where real dependant types start to show up. 
+            See this partial derivation: 
+            \begin{prooftree}
+                \AxiomC{$\vdots$}
+                \UnaryInfC{$\alpha : * \vdash \alpha : *$}
+                \AxiomC{$\vdots$}
+                \UnaryInfC{$\alpha : * \vdash * : \square$}
+                \LeftLabel{prod}
+                \BinaryInfC{$\alpha : * \vdash \alpha \to * : \square$}
+                \LeftLabel{var}
+                \UnaryInfC{$\alpha : *, \beta : \alpha \to * \vdash \beta : \alpha \to *$}
+                \UnaryInfC{$\vdots$}
+                \UnaryInfC{$\alpha : *, \beta : \alpha \to * \vdash \prod x : \alpha. \beta x : *$}
+            \end{prooftree}
+            We can also show 
+            \begin{equation*}
+                \alpha : *, \beta : \alpha \to *, \gamma : \alpha \to *, f : \prod_{x : \alpha} \beta x, g : \prod_{x : \alpha} \beta x \to \gamma x \vdash \lambda x : \alpha. gx(fx): \prod_{x : \alpha} \gamma x.
+            \end{equation*}
+        }
+        \item {
+            Consider $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (\square, \square)\}$. 
+            This is called \alert{$\lambda \underline{\omega}$}.
+            In this system we can derive $\vdash * \to * : \square$ and $\vdash \lambda \alpha : *. \alpha \to \alpha : *$.
+            If we add $(\square, *)$ to $\fR$, we can derive
+            \begin{equation*}
+                \vdash \lambda A : *. \lambda B : *. A \wedge B : * \to * \to *
+            \end{equation*}
+        }
+        \item{
+            Let $\fS = \{ *,  \square\}$ and $\fA = \{* : \square\}$.
+            \alert{$\lambda$C} or the \alert{calculus of constructions} has all 4 rules from the previous examples, i.e.\ $\fR = \{(*, *), (*, \square), (\square, *), (\square, \square)\}$.
+
+        }
+        \item{
+            Lean's type theory has the following rules for sorts and function types: 
+            To be continued\dots
+        }
+    \end{enumerate}
+\end{example}
