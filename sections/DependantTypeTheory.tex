@@ -1,0 +1,39 @@
+\section{Dependant Type Theory}
+
+
+The rules of simple type theory (when ignoring the terms) are precisely the rules of implicational logic. 
+So, instead of having a type specifically for propositions, we could view types as propositions and terms as proofs. 
+This is called \alert{Curry-Howard correspondence} or the \alert{propositions-as-types interpretation}.
+We could add other type formers for connectives, e.g.\ $\sigma \times \tau$ corresponding to conjunction and $\sigma + \tau$ corresponding to disjunction.
+
+How do we represent quantifiers?
+We will add the the \alert{dependant product type}, or \alert{pi type}, $\prod x : \sigma. \tau$ or $\prod_{x : \sigma} \tau$, corresponding to $\forall x : \sigma. \tau$ and where $\tau$ can depend on $x$.
+A term $t : \prod x : \sigma. \tau$ is a dependant function. 
+For $s : \sigma$, we get $ts : \tau[s/x]$.
+
+\begin{example}
+    We could then define $\tau \coloneq \bR^n$ where $n : \bN$. 
+    Then $f$, defined to send $n : \bN$ to $\underbrace{(0, \dots, 0)}_{\text{length }n}$ would have type $\prod_{n : \bN} \bR^n$.
+\end{example}
+
+\subsection{Pure Type Systems (PTSs)}
+
+\begin{boxdefi}
+    A \alert{pure type system (PTS)} is determined by $(\fS, \fA, \fR)$, where 
+    \begin{enumerate}
+        \item $\fS$ is a set of \alert{sorts} (or \alert{universes})
+        \item $\fA \subseteq \fS \times \fS$ is a set of \alert{axioms}
+        \item $\fR \subseteq \fS \times \fS \times \fS$ is a set of \alert{relations}
+    \end{enumerate}
+    We additionally have an infinite set of variables. 
+    A PTS has \alert{preterms} 
+    \begin{equation*}
+        A, B, M, N \Coloneqq x  \mid s \mid (MN) \mid (\lambda x : A. M) \mid \prod x : A, B.
+    \end{equation*}
+    If $B$ does not depend on $x$, we write $\prod x : A. B$ as $\alert{A \to B}$.
+    \alert{Contexts} are lists if the form $\Gamma \coloneq x_1 : A_1, x_2 : A_2, \dots, x_n : A_n$.
+    Here, the order of the context matters. 
+    We set $\alert{\domain{\Gamma}} \coloneq \{x_1, \dots, x_n\}$. 
+    We identify terms up to $\alpha$-equivalence, so e.g.\ $\lambda x : \tau. x \aeq \lambda y : \tau. y$ and $\prod x : \tau. B(x) \aeq \prod y : \tau. B(y)$.
+    To be continued\dots 
+\end{boxdefi}
