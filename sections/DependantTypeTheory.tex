@@ -196,14 +196,14 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \begin{boxprop}\label{prop:PTS}
     In any PTS 
     \begin{enumerate}
-        \item If $\Gamma \vdash M : A$, then $\Gamma \vdash A : s$ or $A = s$.
+        \item If $\Gamma \vdash M : A$, then $\Gamma \vdash A : s$ or $A \bered s$.
         \item (Substitution) If $\Gamma, x : A, \Delta \vdash M : B$ and $\Gamma \vdash N : A$, then $\Gamma, \Delta[N/x] \vdash M[N/x] : B[N/x]$.
         \item (Subject reduction) If $\Gamma \vdash M : A$ and $M \bered M'$, then $\Gamma \vdash M' : A$.
     \end{enumerate}
 \end{boxprop}
 
 \begin{rem}
-    $\vdash * : \square$ shows that we need to consider $A = s$ in Proposition \ref{prop:PTS} (i).
+    $\vdash * : \square$ shows that we need to consider $A \bered s$ in Proposition \ref{prop:PTS} (i).
 \end{rem}
 
 \begin{boxdefi}
