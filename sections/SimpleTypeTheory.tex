@@ -166,18 +166,18 @@ Simple type theory was first presented by Church in 1940.
 \end{exercise}
 
 \begin{boxprop}[Diaconescu]
-    $\forall P : \proptype. P \wedge \neg P$.
+    $\forall P : \proptype. P \vee \neg P$.
 \end{boxprop}
 \begin{proof}
     We give an informal argument.
     Let $P : \proptype$.
     Define
     \begin{equation*}
-        U \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \top) \wedge P : \proptype \to \proptype
+        U \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \top) \vee P : \proptype \to \proptype
     \end{equation*}
     and 
     \begin{equation*}
-        V \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \bot) \wedge P : \proptype \to \proptype
+        V \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \bot) \vee P : \proptype \to \proptype
     \end{equation*}
     \begin{claim}
         $P \Rightarrow \varepsilon U = \varepsilon V$
@@ -187,8 +187,8 @@ Simple type theory was first presented by Church in 1940.
             So $\varepsilon U \mathrel{=_{\proptype}} \varepsilon V$.
         \end{proof}
     \end{claim}
-    Notice that $U \top$ is provable, so by the choice axiom $U(\varepsilon U)$ is provable, so $(\varepsilon U = \top) \wedge P$ holds. 
-    Similarly, $V \bot$ holds, so $(\varepsilon V = \bot) \wedge P$ does as well.
+    Notice that $U \top$ is provable, so by the choice axiom $U(\varepsilon U)$ is provable, so $(\varepsilon U = \top) \vee P$ holds. 
+    Similarly, $V \bot$ holds, so $(\varepsilon V = \bot) \vee P$ does as well.
 
     Do case distinctions on both of these disjunctions.
     In three cases $P$ holds and we are done. 
@@ -210,7 +210,7 @@ Simple type theory was first presented by Church in 1940.
             \AxiomC{$\Delta, \neg P \vdash \bot$}
             \UnaryInfC{$\Delta \vdash P$}
             \DisplayProof
-            is constructively false. 
+            is not always constructively valid. 
         }
     \end{enumerate} 
 \end{rem}
