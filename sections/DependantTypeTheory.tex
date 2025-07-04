@@ -61,9 +61,15 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 
 \begin{rem}
     A rule $(s_1, s_2, s_2)$ is abbreviated as $(s_1, s_2)$ and axioms $(s_1, s_2)$ are denoted $s_1 : s_2$.
+    $\forall x : A. B$ is another way to write $\prod x : A. B$.
 \end{rem}
 
-\begin{example}
+\begin{boxdefi}
+    A pure type system is called \alert{strongly} resp.\ \alert{weakly normalizing} if $\beta$-reduction on well-typed terms (including sorts) is strongly resp.\ weakly normalizing. 
+\end{boxdefi}
+
+\begin{example}\label{ex:PTS}
+    \hfill
     \begin{enumerate}
         \item {
             Let $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *)\}$.
@@ -160,7 +166,54 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
         }
         \item{
             Lean's type theory has the following rules for sorts and function types: 
-            To be continued\dots
+            \begin{align*}
+                \fS &= \{\proptype\} \cup \{ \typeu{u} \mid u \in \bN\} \\
+                \fA &= \{\proptype : \typeu{0}\} \cup \{\typeu{u} : \typeu{(u + 1)} \mid u \in \bN\} \\
+                \fR &= \{ (\typeu{u}, \typeu{v}, \typeu{(\max u\ v)}) \mid u,v \in \bN\} \cup \{(s, \proptype, \proptype) \mid s \in \fS\}
+            \end{align*}
+            If $A : \typeu{u}$ and $B : \typeu{v}$, then $A \to B : \typeu{\max u\ v}$.
+            If $P : A \to \proptype$, then $\forall x : A. Px : \proptype$. 
+            If $A : \typeu{u}$ and $C : A \to \typeu{v}$, then $\prod_{x : A} Cx : \typeu{(\max u \ v)}$.
+            $\proptype$ is called and \alert{impredicative universe}.
+        }
+        \item {
+            Consider $\fS = \{*\}$, $\fA = \{* :*\}$, $\fR = \{(*, *)\}$. 
+            We can construct a term of type $\prod_{\alpha : *} \alpha$. 
+            This system is \alert{inconsistent}, i.e.\ every type is inhabited. 
+            In this system, weak normalization fails. 
         }
     \end{enumerate}
 \end{example}
+
+\begin{boxthm}
+    In Example \ref{ex:PTS}, the PTSs (i)-(vi) are strongly normalizing.
+\end{boxthm}
+
+\begin{conj}
+    If a PTS is weakly normalizing, then it is strongly normalizing. 
+\end{conj}
+
+\begin{boxprop}\label{prop:PTS}
+    In any PTS 
+    \begin{enumerate}
+        \item If $\Gamma \vdash M : A$, then $\Gamma \vdash A : s$ or $A = s$.
+        \item (Substitution) If $\Gamma, x : A, \Delta \vdash M : B$ and $\Gamma \vdash N : A$, then $\Gamma, \Delta[N/x] \vdash M[N/x] : B[N/x]$.
+        \item (Subject reduction) If $\Gamma \vdash M : A$ and $M \bered M'$, then $\Gamma \vdash M' : A$.
+    \end{enumerate}
+\end{boxprop}
+
+\begin{rem}
+    $\vdash * : \square$ shows that we need to consider $A = s$ in Proposition \ref{prop:PTS} (i).
+\end{rem}
+
+\begin{boxdefi}
+    A PTS is \alert{functional} if 
+    \begin{enumerate}
+        \item If $(s_1, s_2), (s_1, s_2') \in \fA$, then $s_2 =s_2'$.
+        \item If $(r_1, r_2, r_3), (r_1, r_2, r_3') \in \fR$, then $r_3 = r_3'$.
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxthm}
+    In a functional PTS, if $\Gamma \vdash M : A$ and $\Gamma \vdash M : A'$ then $A \beq A'$.
+\end{boxthm}
