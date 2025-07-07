@@ -87,7 +87,7 @@
 \end{boxdefi}
 
 \begin{rem}
-    Naming this a pairing makes sense because we have $(s, t) K \bered Kst \bered s$ and $(s, t) K_* \bered K*(s, t) \bered t$.
+    Naming this a pairing makes sense because we have $(s, t) K \bered Kst \bered s$ and $(s, t) K_* \bered K_*(s, t) \bered t$.
 \end{rem}
 
 \begin{boxdefi}
@@ -198,7 +198,7 @@
     \begin{enumerate}
         \item $x^* = x$ and $c^* = c$ for variables $x$ and constants $c$.
         \item $(\lambda x.t)^* = \lambda x. t^*$.
-        \item $(ts)^* = t^*s^*$ if $t$ is not a $\lambda$.
+        \item $(ts)^* = t^*s^*$ if $t$ is not a $\lambda$-term.
         \item $((\lambda x.t) s)^* = t^*[s^*/x]$.
     \end{enumerate}
 \end{boxdefi}
@@ -212,7 +212,7 @@
     If the last step was Definition \ref{def:parared} (iii), i.e. concluding $tu \Rightarrow t'u'$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
     We need to show that $t'u' \Rightarrow (t u)^*$.
     If $t$ is not a $\lambda$ then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
-    If $t = \lambda x. s$ then $(tu)^* = s^* [u*/x]$.
+    If $t = \lambda x. s$ then $(tu)^* = s^* [u^*/x]$.
     We know $\lambda x.s \Rightarrow t'$ which can only be derived using Definition \ref{def:parared} (ii).
     So $t' = \lambda x. s'$ with $s \Rightarrow s'$.
     By induction hypothesis $s' \Rightarrow s^*$.
