@@ -1,4 +1,4 @@
-\section{Dependant Type Theory}
+\section{Dependent Type Theory}
 
 
 The rules of simple type theory (when ignoring the terms) are precisely the rules of implicational logic. 
@@ -7,8 +7,8 @@ This is called \alert{Curry-Howard correspondence} or the \alert{propositions-as
 We could add other type formers for connectives, e.g.\ $\sigma \times \tau$ corresponding to conjunction and $\sigma + \tau$ corresponding to disjunction.
 
 How do we represent quantifiers?
-We will add the the \alert{dependant product type}, or \alert{pi type}, $\prod x : \sigma. \tau$ or $\prod_{x : \sigma} \tau$, corresponding to $\forall x : \sigma. \tau$ and where $\tau$ can depend on $x$.
-A term $t : \prod x : \sigma. \tau$ is a dependant function. 
+We will add the the \alert{dependent product type}, or \alert{pi type}, $\prod x : \sigma. \tau$ or $\prod_{x : \sigma} \tau$, corresponding to $\forall x : \sigma. \tau$ and where $\tau$ can depend on $x$.
+A term $t : \prod x : \sigma. \tau$ is a dependent function. 
 For $s : \sigma$, we get $ts : \tau[s/x]$.
 
 \begin{example}
@@ -131,7 +131,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
             Let $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (*, \square)\}$.
             This is called \alert{$\lambda$P}.
             In this system $\alpha : * \vdash \alpha \to * : \square$. 
-            This system is where real dependant types start to show up. 
+            This system is where real dependent types start to show up. 
             See this partial derivation: 
             \begin{prooftree}
                 \AxiomC{$\vdots$}
@@ -171,7 +171,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
                 \fA &= \{\proptype : \typeu{0}\} \cup \{\typeu{u} : \typeu{(u + 1)} \mid u \in \bN\} \\
                 \fR &= \{ (\typeu{u}, \typeu{v}, \typeu{(\max u\ v)}) \mid u,v \in \bN\} \cup \{(s, \proptype, \proptype) \mid s \in \fS\}
             \end{align*}
-            If $A : \typeu{u}$ and $B : \typeu{v}$, then $A \to B : \typeu{\max u\ v}$.
+            If $A : \typeu{u}$ and $B : \typeu{v}$, then $A \to B : \typeu{(\max u\ v)}$.
             If $P : A \to \proptype$, then $\forall x : A. Px : \proptype$. 
             If $A : \typeu{u}$ and $C : A \to \typeu{v}$, then $\prod_{x : A} Cx : \typeu{(\max u \ v)}$.
             $\proptype$ is called and \alert{impredicative universe}.
@@ -214,6 +214,6 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
     \end{enumerate}
 \end{boxdefi}
 
-\begin{boxthm}
+\begin{boxthm}[Unique typing]
     In a functional PTS, if $\Gamma \vdash M : A$ and $\Gamma \vdash M : A'$ then $A \beq A'$.
 \end{boxthm}
