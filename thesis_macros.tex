@@ -65,6 +65,8 @@
 \newcommand{\up}{{\uparrow}} %uparrow without space around it
 \DeclareMathOperator{\sucOP}{Succ}
 \newcommand{\suc}[1]{\sucOP(#1)} %successor function
+\DeclareMathOperator{\ssucOP}{s}
+\newcommand{\ssuc}[1]{\ssucOP(#1)} %successor function
 \DeclareMathOperator{\set}{Set} %type of subsets
 \DeclareMathOperator{\groupstruct}{GroupStruct} %Ambient type of groups
 \newcommand{\lamcur}{\lambda_{\to}^{\textnormal{Curry}}} % Curry-style typed lambda calculus
@@ -76,6 +78,15 @@
 \newcommand{\sortu}[1]{\sort\ #1} % sort
 \newcommand{\forallterm}[1]{\mathrm{Forall}_{#1}} % term constant forall
 \newcommand{\maxx}[2]{\max #1\ #2}
+\DeclareMathOperator{\recOp}{rec}
+\newcommand{\rec}[1]{\recOp_{#1}}
+\DeclareMathOperator{\indOp}{ind}
+\newcommand{\ind}[1]{\indOp_{#1}}
+\DeclareMathOperator{\inl}{inl}
+\DeclareMathOperator{\inr}{inr}
+\DeclareMathOperator{\reflOp}{refl}
+\newcommand{\refl}[1]{\reflOp_{#1}}
+\newcommand{\colonequiv}{\vcentcolon\equiv} %define equiv
 
 \newcommand{\proj}[2]{\text{P}_{#1}^{#2}} %projection
 \newcommand{\piproj}[2]{\pi_{#1}(#2)} %projection using pi symbol

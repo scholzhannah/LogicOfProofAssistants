@@ -220,7 +220,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 
 \begin{rem}
     In Lean, $\bN, \bR, \bR^\bR : \typeu{0}$. 
-    The category if groups in $\typeu{u}$ has type $\typeu{(u + 1)}$.
+    The category of groups in $\typeu{u}$ has type $\typeu{(u + 1)}$.
 \end{rem}
 
 \subsection{Inductive types}
@@ -237,9 +237,9 @@ Instead of providing the very general and complicated definition of an inductive
     \begin{enumerate}
         \item \alert{formation rule}: specifying when a type is well-formed
         \item \alert{introduction rules}: specifying how to form an element of the type
-        \item \alert{elimination rules}: specifying how you can combine the type with others
+        \item \alert{elimination rules}: specifying how to combine the type with others
         \item \alert{computation rules}: specifying how combinations of other rules simplify
-        \item \alert{uniqueness principle}: specifying element of the type that agree
+        \item \alert{uniqueness principle}: specifying which elements of the type agree
     \end{enumerate}
 \end{boxdefi}
 
@@ -252,8 +252,8 @@ Instead of providing the very general and complicated definition of an inductive
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : \typeu{v}$} \BinaryInfC{$\Gamma \vdash A \times B : \typeu{(\maxx{u}{v})}$} \DisplayProof
     \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \AxiomC{$\Gamma \vdash b : B$} \BinaryInfC{$\Gamma \vdash (a, b) : A \times B$} \DisplayProof
-    \item elimination rules: \AxiomC{$\Gamma \vdash v : A \times B$} \UnaryInfC{$\Gamma \vdash \piproj{1}{v} : A$} \DisplayProof, \AxiomC{$\Gamma \vdash A \times B$} \UnaryInfC{$\Gamma \vdash \piproj{2}{v} : B$} \DisplayProof
-    \item computation rules: $\piproj{1}{a, b} \bered a$, $\piproj{2}{a, b} \bered b$
+    \item elimination rules: \AxiomC{$\Gamma \vdash v : A \times B$} \UnaryInfC{$\Gamma \vdash \piproj{1}{v} : A$} \DisplayProof and\AxiomC{$\Gamma \vdash A \times B$}\UnaryInfC{$\Gamma \vdash \piproj{2}{v} : B$} \DisplayProof
+    \item computation rules: $\piproj{1}{a, b} \bered a$ and $\piproj{2}{a, b} \bered b$
     \item uniqueness principle: $(\piproj{1}{v}, \piproj{2}{v}) \etred v$
     \end{enumerate}
 \end{boxdefi}
@@ -263,8 +263,8 @@ Instead of providing the very general and complicated definition of an inductive
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : A \to \typeu{v}$} \BinaryInfC{$\Gamma \vdash \sum_{x : A} B(x) : \typeu{(\maxx{u}{v})}$} \DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \AxiomC{$\Gamma \vdash b : B(a)$} \BinaryInfC{$\Gamma \vdash (a, b) : \sum_{x : A} B(x)$} \DisplayProof
-        \item elimination rules: \AxiomC{$\Gamma \vdash v : \sum_{x : A} B(x)$} \UnaryInfC{$\Gamma \vdash \piproj{1}{v} : A$} \DisplayProof, \AxiomC{$\Gamma \vdash v : \sum_{x : A} B(x)$} \UnaryInfC{$\Gamma \vdash \piproj{2}{v} : B (\piproj{1}{v})$} \DisplayProof
-        \item computation rules: $\piproj{1}{a, b} \bered a$, $\piproj{2}{a, b} \bered b$
+        \item elimination rules: \AxiomC{$\Gamma \vdash v : \sum_{x : A} B(x)$} \UnaryInfC{$\Gamma \vdash \piproj{1}{v} : A$} \DisplayProof and\AxiomC{$\Gamma \vdash v : \sum_{x : A} B(x)$}\UnaryInfC{$\Gamma \vdash \piproj{2}{v} : B (\piproj{1}{v})$} \DisplayProof
+        \item computation rules: $\piproj{1}{a, b} \bered a$ and $\piproj{2}{a, b} \bered b$
         \item uniqueness rule: $(\piproj{1}{v}, \piproj{2}{v}) \etred v$
     \end{enumerate}
 \end{boxdefi}
@@ -277,3 +277,127 @@ Instead of providing the very general and complicated definition of an inductive
         \BinaryInfC{$\Gamma \vdash \sum_{x : A} B : \typeu{(\maxx{u}{v})}$}
     \end{prooftree}
 \end{rem}
+
+\begin{rem}
+    Notice that for $(a, b) : \sum_{a : A} B(a)$, we have $\piproj{2}{a, b} : B(\piproj{1}{a, b})$ and $b : B(a)$, i.e.\ the typing is only the same up to $\beta$-equivalence.
+\end{rem}
+
+\begin{example}
+    A \alert{magma} is a set (or type) with a binary operation and no axioms.
+    We can write this using $\Sigma$-types. 
+    The type of a magma is $\sum_{A : \typeu{u}} (A \to A \to A) : \typeu{(u + 1)}$. 
+    The type of a pointed magma is $\sum_{A : \typeu{u}} (A \to A \to A) \times A : \typeu{(u + 1)}$.
+\end{example}
+
+\begin{rem}
+    How can we define a (dependent) function out of $A \times B$?
+    Precisely we want to know:
+    \begin{enumerate}
+        \item Given $C : \sortu{w}$, when is $A \times B \to C$ inhabited?
+        \item Given $C : A \times B \to \sortu{w}$, when is $\prod_{v : A \times B} C(v)$ inhabited?
+    \end{enumerate} 
+    For (i), we need $f : A \to B \to C$, which then gives us $g : A \times B \to C, v \mapsto f(\piproj{1}{v})(\piproj{2}{v})$. 
+    For (ii), we need $f : \prod_{a : A}\prod_{b : B}C(a, b)$ to give us $g : \prod_{v : A \times B} C(v), v \mapsto f(\piproj{1}{v})(\piproj{2}{v})$.
+    Thus, there is a derivable recursion principle 
+    \begin{equation*}
+        \rec{A \times B} : (A \to B \to C) \to A \times B \to C
+    \end{equation*}
+    and a derivable induction principle
+    \begin{equation*}
+        \ind{A \times B} : \left(\prod_{a : A}\prod_{b : B}C(a, b)\right) \to \prod_{v : A \times B} C(v).
+    \end{equation*}
+\end{rem}
+
+\begin{rem}
+    When we define a function writing $v \mapsto g v$ we actually mean $\lambda v. gv$.
+\end{rem}
+
+\begin{boxdefi}
+    We can define \alert{coproducts} as follows
+    \begin{enumerate}
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : \typeu{v}$} \BinaryInfC{$\Gamma \vdash A + B : \typeu{(\maxx{u}{v})}$} \DisplayProof
+        \item introduction rules: \AxiomC{$\Gamma \vdash a : A$} \UnaryInfC{$\Gamma \vdash \inl(a) : A + B$} \DisplayProof and\AxiomC{$\Gamma \vdash b : B$}\UnaryInfC{$\inr(b) : A + B$} \DisplayProof
+        \item {elimination rule: 
+
+            \def\defaultHypSeparation{\hskip .1in}
+            \AxiomC{$\Gamma \vdash C : A + B \to \sortu{w}$} \AxiomC{$\Gamma \vdash f : \prod_{a : A}C(\inl(a))$} \AxiomC{$\Gamma \vdash g : \prod_{b : B} C(\inr(b))$} \TrinaryInfC{$\Gamma \vdash \ind{A + B}(C, f, g) : \prod_{v : A + B}C(v)$} \DisplayProof}
+            \def\defaultHypSeparation{\hskip.2in}
+        \item computation rules: 
+
+        $\ind{A + B}(C, f, g)(\inl a) \iored f(a)$ and $\ind{A + B}(C, f, g)(\inr b) \iored g(b)$
+        \item there is no uniqueness rule
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxdefi}
+    We can also define the \alert{natural numbers}: 
+    \begin{enumerate}
+        \item formation rule: \AxiomC{}\UnaryInfC{$\Gamma \vdash \bN : \typeu{0}$}\DisplayProof
+        \item introduction rules: \AxiomC{}\UnaryInfC{$\Gamma \vdash 0 : \bN$}\DisplayProof and \AxiomC{$\Gamma \vdash n : \bN$}\UnaryInfC{$\Gamma \vdash \ssuc{n} : \bN$}\DisplayProof
+        \item {elimination rule: 
+        
+        \AxiomC{$\Gamma \vdash C : \bN \to \sortu{w}$}\AxiomC{$\Gamma \vdash f_0 : C(0)$}\AxiomC{$\Gamma \vdash f_{\ssucOP} : \prod_{n : \bN} C(n) \to C(\ssuc{n})$}\TrinaryInfC{$\Gamma \vdash \ind{\bN}(C, f_0, f_{\ssucOP}) : \prod_{n : \bN} C(n)$}\DisplayProof}
+        \item computation rules: $\ind{\bN}(C, f_0, f_{\ssucOP})(0) \iored f_0$ and $\ind{\bN}(C, f_0, f_{\ssucOP})(\ssuc{n}) \iored f_{\ssucOP}(n)(\ind{\bN}(c, f_0, f_{\ssucOP})(n))$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{rem}
+    We could also write the second introduction rule in the above definition as \AxiomC{}\UnaryInfC{$\Gamma \vdash \ssucOP : \bN \to \bN$}\DisplayProof.
+\end{rem}
+
+\begin{rem}
+    To define $g : \prod_{n : \bN} C(n)$ we need $g(0) \colonequiv_{\iota} f_0 : C(0)$ and $g(\ssuc{n}) \colonequiv_\iota f_{\ssucOP}(n, g(n)) : C (\ssuc{n})$. 
+    This way of defining terms is called \alert{pattern matching}.
+\end{rem}
+
+\begin{boxdefi}
+    We can define \alert{addition} on $\bN$ using pattern matching: 
+    to define $n + {-} : \bN \to \bN$ we set $n + 0 \coloneq n$ and $n + \ssuc{m} = \ssuc{n + m}$.
+\end{boxdefi}
+
+\begin{boxdefi}
+    We define the \alert{equality type} (also called \alert{indentity type}) as the smallest reflexive relation: 
+    \begin{enumerate}
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \sortu{u}$}\AxiomC{$\Gamma \vdash x : A$}\AxiomC{$\Gamma \vdash y : A$}\TrinaryInfC{$\Gamma \vdash x \mathrel{=_A} y : \proptype$}\DisplayProof
+        \item introduction rule: \AxiomC{$\Gamma \vdash x : A$}\UnaryInfC{$\Gamma \vdash \refl{x} : x \mathrel{=_A} x$}\DisplayProof
+        \item elimination rules: 
+        
+        \AxiomC{$\Gamma \vdash C : A \to \sortu{w}$}\AxiomC{$\Gamma \vdash v : C(x)$}\AxiomC{$\Gamma \vdash h : x \mathrel{=_A} y$}\TrinaryInfC{$\Gamma \vdash \rec{=_A}(C, v, h) : C(y)$}\DisplayProof
+        \item computation rule: $\rec{=}(C, v, \refl{x}) \iored v$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{rem}
+    We could have also used \AxiomC{}\UnaryInfC{$\Gamma \vdash \prod_{A : \typeu{u}}\prod{x : A}x \mathrel{=_A} x$}\DisplayProof as the introduction rule in the above definition. 
+\end{rem}
+
+\begin{rem}
+    Inductive types are the least/initial types generated by their introduction rules. 
+\end{rem}
+
+\begin{rem}
+    Lean additionally has: 
+    \begin{enumerate}
+        \item a general scheme for inductive types
+        \item definitional proof irrelevance: if $P : \proptype$ and $h_1, h_2 : P$, then $h_1 \equiv h_2$.
+        \item a conversion rule: if $x : A$, $A \equiv B$, then $x : B$, where $\equiv$ is the equivalence relation generated by proof irrelevance, ($\delta$-, $\zeta$-), $\beta$-, $\eta$- and $\iota$-reduction.
+        \item the ability to make new definitions
+        \item analogous inductive propositions ${\wedge}, {\vee}, \dots$
+        \item $\mathrm{propext}: \prod_{P, Q : \proptype} (P \leftrightarrow Q) \to P \mathrel{=_\proptype} Q$
+        \item $\mathrm{choice} : \prod_{A : \typeu{u}} \mathrm{nonempty}(A) \to A$ where $\mathrm{nonempty}(A)$ us the inductive proposition stating that $A$ is non-empty.
+    \end{enumerate}
+\end{rem}
+
+\begin{example}
+    $\delta$- and $\zeta$-reduction relate to unfolding definitions.
+    For the definition 
+    \begin{center}
+        {\ttfamily def two : $\bN$ := s(s(0))}
+    \end{center} 
+    we get {\ttfamily two $\mathrel{\to_\delta}$ s(s(0))}. 
+    Within a definition you might write 
+    \begin{center}
+        {\ttfamily let two := s(s(0))}, 
+    \end{center}
+    then {\ttfamily two $\to_{\zeta}$ s(s(0))}.
+\end{example}
