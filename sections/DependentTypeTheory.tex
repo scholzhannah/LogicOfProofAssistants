@@ -236,15 +236,16 @@ Instead of providing the very general and complicated definition of an inductive
     New type formers can be specified using constants and several rules: 
     \begin{enumerate}
         \item \alert{formation rule}: specifying when a type is well-formed
-        \item \alert{introduction rules}: specifying how to form an element of the type
-        \item \alert{elimination rules}: specifying how to combine the type with others
-        \item \alert{computation rules}: specifying how combinations of other rules simplify
-        \item \alert{uniqueness principle}: specifying which elements of the type agree
+        \item \alert{introduction rules}: specifying how to form an element of the type (using constructors)
+        \item \alert{elimination rules}: specifying how you can use elements of the type (using eliminators)
+        \item \alert{computation rules}: specifying how an eliminator applied to a constructor simplifies
+        \item \alert{uniqueness principle}: specifying a reduction rule involving an arbitrary element of the type
     \end{enumerate}
 \end{boxdefi}
 
 \begin{example}
-    The dependent product type can be viewed as an inductive type: (prod) is the formation rule, (abs) the introduction rule, (app) an elimination rule, $\beta$-reduction is a computation rule, and $\eta$-reduction $\lambda x : A.fx \etred f$ is a uniqueness principle. 
+    Not only inductive types follow this schema.
+    For example, the dependent product type can be defined in this way: (prod) is the formation rule, (abs) the introduction rule, (app) an elimination rule, $\beta$-reduction is a computation rule, and $\eta$-reduction $\lambda x : A.fx \etred f$ is a uniqueness principle. 
 \end{example}
 
 \begin{boxdefi}
@@ -385,6 +386,7 @@ Instead of providing the very general and complicated definition of an inductive
         \item analogous inductive propositions ${\wedge}, {\vee}, \dots$
         \item $\mathrm{propext}: \prod_{P, Q : \proptype} (P \leftrightarrow Q) \to P \mathrel{=_\proptype} Q$
         \item $\mathrm{choice} : \prod_{A : \typeu{u}} \mathrm{nonempty}(A) \to A$ where $\mathrm{nonempty}(A)$ us the inductive proposition stating that $A$ is non-empty.
+        \item quotient types
     \end{enumerate}
 \end{rem}
 
