@@ -217,3 +217,63 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \begin{boxthm}[Unique typing]
     In a functional PTS, if $\Gamma \vdash M : A$ and $\Gamma \vdash M : A'$ then $A \beq A'$.
 \end{boxthm}
+
+\begin{rem}
+    In Lean, $\bN, \bR, \bR^\bR : \typeu{0}$. 
+    The category if groups in $\typeu{u}$ has type $\typeu{(u + 1)}$.
+\end{rem}
+
+\subsection{Inductive types}
+
+For concreteness we will stick to Lean's type theory. 
+Instead of providing the very general and complicated definition of an inductive type, we will be explaining them mostly by example. 
+
+\begin{rem}
+    To make talking about $\proptype$ and $\type$ easier, we define $\alert{\sort}$ as $\sortu{0} \coloneq \proptype$ and $\sortu{(u + 1)} \coloneq \typeu{u}$.
+\end{rem}
+
+\begin{boxdefi}
+    New type formers can be specified using constants and several rules: 
+    \begin{enumerate}
+        \item \alert{formation rule}: specifying when a type is well-formed
+        \item \alert{introduction rules}: specifying how to form an element of the type
+        \item \alert{elimination rules}: specifying how you can combine the type with others
+        \item \alert{computation rules}: specifying how combinations of other rules simplify
+        \item \alert{uniqueness principle}: specifying element of the type that agree
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{example}
+    The dependent product type can be viewed as an inductive type: (prod) is the formation rule, (abs) the introduction rule, (app) an elimination rule, $\beta$-reduction is a computation rule, and $\eta$-reduction $\lambda x : A.fx \etred f$ is a uniqueness principle. 
+\end{example}
+
+\begin{boxdefi}
+    \alert{Cartesian products} can now be defined inductively: 
+    \begin{enumerate}
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : \typeu{v}$} \BinaryInfC{$\Gamma \vdash A \times B : \typeu{(\maxx{u}{v})}$} \DisplayProof
+    \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \AxiomC{$\Gamma \vdash b : B$} \BinaryInfC{$\Gamma \vdash (a, b) : A \times B$} \DisplayProof
+    \item elimination rules: \AxiomC{$\Gamma \vdash v : A \times B$} \UnaryInfC{$\Gamma \vdash \piproj{1}{v} : A$} \DisplayProof, \AxiomC{$\Gamma \vdash A \times B$} \UnaryInfC{$\Gamma \vdash \piproj{2}{v} : B$} \DisplayProof
+    \item computation rules: $\piproj{1}{a, b} \bered a$, $\piproj{2}{a, b} \bered b$
+    \item uniqueness principle: $(\piproj{1}{v}, \piproj{2}{v}) \etred v$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxdefi}
+    We can define \alert{$\Sigma$-types} which are also called \alert{dependent sum types} using:
+    \begin{enumerate}
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : A \to \typeu{v}$} \BinaryInfC{$\Gamma \vdash \sum_{x : A} B(x) : \typeu{(\maxx{u}{v})}$} \DisplayProof
+        \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \AxiomC{$\Gamma \vdash b : B(a)$} \BinaryInfC{$\Gamma \vdash (a, b) : \sum_{x : A} B(x)$} \DisplayProof
+        \item elimination rules: \AxiomC{$\Gamma \vdash v : \sum_{x : A} B(x)$} \UnaryInfC{$\Gamma \vdash \piproj{1}{v} : A$} \DisplayProof, \AxiomC{$\Gamma \vdash v : \sum_{x : A} B(x)$} \UnaryInfC{$\Gamma \vdash \piproj{2}{v} : B (\piproj{1}{v})$} \DisplayProof
+        \item computation rules: $\piproj{1}{a, b} \bered a$, $\piproj{2}{a, b} \bered b$
+        \item uniqueness rule: $(\piproj{1}{v}, \piproj{2}{v}) \etred v$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{rem}
+    The formation rule in the above definition could equivalently be stated as 
+    \begin{prooftree}
+        \AxiomC{$\Gamma \vdash A : \typeu{u}$}
+        \AxiomC{$\Gamma, x : A \vdash B : \typeu{v}$}
+        \BinaryInfC{$\Gamma \vdash \sum_{x : A} B : \typeu{(\maxx{u}{v})}$}
+    \end{prooftree}
+\end{rem}
