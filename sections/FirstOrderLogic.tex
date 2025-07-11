@@ -152,8 +152,8 @@ Options to achieve this are:
 \begin{defi}
     \alert{$\alpha$-equivalence} is the \alert{congruence closure} of 
     \begin{enumerate}
-        \item $(\forall x. \varphi) \aeq (\forall y. \varphi[y/x])$
-        \item $(\exists x. \varphi) \aeq (\exists y. \varphi[y/x])$
+        \item $(\forall x. \varphi) \aeq (\forall y. \varphi[y/x])$ where $y \notin \fv{\varphi}$.
+        \item $(\exists x. \varphi) \aeq (\exists y. \varphi[y/x])$ where $y \notin \fv{\varphi}$.
     \end{enumerate}
     i.e. it is the smallest equivalence relation containing these two rules and respecting the connectives: 
     \begin{enumerate}
