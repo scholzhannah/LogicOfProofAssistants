@@ -112,7 +112,7 @@ Simple type theory was first presented by Church in 1940.
         \item {(Hilbert $\varepsilon_\tau$ function / global choice operator)
             
             \AxiomC{}
-            \UnaryInfC{$\Delta \vdash \forall P : \tau \to \proptype. \forall x : \tau. P x \Rightarrow P(\varepsilon_\tau P)$}
+            \UnaryInfC{$\Delta \vdash \forall P : \tau \to \proptype. \forall x : \tau. (P x \Rightarrow P(\varepsilon_\tau P))$}
             \DisplayProof}
     \end{enumerate}
 \end{boxdefi}
@@ -173,11 +173,11 @@ Simple type theory was first presented by Church in 1940.
     Let $P : \proptype$.
     Define
     \begin{equation*}
-        U \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \top) \vee P : \proptype \to \proptype
+        U \coloneq (\lambda A : \proptype. (A \mathrel{=_\proptype} \top) \vee P) : \proptype \to \proptype
     \end{equation*}
     and 
     \begin{equation*}
-        V \coloneq \lambda A : \proptype. (A \mathrel{=_\proptype} \bot) \vee P : \proptype \to \proptype
+        V \coloneq (\lambda A : \proptype. (A \mathrel{=_\proptype} \bot) \vee P) : \proptype \to \proptype
     \end{equation*}
     \begin{claim}
         $P \Rightarrow \varepsilon U = \varepsilon V$

@@ -185,7 +185,7 @@
 \begin{proof}
     We show this by induction on $t \Rightarrow t'$.
     Suppose the last step was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t)u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$.
-    By induction hypothesis we know that $t[w/y] \Rightarrow t'[w/y]$ and $u[w /y] \Rightarrow u'[w/y]$.
+    By induction hypothesis we know that $t[w/y] \Rightarrow t'[w'/y]$ and $u[w /y] \Rightarrow u'[w'/y]$.
     We have to show $(\lambda x.t [w/y])u[w/y] \Rightarrow t'[u'/x][w'/y]$.
     $x$ is bound so we may assume that $x$ is not free in $w'$.
     Then one can prove that $t'[u'/x][w'/y] = t'[w'/y][(u'[w'/y])/x]$.
@@ -211,14 +211,14 @@
 
     If the last step was Definition \ref{def:parared} (iii), i.e. concluding $tu \Rightarrow t'u'$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
     We need to show that $t'u' \Rightarrow (t u)^*$.
-    If $t$ is not a $\lambda$ then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
+    If $t$ is not a $\lambda$-term then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
     If $t = \lambda x. s$ then $(tu)^* = s^* [u^*/x]$.
     We know $\lambda x.s \Rightarrow t'$ which can only be derived using Definition \ref{def:parared} (ii).
     So $t' = \lambda x. s'$ with $s \Rightarrow s'$.
     By induction hypothesis $s' \Rightarrow s^*$.
-    Then $(\lambda x. s') u' \Rightarrow s^* [u*/x]$ follows from Definition \ref{def:star} (iv).
+    Then $(\lambda x. s') u' \Rightarrow s^* [u^*/x]$ follows from Definition \ref{def:star} (iv).
 
-    If the last step was Definition \ref{def:parared} (iv), i.e. concluding $(\lambda x.t) u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis we know that $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
+    If the last step was Definition \ref{def:parared} (iv), i.e.\ concluding $(\lambda x.t) u \Rightarrow t'[u'/x]$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis we know that $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
     Then $t'[u'/x] \Rightarrow ((\lambda x.t)u)^* = t^*[u^* /x]$ by Lemma \ref{lem:arrowsubst}.
 
     The rest of the cases are easy.
@@ -774,7 +774,7 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
 \begin{boxlem}\label{lem:lambdaconstruct}
     Suppose $t : \tau$, $x : \sigma$ and
     \begin{equation}\label{eq:subst}
-        \forall x \in C(\sigma), t[s/x] \in C(\tau) \tag{$*$}
+        \forall s \in C(\sigma), t[s/x] \in C(\tau) \tag{$*$}
     \end{equation}
     Then $\lambda x : \sigma. t \in C(\sigma \to \tau)$.
 \end{boxlem}
@@ -796,7 +796,7 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
     \end{enumerate}
     For (i), since $h(s') < h(s)$, by induction hypothesis $r \in C(\tau)$. 
 
-    For (ii) we have $h(t) < h(t')$. 
+    For (ii) we have $h(t') < h(t)$. 
     To conclude by induction hypothesis we have to show that $t'$ satisfies (\ref{eq:subst}). 
     So let $s \in C(\sigma)$. 
     Since $t$ satisfies (\ref{eq:subst}) we know $t[s/x] \in C(\tau)$. 
@@ -806,7 +806,7 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
 \end{proof}
 
 \begin{boxlem}
-    If $t \in C(\tau)$, $x_0 : \sigma_0, \dots, x_{k-1} : \sigma_{k-1}$ are variables and $s_0 \in C(\sigma_0), \dots, s_{k-1} \in C(\sigma_{k-1})$. 
+    If $t : \tau$, $x_0 : \sigma_0, \dots, x_{k-1} : \sigma_{k-1}$ are variables and $s_0 \in C(\sigma_0), \dots, s_{k-1} \in C(\sigma_{k-1})$. 
     Then $t[\vec{s}/\vec{x}] = t [s_0 / x_0] \dots [s_{k-1} / x_{k - 1}] \in C(\tau)$.
 \end{boxlem}
 \begin{proof}
@@ -815,7 +815,7 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
 
     If $t = \lambda x. t'$, then by Lemma \ref{lem:generation} (iii) $\tau = (\sigma' \to \tau')$, $x' : \tau'$ and $t' : \tau'$ for some $\sigma'$ and $\tau'$.
     We want to show $(\lambda x'.t')[\vec{s}/\vec{x}] = \lambda x'. (t'[\vec{s}/\vec{x}]) \in C(\sigma' \to \tau')$.
-    By Lemma \ref{lem:lambdaconstruct} it is enough to show that for every $s' \in C(\sigma)$, $t'[\vec{s}/\vec{x}][s' / x']$. 
+    By Lemma \ref{lem:lambdaconstruct} it is enough to show that for every $s' \in C(\sigma)$, $t'[\vec{s}/\vec{x}][s' / x'] \in C(\tau')$. 
     This follows by induction hypothesis. 
 
     Lastly, let us consider $t = t's'$.
