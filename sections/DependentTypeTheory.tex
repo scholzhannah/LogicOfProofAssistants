@@ -439,16 +439,16 @@ Instead of thinking of types as sets we now want to think of them as topological
 To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{choice}$ and all axioms relating to them. 
 
 \begin{rem}
-    Homotopy type theory is a way to to \alert{synthetic homotopy theory}. 
-    You might know synthetic geometry, where instead of considering euclidean geometry in the complex plane, you build it up from axioms.
+    Homotopy type theory is a way to do \alert{synthetic homotopy theory}. 
+    You might know synthetic geometry, where instead of considering euclidean geometry in the complex plane, the theory is built up from axioms.
 \end{rem}
 
 \begin{boxdefi}
     We define a new notion of \alert{equality}:
     \begin{enumerate}
-        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash x, y : A$} \BinaryInfC{$\Gamma \vdash x : \mathrel{=_A} y : \typeu{u}$} \DisplayProof
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash x, y : A$} \BinaryInfC{$\Gamma \vdash x \mathrel{=_A} y : \typeu{u}$} \DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash x : A$} \UnaryInfC{$\Gamma \vdash \refl{x} : x \mathrel{=_A} x$} \DisplayProof
-        \item elimination rule (path induction): 
+        \item elimination rule (\alert{path induction}): 
 
             \def\defaultHypSeparation{\hskip -1mm}
             \AxiomC{$\Gamma \vdash C : \prod_{x, y: A} (x \mathrel{=_A} y \to \typeu{w})$} \AxiomC{$\Gamma \vdash r : \prod_{x : A} C(x, x, \refl{x})$} \AxiomC{$\Gamma \vdash p : x \mathrel{=_A} y$} \TrinaryInfC{$\Gamma \vdash \ind{=}(C, r, p) : C(x, y, p)$} \DisplayProof
@@ -459,12 +459,142 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxdefi}
 
 \begin{rem}
-    We interpret: 
+    We interpret this type theory as follows: 
     \begin{enumerate}
         \item $A, B : \typeu{u}$ as topological spaces
         \item $x : A$ as a point in $A$
         \item $p, q : x \mathrel{=_A} y$ as paths from $x$ to $y$
-        \item $h : P \mathrel{=_{x \mathrel{=_A} y}} q$ as a homotopy from $x$ to $y$
-        \item $f : A \to B$ as continuous functions
+        \item $h : p \mathrel{=_{x \mathrel{=_A} y}} q$ as a homotopy from $p$ to $q$
+        \item $f : A \to B$ as a continuous function
     \end{enumerate}
 \end{rem}
+
+\begin{boxlem}
+    There is a function $\alert{({-})^{-1}} : x \mathrel{=_A} y \to y \mathrel{=_A} x$, $p \mapsto p^{-1}$ such that $\refl{x}^{-1} \equiv \refl{x}$.
+\end{boxlem}
+\begin{proof}
+    We define $({-})^{-1}$ using path induction. 
+    Let 
+    \begin{equation*}
+        C \coloneq (\lambda x,y :A, p : x \mathrel{=_A} y. y \mathrel{=_A} x) : \prod_{x, y : A} x \mathrel{=_A} y \to \typeu{u}
+    \end{equation*}
+    and 
+    \begin{equation*}
+        r \coloneq (\lambda x : A. \refl{x}) : \prod_{x : A} C(x, x, \refl{x})
+    \end{equation*}
+    where the typing is correct because of the conversion rule. 
+    Define $p^{-1} \coloneq \ind{=}(C, r, p) : y \mathrel{=_A} x$.
+    Then $\refl{x}^{-1} \equiv \ind{=}(C, r, \refl{x}) \equiv r(x) \equiv \refl{x}$.
+\end{proof}
+
+\begin{proof}[Informal version of the proof]
+    Given $p : x \mathrel{=_A} y$. 
+    By path induction, we may assume that $p$ is $\refl{x}$ and $y$ is $x$. 
+    Here we are using that the endpoints of $p$ are distinct variables. 
+    Now we have to construct an element of type $x \mathrel{=_A} x$. 
+    Define $p^{-1} \equiv \refl{x}^{-1} \colonequiv \refl{x}$. 
+\end{proof}
+
+\begin{rem}
+    Path induction corresponds to the topological fact that path spaces where one or both endpoints are free are contractible, i.e.\ in our interpretation with don't require homotopies to fix endpoints that are free variables.
+\end{rem}
+
+\begin{boxlem}
+    For $p : x \mathrel{=_A} y$ and $q : y \mathrel{=_A} z$ we construct $\alert{p.q} : x \mathrel{=_A} z$ such that $p.\refl{y} \equiv p$.
+\end{boxlem}
+
+\begin{proof}
+    By path induction on $q$, we may assume that $z$ is $y$ and $q$ is $\refl{y}$. 
+    Now we have to construct $p.\refl{y} : x \mathrel{=_A} y$ which we define as $p$. 
+\end{proof}
+
+\begin{boxlem}\label{lem:paths}
+    Let $p : x \mathrel{=_A} y$, $q : y \mathrel{=_A} z$ and $r : z \mathrel{=_A} w$. 
+    Then
+    \begin{enumerate}
+        \item $p.p^{-1} \mathrel{=_{x \mathrel{=_A} x}} \refl{x}$.
+        \item $p^{-1}.p \mathrel{=_{y \mathrel{=_A} y}} \refl{y}$.
+        \item $(p^{-1})^{-1} \mathrel{=_{x \mathrel{=_A} y}} p$.
+        \item $(p.q).r \mathrel{=_{x \mathrel{=_A} w}} p.(q.r)$.
+    \end{enumerate}
+\end{boxlem}
+
+\begin{proof}
+    Let us proof (iii). 
+    The rest of the lemma is an exercise. 
+    By path induction we may assume that $y$ is $x$ and $p$ is $\refl{x}$, so we have to prove $(\refl{x}^{-1})^{-1} = \refl{x}$. 
+    We saw that $(\refl{x}^{-1})^{-1} \equiv \refl{x}^{-1} \equiv \refl{x}$.
+    So $\refl{\refl{x}} : (\refl{x}^{-1})^{-1} = \refl{x}$.
+\end{proof}
+
+\begin{rem}
+    This same proof doesn't work to prove $p^{-1} = p$ for $p : x \mathrel{=_A} y$ because already for typing reasons that isn't a valid statement. 
+    For $p : x \mathrel{=_A} x$ this still does not work because the endpoints of the path agree and we therefore cannot use path induction.
+\end{rem}
+
+\begin{rem}
+    Lemma \ref{lem:paths} gives each type the structure of an $\infty$-groupoid. 
+\end{rem}
+
+\begin{boxlem}
+    If $f : A \to B$ then there is a map $\alert{\mathop{\operatorname{ap}_f}} : x \mathrel{=_A} y \to f(x) \mathrel{=_B} f(y)$ with $\mathop{\operatorname{ap}_f}(\refl{x}) \equiv \refl{f(x)}$.
+\end{boxlem}
+
+\begin{boxlem}
+    If $P : A \to \typeu{v}$ and $p : x \mathrel{=_A} y$, then $\alert{p_*} : P(x) \to P(y)$ with $(\refl{x})_* \equiv \refl{P(x)}$.
+\end{boxlem}
+
+\begin{rem}
+    In the lemma above, $P$ gives us a space $\sum_{x : A} P(x)$. 
+    We get a fibration $\mathop{\pi_1} : \sum_{x : A} P(x) \twoheadrightarrow A$. 
+    Every $f : \sum_{x : A} P(x)$ is a section of that fibration. 
+\end{rem}
+
+\begin{boxdefi}
+    If $f, g : \prod_{x : A} P(x)$, then a \alert{homotopy} from $f$ to $g$ is an element of $\alert{f \sim g} \coloneq \prod_{x : A} f(x) \mathrel{=_{P(x)}} g(x)$.
+\end{boxdefi}
+
+\begin{rem}
+    Remember that we interpret all functions as continuous maps, so an element of $f \sim g$ assigns paths continuously. 
+\end{rem}
+
+\begin{boxdefi}
+    Given $f : A \to B$, $f$ is a \alert{(homotopy) equivalence} if $f$ has a left and right inverse, i.e.\
+    \begin{equation*}
+        \alert{\operatorname{isequiv}}(f) \coloneq \left( \sum_{g : B \to A} g \circ f \sim \id_A \right) \times \left( \sum_{h : B \to A} f \circ h \sim \id_B \right).
+    \end{equation*}
+    We set $(\alert{A \simeq B}) \coloneq \sum_{f : A \to B} \operatorname{isequiv}(f)$.
+\end{boxdefi}
+
+\begin{boxlem}
+    $((x,y) \mathrel{=_{A \times B} (x', y')}) \simeq ((x \mathrel{=_A} x') \times (y \mathrel{=_B} y'))$ is inhabited.
+\end{boxlem}
+
+\begin{boxdefi}
+    We add the following axioms: 
+    \begin{enumerate}
+        \item \alert{function extentionality}: $(f \mathrel{=_{\Pi_{x : A}P(x)}} g) \simeq (f \sim g)$ is inhabited.
+        \item \alert{univalence}: $(A \mathrel{=_{\typeu{u}}} B) \simeq (A \simeq B)$ is inhabited.
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{boxthm}
+    Univalence implies function extensionality.
+\end{boxthm}
+
+\begin{rem}
+    With univalence we can prove that there are path spaces with more than one element: 
+    consider $2 : \typeu{0}$, the type with two elements. 
+    Note that $2 \simeq 2$ simply consists of the bijections from $2$ to itself and thus has two elements. 
+    By univalence, $2 \mathrel{=_{\typeu{0}}} 2$ has two distinct elements.
+\end{rem}
+
+
+\begin{rem}
+    Using higher inductive types we can construct spheres, suspensions, pullbacks and pushouts. 
+\end{rem}
+
+\begin{rem}
+    The are categorical models of homotopy type theory such as the simplicial set model. 
+\end{rem}
+
