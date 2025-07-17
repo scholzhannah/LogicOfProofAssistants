@@ -196,14 +196,14 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \begin{boxprop}\label{prop:PTS}
     In any PTS 
     \begin{enumerate}
-        \item If $\Gamma \vdash M : A$, then $\Gamma \vdash A : s$ or $A \bered s$.
+        \item If $\Gamma \vdash M : A$, then $\Gamma \vdash A : s$ or $A = s$.
         \item (Substitution) If $\Gamma, x : A, \Delta \vdash M : B$ and $\Gamma \vdash N : A$, then $\Gamma, \Delta[N/x] \vdash M[N/x] : B[N/x]$.
         \item (Subject reduction) If $\Gamma \vdash M : A$ and $M \bered M'$, then $\Gamma \vdash M' : A$.
     \end{enumerate}
 \end{boxprop}
 
 \begin{rem}
-    $\vdash * : \square$ shows that we need to consider $A \bered s$ in Proposition \ref{prop:PTS} (i).
+    $\vdash * : \square$ shows that we need to consider $A = s$ in Proposition \ref{prop:PTS} (i).
 \end{rem}
 
 \begin{boxdefi}
@@ -380,10 +380,12 @@ Instead of providing the very general and complicated definition of an inductive
 \begin{rem}
     Lean additionally has: 
     \begin{enumerate}
+        \item universes
         \item a general scheme for inductive types
         \item definitional proof irrelevance: if $P : \proptype$ and $h_1, h_2 : P$, then $h_1 \equiv h_2$.
         \item a generalized conversion rule: the conversion rule of Definition \ref{def:pts} is extended to proof-irrelevance, ($\delta$-, $\zeta$-), $\eta$- and $\iota$-reduction.
         \item the ability to make new definitions
+        \item let-expressions
         \item analogous inductive propositions ${\wedge}, {\vee}, \dots$
         \item $\mathrm{propext}: \prod_{P, Q : \proptype} (P \leftrightarrow Q) \to P \mathrel{=_\proptype} Q$
         \item $\mathrm{choice} : \prod_{A : \typeu{u}} \mathrm{nonempty}(A) \to A$ where $\mathrm{nonempty}(A)$ us the inductive proposition stating that $A$ is non-empty.
@@ -404,3 +406,65 @@ Instead of providing the very general and complicated definition of an inductive
     \end{center}
     then {\ttfamily two $\to_{\zeta}$ s(s(0))}.
 \end{example}
+
+\begin{boxdefi}
+    While \alert{quotient types} are not inductive types, they can be defined using the same schema: 
+    \begin{enumerate}
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash R : A \to A \to \proptype$} \BinaryInfC{$\Gamma \vdash A/R : \typeu{u}$} \DisplayProof
+        \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \UnaryInfC{$\Gamma \vdash \llbracket a \rrbracket : A / R$} \DisplayProof
+        \item equality: \AxiomC{$\Gamma \vdash h : R a b$} \UnaryInfC{$\Gamma \vdash \operatorname{sound}(h) : \llbracket a \rrbracket \mathrel{=_{A/R} \llbracket b \rrbracket}$} \DisplayProof
+        \item{ elimination rules:
+
+                (rec) 
+                \def\defaultHypSeparation{\hskip 1mm}
+                \AxiomC{$\Gamma \vdash C : \typeu{w}$} 
+                \AxiomC{$\Gamma \vdash f : A \to C$} 
+                \AxiomC{$\Gamma \vdash h : \prod_{a, b : A} Rab \to f(a) \mathrel{=_C} f(b)$} 
+                \TrinaryInfC{$\Gamma \vdash \recOp(C, f, f) : A/R \to C$}
+                \DisplayProof
+                \def\defaultHypSeparation{\hskip.2in}
+
+                (ind)
+                \AxiomC{$\Gamma \vdash P : A/R \to \proptype$}
+                \AxiomC{$\Gamma \vdash h : \prod_{a : A}P(\llbracket a \rrbracket)$}
+                \BinaryInfC{$\Gamma \vdash \indOp(P, h) : \prod_{v : A/R} P(v)$}
+                \DisplayProof}
+        \item computation rule: $\recOp(C,f,h) \llbracket a \rrbracket \iored f(a)$
+    \end{enumerate}
+\end{boxdefi}
+
+\subsection{Homotopy type theory}
+
+Instead of thinking of types as sets we now want to think of them as topological spaces. 
+To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{choice}$ and all axioms relating to them. 
+
+\begin{rem}
+    Homotopy type theory is a way to to \alert{synthetic homotopy theory}. 
+    You might know synthetic geometry, where instead of considering euclidean geometry in the complex plane, you build it up from axioms.
+\end{rem}
+
+\begin{boxdefi}
+    We define a new notion of \alert{equality}:
+    \begin{enumerate}
+        \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash x, y : A$} \BinaryInfC{$\Gamma \vdash x : \mathrel{=_A} y : \typeu{u}$} \DisplayProof
+        \item introduction rule: \AxiomC{$\Gamma \vdash x : A$} \UnaryInfC{$\Gamma \vdash \refl{x} : x \mathrel{=_A} x$} \DisplayProof
+        \item elimination rule (path induction): 
+
+            \def\defaultHypSeparation{\hskip -1mm}
+            \AxiomC{$\Gamma \vdash C : \prod_{x, y: A} (x \mathrel{=_A} y \to \typeu{w})$} \AxiomC{$\Gamma \vdash r : \prod_{x : A} C(x, x, \refl{x})$} \AxiomC{$\Gamma \vdash p : x \mathrel{=_A} y$} \TrinaryInfC{$\Gamma \vdash \ind{=}(C, r, p) : C(x, y, p)$} \DisplayProof
+            \def\defaultHypSeparation{\hskip.2in}
+            where $x$ and $y$ are distinct variables
+        \item computation rule: $\ind{=}(C, r, \refl{x}) \iored r(x)$
+    \end{enumerate}
+\end{boxdefi}
+
+\begin{rem}
+    We interpret: 
+    \begin{enumerate}
+        \item $A, B : \typeu{u}$ as topological spaces
+        \item $x : A$ as a point in $A$
+        \item $p, q : x \mathrel{=_A} y$ as paths from $x$ to $y$
+        \item $h : P \mathrel{=_{x \mathrel{=_A} y}} q$ as a homotopy from $x$ to $y$
+        \item $f : A \to B$ as continuous functions
+    \end{enumerate}
+\end{rem}
