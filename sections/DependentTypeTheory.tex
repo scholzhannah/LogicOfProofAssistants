@@ -103,7 +103,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
             \end{equation*}
             and 
             \begin{equation*}
-                \tau : *, \sigma : *, f : \sigma \to \tau, g : \tau \to \tau, x : \tau \vdash g(g(f(x))) : \tau.
+                \tau : *, \sigma : *, f : \sigma \to \tau, g : \tau \to \tau, x : \sigma \vdash g(g(f(x))) : \tau.
             \end{equation*}
             }
         \item {
@@ -185,9 +185,13 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
     \end{enumerate}
 \end{example}
 
-\begin{boxthm}
+\begin{boxlem}
     In Example \ref{ex:PTS}, the PTSs (i)-(vi) are strongly normalizing.
-\end{boxthm}
+\end{boxlem}
+
+\begin{boxprop}[Confluence]
+    In pure type systems, $\beta$-reduction is confluent.
+\end{boxprop}
 
 \begin{conj}
     If a PTS is weakly normalizing, then it is strongly normalizing. 
@@ -412,7 +416,7 @@ Instead of providing the very general and complicated definition of an inductive
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash R : A \to A \to \proptype$} \BinaryInfC{$\Gamma \vdash A/R : \typeu{u}$} \DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \UnaryInfC{$\Gamma \vdash \llbracket a \rrbracket : A / R$} \DisplayProof
-        \item equality: \AxiomC{$\Gamma \vdash h : R a b$} \UnaryInfC{$\Gamma \vdash \operatorname{sound}(h) : \llbracket a \rrbracket \mathrel{=_{A/R} \llbracket b \rrbracket}$} \DisplayProof
+        \item equality introduction rule: \AxiomC{$\Gamma \vdash h : R a b$} \UnaryInfC{$\Gamma \vdash \operatorname{sound}(h) : \llbracket a \rrbracket \mathrel{=_{A/R} \llbracket b \rrbracket}$} \DisplayProof
         \item{ elimination rules:
 
                 (rec) 

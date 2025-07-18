@@ -66,10 +66,6 @@
     \end{enumerate}
 \end{boxdefi}
 
-\begin{rem}
-    Every term can be defined using $K$ and $S$ up to $\beta$-equivalence.
-\end{rem}
-
 \begin{example}
     $SKK \bered \lambda z. Kz(Kz) \bered \lambda z.z = I$.
 \end{example}
@@ -198,7 +194,7 @@
     \begin{enumerate}
         \item $x^* = x$ and $c^* = c$ for variables $x$ and constants $c$.
         \item $(\lambda x.t)^* = \lambda x. t^*$.
-        \item $(ts)^* = t^*s^*$ if $t$ is not a $\lambda$-term.
+        \item $(ts)^* = t^*s^*$ if $t$ is not a $\lambda$-abstraction.
         \item $((\lambda x.t) s)^* = t^*[s^*/x]$.
     \end{enumerate}
 \end{boxdefi}
@@ -211,7 +207,7 @@
 
     If the last step was Definition \ref{def:parared} (iii), i.e. concluding $tu \Rightarrow t'u'$ from $t \Rightarrow t'$ and $u \Rightarrow u'$, then by induction hypothesis $t' \Rightarrow t^*$ and $u' \Rightarrow u^*$.
     We need to show that $t'u' \Rightarrow (t u)^*$.
-    If $t$ is not a $\lambda$-term then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
+    If $t$ is not a $\lambda$-abstraction then $(tu)^* = t^*u^*$, so we are done by Definition \ref{def:parared} (iii).
     If $t = \lambda x. s$ then $(tu)^* = s^* [u^*/x]$.
     We know $\lambda x.s \Rightarrow t'$ which can only be derived using Definition \ref{def:parared} (ii).
     So $t' = \lambda x. s'$ with $s \Rightarrow s'$.
@@ -496,6 +492,10 @@ We define two versions of simply-typed $\lambda$-calculus $\lamcur$ and $\lamchu
 \begin{example}
     One can show that $\vdash [n] : (\sigma \to \sigma) \to \sigma \to \sigma$.
 \end{example}
+
+\begin{rem}
+    Every well-typed term without free variables can be defined using $K$ and $S$ up to $\beta$-equivalence.
+\end{rem}
 
 \begin{boxdefi}
     \alert{$\lamcur + \bN$} is an extension of $\lamcur$ with
