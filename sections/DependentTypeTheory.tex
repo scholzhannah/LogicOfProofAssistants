@@ -30,7 +30,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
     \begin{enumerate}[resume]
         \item{ A PTS has \alert{preterms} 
             \begin{equation*}
-                A, B, M, N \Coloneqq x  \mid s \mid (MN) \mid (\lambda x : A. M) \mid \prod x : A, B
+                A, B, M, N \Coloneqq x  \mid s \mid (MN) \mid (\lambda x : A. M) \mid \prod x : A. B
             \end{equation*}
             where $x$ is a variable and $s$ a sort.
             If $B$ does not depend on $x$, we write $\prod x : A. B$ as $\alert{A \to B}$.}
@@ -174,7 +174,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
             If $A : \typeu{u}$ and $B : \typeu{v}$, then $A \to B : \typeu{(\max u\ v)}$.
             If $P : A \to \proptype$, then $\forall x : A. Px : \proptype$. 
             If $A : \typeu{u}$ and $C : A \to \typeu{v}$, then $\prod_{x : A} Cx : \typeu{(\max u \ v)}$.
-            $\proptype$ is called and \alert{impredicative universe}.
+            $\proptype$ is called an \alert{impredicative universe}.
         }
         \item {
             Consider $\fS = \{*\}$, $\fA = \{* :*\}$, $\fR = \{(*, *)\}$. 
