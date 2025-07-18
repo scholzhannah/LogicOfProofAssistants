@@ -424,7 +424,7 @@ Instead of providing the very general and complicated definition of an inductive
                 \AxiomC{$\Gamma \vdash C : \typeu{w}$} 
                 \AxiomC{$\Gamma \vdash f : A \to C$} 
                 \AxiomC{$\Gamma \vdash h : \prod_{a, b : A} Rab \to f(a) \mathrel{=_C} f(b)$} 
-                \TrinaryInfC{$\Gamma \vdash \recOp(C, f, f) : A/R \to C$}
+                \TrinaryInfC{$\Gamma \vdash \recOp(C, f, h) : A/R \to C$}
                 \DisplayProof
                 \def\defaultHypSeparation{\hskip.2in}
 
@@ -448,7 +448,7 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{rem}
 
 \begin{boxdefi}
-    We define a new notion of \alert{equality}:
+    We define a new notion of \alert{equality/identity type}:
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash x, y : A$} \BinaryInfC{$\Gamma \vdash x \mathrel{=_A} y : \typeu{u}$} \DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash x : A$} \UnaryInfC{$\Gamma \vdash \refl{x} : x \mathrel{=_A} x$} \DisplayProof
@@ -504,22 +504,22 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{rem}
 
 \begin{boxlem}
-    For $p : x \mathrel{=_A} y$ and $q : y \mathrel{=_A} z$ we construct $\alert{p.q} : x \mathrel{=_A} z$ such that $p.\refl{y} \equiv p$.
+    For $p : x \mathrel{=_A} y$ and $q : y \mathrel{=_A} z$ we construct $\alert{p \cdot q} : x \mathrel{=_A} z$ such that $p \cdot\refl{y} \equiv p$.
 \end{boxlem}
 
 \begin{proof}
     By path induction on $q$, we may assume that $z$ is $y$ and $q$ is $\refl{y}$. 
-    Now we have to construct $p.\refl{y} : x \mathrel{=_A} y$ which we define as $p$. 
+    Now we have to construct $p \cdot\refl{y} : x \mathrel{=_A} y$ which we define as $p$. 
 \end{proof}
 
 \begin{boxlem}\label{lem:paths}
     Let $p : x \mathrel{=_A} y$, $q : y \mathrel{=_A} z$ and $r : z \mathrel{=_A} w$. 
     Then
     \begin{enumerate}
-        \item $p.p^{-1} \mathrel{=_{x \mathrel{=_A} x}} \refl{x}$.
-        \item $p^{-1}.p \mathrel{=_{y \mathrel{=_A} y}} \refl{y}$.
+        \item $p \cdot p^{-1} \mathrel{=_{x \mathrel{=_A} x}} \refl{x}$.
+        \item $p^{-1} \cdot p \mathrel{=_{y \mathrel{=_A} y}} \refl{y}$.
         \item $(p^{-1})^{-1} \mathrel{=_{x \mathrel{=_A} y}} p$.
-        \item $(p.q).r \mathrel{=_{x \mathrel{=_A} w}} p.(q.r)$.
+        \item $(p \cdot q) \cdot r \mathrel{=_{x \mathrel{=_A} w}} p\cdot (q \cdot r)$.
     \end{enumerate}
 \end{boxlem}
 
@@ -537,7 +537,8 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{rem}
 
 \begin{rem}
-    Lemma \ref{lem:paths} gives each type the structure of an $\infty$-groupoid. 
+    Each identity type also has higher coherence rules like in Lemma \ref{lem:paths}. 
+    All these coherence rules together give each type the structure of an $\infty$-groupoid.
 \end{rem}
 
 \begin{boxlem}
