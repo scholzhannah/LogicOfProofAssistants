@@ -1,51 +1,53 @@
 \section{Simple Type Theory}
 
-Simple type theory was first presented by Church in 1940. 
+Simple type theory was first presented by Church in 1940.
 
 \begin{boxdefi}
-    We add to $\lamchu$ the type constants 
+    We add to $\lamchu$ the type constants
     \begin{enumerate}
         \item \alert{$I$} (``\alert{individuals}'')
         \item \alert{$\proptype$}
     \end{enumerate}
-    and the term constants 
+    and the term constants
     \begin{enumerate}
         \item $\alert{\forallterm{\tau}} : (\tau \to \proptype) \to \proptype$
         \item $\alert{{\Rightarrow}} : \proptype \to \proptype \to \proptype$
         \item $\alert{=_\tau} : \tau \to \tau \to \proptype$
         \item $\alert{\varepsilon_\tau} : (\tau \to \proptype) \to \tau$
     \end{enumerate}
-    We view $A : \proptype$ as a formula. 
-    We write: 
+    We view $A : \proptype$ as a formula.
+    We write:
     \begin{enumerate}
         \item $\forall x : \tau. A$ for $\forallterm{\tau}(\lambda x : \tau.A)$
         \item $A \Rightarrow B : \proptype$ for ${\Rightarrow} (A)(B)$ where $A, B : \proptype$
         \item $s =_\tau t : \proptype$ for ${=_\tau}(s)(t)$ where $s, t : \tau$
     \end{enumerate}
-    Now we can define: 
+    Now we can define:
     \begin{enumerate}
         \item $\alert{\bot} \coloneq \forall P : \proptype. P$
-        \item $\alert{\top} \coloneq \bot \Rightarrow \bot$
+        \item $\alert{\top} \coloneq \forall P : \proptype. P \Rightarrow P$
         \item $\alert{\neg A} \coloneq A \Rightarrow \bot$
-        \item $\alert{A \vee B} \coloneq \neg A \Rightarrow B$
-        \item $\alert{A \wedge B} \coloneq \neg (\neg A \vee \neg B)$
+        \item $\alert{A \vee B} \coloneq \forall P:\proptype.\,(A\Rightarrow P)\Rightarrow(B\Rightarrow P)\Rightarrow P$
+        \item $\alert{A \wedge B} \coloneq \forall P:\proptype.\,(A\Rightarrow B\Rightarrow P)\Rightarrow P$
         \item $\alert{A \Leftrightarrow B} \coloneq (A \Rightarrow B) \wedge (B \Rightarrow A)$
-        \item $\alert{\exists x : \tau. A} \coloneq \neg (\forall x : \tau. \neg A)$
+        \item $\alert{\exists x : \tau. A} \coloneq \forall P:\proptype.\,(\forall x:\tau.\, A\Rightarrow P)\Rightarrow P$
     \end{enumerate}
 \end{boxdefi}
 
 \begin{rem}
-    See sheet 6 exercise 6 for a different (equivalent) way to define $A \wedge B$, $A \vee B$ and $\exists x : \tau. A$.
+    When using classical logic, we could alternatively define
+    $A\vee B$ and $A\wedge B$ and $\exists x : \tau. A$ as
+    $\neg A \Rightarrow B$ and $\neg (\neg A \vee \neg B)$ and $\neg (\forall x : \tau. \neg A)$, respectively.
 \end{rem}
 
 \begin{boxdefi}\label{def:provejudge}
     In addition to the typing judgements $\Gamma \vdash t : \tau$ we can now define \alert{provability judgements} $\alert{\Delta \mathrel{\vdash_\Gamma} A}$ (or $\Delta \vdash A$ for short) where $\Delta$ is a set of terms $B$ such that $\Gamma \vdash B : \proptype$ and $\Gamma \vdash A : \proptype$.
-    This gives a proof system with the following rules where the typing constraints are marked in gray: 
+    This gives a proof system with the following rules where the typing constraints are marked in gray:
     \begin{enumerate}
         \item {(Ass)
             \AxiomC{}
             \UnaryInfC{$\Delta, A \vdash A$}
-            \DisplayProof} 
+            \DisplayProof}
         \item {($\Rightarrow$ I)
             \AxiomC{$\Delta, A \vdash B$}
             \UnaryInfC{$\Delta \vdash A \Rightarrow B$}
@@ -55,7 +57,7 @@ Simple type theory was first presented by Church in 1940.
             \AxiomC{$\Delta \vdash A$}
             \BinaryInfC{$\Delta \vdash B$}
             \DisplayProof}
-        \item {($\forall$ I) 
+        \item {($\forall$ I)
             \AxiomC{$\Delta \vdash A$}
             \AxiomC{$x \notin \fv{\Delta}$}
             \AxiomC{$\color{gray}\Gamma \vdash x : \tau$}
@@ -95,7 +97,7 @@ Simple type theory was first presented by Church in 1940.
             \BinaryInfC{$\Delta \vdash B$}
             \DisplayProof}
         \item {(Propositional extensionality)
-            
+
             \AxiomC{}
             \UnaryInfC{$\Delta \vdash \forall P, Q : \proptype. (P \Leftrightarrow Q) \Rightarrow P \mathrel{=_\proptype} Q$}
             \DisplayProof}
@@ -104,13 +106,13 @@ Simple type theory was first presented by Church in 1940.
             \AxiomC{}
             \UnaryInfC{$\Delta \vdash \forall f, g : \sigma \to \tau. (\forall x : \sigma. f x \mathrel{=_\tau} g x) \Rightarrow f \mathrel{=_{\sigma \to \tau}} g$}
             \DisplayProof}
-        \item {(Infinity) 
-            
+        \item {(Infinity)
+
             \AxiomC{}
             \UnaryInfC{$\Delta \vdash \exists f : I \to I. (\forall x, x' : I. f x \mathrel{=_I} f x' \Rightarrow x \mathrel{=_I} x') \wedge \exists y : I. \forall x : I. \neg (f x \mathrel{=_I} y)$}
             \DisplayProof}
         \item {(Hilbert $\varepsilon_\tau$ function / global choice operator)
-            
+
             \AxiomC{}
             \UnaryInfC{$\Delta \vdash \forall P : \tau \to \proptype. \forall x : \tau. (P x \Rightarrow P(\varepsilon_\tau P))$}
             \DisplayProof}
@@ -118,8 +120,8 @@ Simple type theory was first presented by Church in 1940.
 \end{boxdefi}
 
 \begin{rem}
-    Interpret $\varepsilon$ as a choice operator. 
-    $\varepsilon_\tau P$ for $P : \tau \to \proptype$ is an arbitrary choice of a $t : \tau$ such that $P t$ holds if such a $t$ exists. 
+    Interpret $\varepsilon$ as a choice operator.
+    $\varepsilon_\tau P$ for $P : \tau \to \proptype$ is an arbitrary choice of a $t : \tau$ such that $P t$ holds if such a $t$ exists.
     One could also define the rule to be:
     \begin{prooftree}
         \AxiomC{}
@@ -128,7 +130,7 @@ Simple type theory was first presented by Church in 1940.
 \end{rem}
 
 \begin{boxlem}
-    We can derive 
+    We can derive
     \begin{prooftree}
         \AxiomC{$\Delta \vdash P s$}
         \AxiomC{$\Delta \vdash s \mathrel{=_\tau} t$}
@@ -142,16 +144,16 @@ Simple type theory was first presented by Church in 1940.
     \begin{enumerate}
         \item {All types are non-empty.
             Consider $\varepsilon_\tau(\lambda x : \tau. \bot)$ which has type $\tau$ in any context.}
-        \item {Given a type $\tau$, we can define the collection of subsets of $\tau$ as $\alert{(\set \tau)} \coloneq (\tau \to \proptype)$. 
+        \item {Given a type $\tau$, we can define the collection of subsets of $\tau$ as $\alert{(\set \tau)} \coloneq (\tau \to \proptype)$.
         We view $P : \tau \to \proptype$ as the set $\{ x : \tau \mid P x\}$.}
         \item {Proof assistants that implement simple type theory/higher order logic: HOL4, HOL Light, Isabelle/HOL.}
-        \item {These proof assistants give another way to define new types: 
+        \item {These proof assistants give another way to define new types:
             Given a type $\tau$ and $P : \tau \to \proptype$, if $P$ is not always false, then you can define the subtype of $\tau$ where $P$ holds.}
     \end{enumerate}
 \end{rem}
 
 \begin{example}
-    We can define $\alert{\alpha \times \beta}$ as the subtype of $\tau = (\alpha \to \beta \to \proptype)$ where $P : \tau \to \proptype$ holds where $P$ is 
+    We can define $\alert{\alpha \times \beta}$ as the subtype of $\tau = (\alpha \to \beta \to \proptype)$ where $P : \tau \to \proptype$ holds where $P$ is
     \begin{equation*}
         \lambda f : \tau. \exists x : \alpha \exists y : \beta. f x y \wedge \forall x' : \alpha \forall y' : \beta. f x' y' \Rightarrow x \mathrel{=_\alpha} x' \wedge y \mathrel{=_\beta} y'
     \end{equation*}
@@ -175,26 +177,26 @@ Simple type theory was first presented by Church in 1940.
     \begin{equation*}
         U \coloneq (\lambda A : \proptype. (A \mathrel{=_\proptype} \top) \vee P) : \proptype \to \proptype
     \end{equation*}
-    and 
+    and
     \begin{equation*}
         V \coloneq (\lambda A : \proptype. (A \mathrel{=_\proptype} \bot) \vee P) : \proptype \to \proptype
     \end{equation*}
     \begin{claim}
         $P \Rightarrow \varepsilon U = \varepsilon V$
         \begin{proof}
-            If $P$ holds then $UA$ and $VA$ are true for any $A : \proptype$ so in particular $UA \Leftrightarrow VA$. 
-            Therefore by propositional extensionality $UA \mathrel{=_\proptype} VA$ so then by functional extensionality $U \mathrel{=_{\proptype \to \proptype} V}$. 
+            If $P$ holds then $UA$ and $VA$ are true for any $A : \proptype$ so in particular $UA \Leftrightarrow VA$.
+            Therefore by propositional extensionality $UA \mathrel{=_\proptype} VA$ so then by functional extensionality $U \mathrel{=_{\proptype \to \proptype} V}$.
             So $\varepsilon U \mathrel{=_{\proptype}} \varepsilon V$.
         \end{proof}
     \end{claim}
-    Notice that $U \top$ is provable, so by the choice axiom $U(\varepsilon U)$ is provable, so $(\varepsilon U = \top) \vee P$ holds. 
+    Notice that $U \top$ is provable, so by the choice axiom $U(\varepsilon U)$ is provable, so $(\varepsilon U = \top) \vee P$ holds.
     Similarly, $V \bot$ holds, so $(\varepsilon V = \bot) \vee P$ does as well.
 
     Do case distinctions on both of these disjunctions.
-    In three cases $P$ holds and we are done. 
+    In three cases $P$ holds and we are done.
     In the last case we know $\varepsilon U = \top$ and $\varepsilon V = \bot$.
     Thus by Exercise \ref{exe:topnebot}, $\varepsilon U \neq \varepsilon V$.
-    If $P$ holds, then $\varepsilon U = \varepsilon V$ which is a contradiction. 
+    If $P$ holds, then $\varepsilon U = \varepsilon V$ which is a contradiction.
     So we conclude $\neg P$.
 \end{proof}
 
@@ -210,23 +212,23 @@ Simple type theory was first presented by Church in 1940.
             \AxiomC{$\Delta, \neg P \vdash \bot$}
             \UnaryInfC{$\Delta \vdash P$}
             \DisplayProof
-            is not always constructively valid. 
+            is not always constructively valid.
         }
-    \end{enumerate} 
+    \end{enumerate}
 \end{rem}
 
 \begin{example}
-    Define $(\exists x : \tau. A) \coloneq \forall P : \proptype. (\forall x : \tau. A \Rightarrow P) \Rightarrow P$. 
+    Define $(\exists x : \tau. A) \coloneq \forall P : \proptype. (\forall x : \tau. A \Rightarrow P) \Rightarrow P$.
     We will prove
     \begin{prooftree}
         \AxiomC{$\Gamma \vdash t : \tau$}
         \AxiomC{$\Delta \vdash A [t/x]$}
         \BinaryInfC{$\exists x : \tau. A$}
     \end{prooftree}
-    as an example. 
-    First one would need to show a weakening rule, i.e.\ that for $\Delta \subseteq \Delta'$ we know 
+    as an example.
+    First one would need to show a weakening rule, i.e.\ that for $\Delta \subseteq \Delta'$ we know
     \begin{prooftree}
-        \AxiomC{$\Delta \vdash P$} 
+        \AxiomC{$\Delta \vdash P$}
         \UnaryInfC{$\Delta' \vdash P$}
     \end{prooftree}
     for any $P : \proptype$.
@@ -252,7 +254,7 @@ Simple type theory was first presented by Church in 1940.
 \end{example}
 
 \begin{example}
-    We can define $\tau$ having a group structure by considering 
+    We can define $\tau$ having a group structure by considering
     \begin{equation*}
         \groupstruct \alpha \coloneq (\alpha \to \alpha \to \alpha) \times \alpha \times (\alpha \to \alpha)
     \end{equation*}
@@ -260,7 +262,7 @@ Simple type theory was first presented by Church in 1940.
 \end{example}
 
 \begin{rem}
-    Differentiating types and terms can have annoying consequences. 
+    Differentiating types and terms can have annoying consequences.
     While we can define $\groupstruct \bZ$, we cannot define the group $\bZ / n \bZ$ as a type for a general $n$.
     This is because $\bZ /n\bZ$ cannot be a type as it depends on a term.
     In the same way we can define $\bR^2$ and $\bR^3$ but cannot define $\bR^n$ as a type for a general $n$.
