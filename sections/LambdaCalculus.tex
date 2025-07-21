@@ -74,7 +74,7 @@
     There exists a \alert{fixed-point combinator} $Y$ such that $Y t \bered t(Yt)$.
 \end{boxprop}
 \begin{proof}
-    Let $A \coloneq \lambda fx. x(ffx)$ and let $Y \coloneq AA$ be the \alert{Turing operator}.
+    Let $A \coloneq \lambda xf. f(xxf)$ and let $Y \coloneq AA$ be the \alert{Turing operator}.
     Then $Yt = AAt \bered t (AAt) = t(Yt)$.
 \end{proof}
 
@@ -742,31 +742,31 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
 \begin{proof}
     We do a simultaneous proof of (i) - (iii) by induction on $\tau$.
     If $\tau$ is a variable or constant, then (i) - (iii) are easy.
-    Suppose $t : \sigma \to \tau$. 
+    Suppose $t : \sigma \to \tau$.
 
-    For (i) assume that $t \in C(\sigma \to \tau)$. 
+    For (i) assume that $t \in C(\sigma \to \tau)$.
     We need to prove that $t$ is strongly normalizing.
     Let $x : \sigma$, then by induction hypothesis (iii), $x \in C(\sigma)$.
     So now $tx \in C(\tau)$ by definition.
-    By induction hypothesis (i), $tx$ is strongly normalizing. 
-    Therefore, $t$ is strongly normalizing. 
+    By induction hypothesis (i), $tx$ is strongly normalizing.
+    Therefore, $t$ is strongly normalizing.
     Indeed, if $t \beored t_1 \beored t_2 \beored \dots$ then $tx \beored t_1x \beored t_2x \beored \dots$.
 
-    For (ii) assume $t \in C(\sigma \to \tau)$ and $t \beored t'$. 
+    For (ii) assume $t \in C(\sigma \to \tau)$ and $t \beored t'$.
     To show that $t' \in C(\sigma \to \tau)$, take $s \in C(\sigma)$.
-    We now need to prove that $t's \in C(\tau)$. 
+    We now need to prove that $t's \in C(\tau)$.
     By definition we know $ts \in C(\tau)$, so by induction hypothesis (ii) and the fact that $ts \bered t's$, we conclude that $t's \in C(\tau)$.
 
     For part (iii), let $t : \sigma \to \tau$ satisfy (\ref{eq:beored}) and not be a $\lambda$-abstraction.
-    Let $s \in C(\sigma)$. 
+    Let $s \in C(\sigma)$.
     We need to show that $ts \in C(\tau)$.
-    By induction hypothesis (i), $s$ is strongly normalizing. 
-    We prove $ts \in C(\tau)$ by strong induction on $h(s)$. 
-    We show that (\ref{eq:beored}) hold for $ts$. 
-    There are two ways that $ts$ can reduce: 
+    By induction hypothesis (i), $s$ is strongly normalizing.
+    We prove $ts \in C(\tau)$ by strong induction on $h(s)$.
+    We show that (\ref{eq:beored}) hold for $ts$.
+    There are two ways that $ts$ can reduce:
     firstly, $ts \beored t's$ where $t \beored t'$ or secondly, $ts \beored  ts'$ where $s \beored s'$.
-    For the first option we know $t' \in C(\sigma \to \tau)$ because $t$ satisfies (\ref{eq:beored}).  
-    By definition, $t's \in C(\tau)$. 
+    For the first option we know $t' \in C(\sigma \to \tau)$ because $t$ satisfies (\ref{eq:beored}).
+    By definition, $t's \in C(\tau)$.
     For the second option, if $s \beored s'$, then by the induction hypothesis of the nested induction and $h(s') < h(s)$, we know $ts' \in C(\tau)$.
     This finishes (iii).
 \end{proof}
@@ -779,55 +779,55 @@ For a strongly normalizing term $t$, we write $h(t)$ for the maximal length of a
     Then $\lambda x : \sigma. t \in C(\sigma \to \tau)$.
 \end{boxlem}
 \begin{proof}
-    Suppose $t$ satisfies (\ref{eq:subst}). 
+    Suppose $t$ satisfies (\ref{eq:subst}).
     By definition, if $s \in C(\sigma)$, we need to show $(\lambda x:\sigma.t)s \in C(\tau)$.
-    By (\ref{eq:subst}), $t \in C(\tau)$. 
-    Indeed, take $s = x$ and use $t[x/x] = t$. 
-    By Lemma \ref{lem:computableSN} (ii), $t$ and $s$ are strongly normalizing. 
-    We prove $(\lambda x : \sigma. t)s \in C(\tau)$ by induction on $h(s) + h(t)$. 
+    By (\ref{eq:subst}), $t \in C(\tau)$.
+    Indeed, take $s = x$ and use $t[x/x] = t$.
+    By Lemma \ref{lem:computableSN} (ii), $t$ and $s$ are strongly normalizing.
+    We prove $(\lambda x : \sigma. t)s \in C(\tau)$ by induction on $h(s) + h(t)$.
 
-    We want to use Lemma \ref{lem:computableSN} (iii), so assume $(\lambda x: \sigma.t)s \beored r$. 
-    We need to show $r \in C(\tau)$. 
-    There are three cases: 
+    We want to use Lemma \ref{lem:computableSN} (iii), so assume $(\lambda x: \sigma.t)s \beored r$.
+    We need to show $r \in C(\tau)$.
+    There are three cases:
     \begin{enumerate}
         \item $r = (\lambda x : \sigma . t) s'$ where $s \beored s'$
         \item $r = (\lambda x : \sigma. t') s$ where $t \beored t'$
         \item $r = t[s/x]$
     \end{enumerate}
-    For (i), since $h(s') < h(s)$, by induction hypothesis $r \in C(\tau)$. 
+    For (i), since $h(s') < h(s)$, by induction hypothesis $r \in C(\tau)$.
 
-    For (ii) we have $h(t') < h(t)$. 
-    To conclude by induction hypothesis we have to show that $t'$ satisfies (\ref{eq:subst}). 
-    So let $s \in C(\sigma)$. 
-    Since $t$ satisfies (\ref{eq:subst}) we know $t[s/x] \in C(\tau)$. 
-    So by Lemma \ref{lem:computableSN} (ii) and $t[s/x] \bered t'[s/x]$ we have $t'[s/x] \in C(\tau)$. 
+    For (ii) we have $h(t') < h(t)$.
+    To conclude by induction hypothesis we have to show that $t'$ satisfies (\ref{eq:subst}).
+    So let $s \in C(\sigma)$.
+    Since $t$ satisfies (\ref{eq:subst}) we know $t[s/x] \in C(\tau)$.
+    So by Lemma \ref{lem:computableSN} (ii) and $t[s/x] \bered t'[s/x]$ we have $t'[s/x] \in C(\tau)$.
 
-    For (iii) $t$ satisfies (\ref{eq:subst}), which gives us $t[s/x] \in C(\tau)$. 
+    For (iii) $t$ satisfies (\ref{eq:subst}), which gives us $t[s/x] \in C(\tau)$.
 \end{proof}
 
 \begin{boxlem}
-    If $t : \tau$, $x_0 : \sigma_0, \dots, x_{k-1} : \sigma_{k-1}$ are variables and $s_0 \in C(\sigma_0), \dots, s_{k-1} \in C(\sigma_{k-1})$. 
+    If $t : \tau$, $x_0 : \sigma_0, \dots, x_{k-1} : \sigma_{k-1}$ are variables and $s_0 \in C(\sigma_0), \dots, s_{k-1} \in C(\sigma_{k-1})$.
     Then $t[\vec{s}/\vec{x}] = t [s_0 / x_0] \dots [s_{k-1} / x_{k - 1}] \in C(\tau)$.
 \end{boxlem}
 \begin{proof}
     We show this by induction on $t$.
-    If $t$ is a variable or a constant, this is easy. 
+    If $t$ is a variable or a constant, this is easy.
 
     If $t = \lambda x. t'$, then by Lemma \ref{lem:generation} (iii) $\tau = (\sigma' \to \tau')$, $x' : \tau'$ and $t' : \tau'$ for some $\sigma'$ and $\tau'$.
     We want to show $(\lambda x'.t')[\vec{s}/\vec{x}] = \lambda x'. (t'[\vec{s}/\vec{x}]) \in C(\sigma' \to \tau')$.
-    By Lemma \ref{lem:lambdaconstruct} it is enough to show that for every $s' \in C(\sigma)$, $t'[\vec{s}/\vec{x}][s' / x'] \in C(\tau')$. 
-    This follows by induction hypothesis. 
+    By Lemma \ref{lem:lambdaconstruct} it is enough to show that for every $s' \in C(\sigma)$, $t'[\vec{s}/\vec{x}][s' / x'] \in C(\tau')$.
+    This follows by induction hypothesis.
 
     Lastly, let us consider $t = t's'$.
-    By Lemma \ref{lem:generation} (ii) there is $\sigma$ such that $t' : \sigma \to \tau$ and $s' : \sigma$. 
+    By Lemma \ref{lem:generation} (ii) there is $\sigma$ such that $t' : \sigma \to \tau$ and $s' : \sigma$.
     Then $t[\vec{s}/\vec{x}] = (t'[\vec{s}/\vec{x}])(s' [\vec{s}/\vec{x}])$.
-    By induction hypothesis on $t'$ and $s'$, we know that $t'[\vec{s}/\vec{x}] \in C(\sigma \to \tau)$ and $s'[\vec{s} / \vec{x}] \in C(\sigma)$. 
+    By induction hypothesis on $t'$ and $s'$, we know that $t'[\vec{s}/\vec{x}] \in C(\sigma \to \tau)$ and $s'[\vec{s} / \vec{x}] \in C(\sigma)$.
     By definition, $t[\vec{s} / \vec{x}] \in C(\tau)$.
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:typedSN}]
     Let $t : \tau$.
-    By Lemma \ref{lem:computableSN} (i) it is enough to show that $t \in C(\tau)$. 
+    By Lemma \ref{lem:computableSN} (i) it is enough to show that $t \in C(\tau)$.
     But this is true by the previous lemma for $k = 0$.
 \end{proof}
 

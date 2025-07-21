@@ -1,48 +1,48 @@
 \section{Dependent Type Theory}
 
 
-The rules of simple type theory (when ignoring the terms) are precisely the rules of implicational logic. 
-So, instead of having a type specifically for propositions, we could view types as propositions and terms as proofs. 
+The rules of simple type theory (when ignoring the terms) are precisely the rules of implicational logic.
+So, instead of having a type specifically for propositions, we could view types as propositions and terms as proofs.
 This is called \alert{Curry-Howard correspondence} or the \alert{propositions-as-types interpretation}.
 We could add other type formers for connectives, e.g.\ $\sigma \times \tau$ corresponding to conjunction and $\sigma + \tau$ corresponding to disjunction.
 
 How do we represent quantifiers?
 We will add the the \alert{dependent product type}, or \alert{pi type}, $\prod x : \sigma. \tau$ or $\prod_{x : \sigma} \tau$, corresponding to $\forall x : \sigma. \tau$ and where $\tau$ can depend on $x$.
-A term $t : \prod x : \sigma. \tau$ is a dependent function. 
+A term $t : \prod x : \sigma. \tau$ is a dependent function.
 For $s : \sigma$, we get $ts : \tau[s/x]$.
 
 \begin{example}
-    We could then define $\tau \coloneq \bR^n$ where $n : \bN$. 
+    We could then define $\tau \coloneq \bR^n$ where $n : \bN$.
     Then $f$, defined to send $n : \bN$ to $\underbrace{(0, \dots, 0)}_{\text{length }n}$ would have type $\prod_{n : \bN} \bR^n$.
 \end{example}
 
 \subsection{Pure Type Systems (PTSs)}
 
 \begin{boxdefi}\label{def:pts}
-    A \alert{pure type system (PTS)} is determined by $(\fS, \fA, \fR)$, where 
+    A \alert{pure type system (PTS)} is determined by $(\fS, \fA, \fR)$, where
     \begin{enumerate}
         \item $\fS$ is a set of \alert{sorts} (or \alert{universes})
         \item $\fA \subseteq \fS \times \fS$ is a set of \alert{axioms}
         \item $\fR \subseteq \fS \times \fS \times \fS$ is a set of \alert{relations}
     \end{enumerate}
-    We additionally have an infinite set of variables. 
+    We additionally have an infinite set of variables.
     We can define a lot of things we have seen before again:
     \begin{enumerate}[resume]
-        \item{ A PTS has \alert{preterms} 
+        \item{ A PTS has \alert{preterms}
             \begin{equation*}
                 A, B, M, N \Coloneqq x  \mid s \mid (MN) \mid (\lambda x : A. M) \mid \prod x : A. B
             \end{equation*}
             where $x$ is a variable and $s$ a sort.
             If $B$ does not depend on $x$, we write $\prod x : A. B$ as $\alert{A \to B}$.}
         \item {\alert{Contexts} are lists of the form $\Gamma \coloneq x_1 : A_1, x_2 : A_2, \dots, x_n : A_n$.
-            Here, the order of the context matters. 
+            Here, the order of the context matters.
             We set $\alert{\domain{\Gamma}} \coloneq \{x_1, \dots, x_n\}$. }
         \item {We identify terms up to \alert{$\alpha$-equivalence}, so e.g.\ $\lambda x : \tau. x \aeq \lambda y : \tau. y$ and $\prod x : \tau. B(x) \aeq \prod y : \tau. B(y)$.}
         \item {We define \alert{$\beta$-reduction} as before.}
         \item {The \alert{types} are precisely the terms that have a sort as its type.}
-    \end{enumerate} 
+    \end{enumerate}
     We write $s$ for sorts, $A$, $B$ for types and $M$, $N$ for terms (that could be types).
-    The typing rules are: 
+    The typing rules are:
     \begin{enumerate}[resume]
         \item {(ax) \AxiomC{} \UnaryInfC{$\vdash s_1 : s_2$} \DisplayProof for $(s_1, s_2) \in \fA$}
         \item {(var) \AxiomC{$\Gamma \vdash A : s$} \UnaryInfC{$\Gamma, x : A \vdash x : A$} \DisplayProof where $x \notin \domain{\Gamma}$}
@@ -55,7 +55,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \end{boxdefi}
 
 \begin{example}
-    If $\tau : s$, then $(\lambda x : s. x) \tau \beq \tau$. 
+    If $\tau : s$, then $(\lambda x : s. x) \tau \beq \tau$.
     It depends on the PTS whether $(\lambda x : s. x)\tau$ is a well-formed type.
 \end{example}
 
@@ -65,7 +65,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \end{rem}
 
 \begin{boxdefi}
-    A pure type system is called \alert{strongly} resp.\ \alert{weakly normalizing} if $\beta$-reduction on well-typed terms (including sorts) is strongly resp.\ weakly normalizing. 
+    A pure type system is called \alert{strongly} resp.\ \alert{weakly normalizing} if $\beta$-reduction on well-typed terms (including sorts) is strongly resp.\ weakly normalizing.
 \end{boxdefi}
 
 \begin{example}\label{ex:PTS}
@@ -74,9 +74,9 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
         \item {
             Let $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *)\}$.
             The only term of type $\square$ is $*$.
-            In this system, types cannot depend on terms. 
-            This system corresponds to simply-typed $\lambda$-calculus. 
-            An example of a derivation in this system is: 
+            In this system, types cannot depend on terms.
+            This system corresponds to simply-typed $\lambda$-calculus.
+            An example of a derivation in this system is:
             \begin{prooftree}
                 \AxiomC{}
                 \LeftLabel{ax}
@@ -96,21 +96,21 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
                 \UnaryInfC{$\sigma : *, \tau : *, x : \sigma \vdash \tau : *$}
                 \LeftLabel{prod}
                 \BinaryInfC{$\sigma : *, \tau : * \vdash \sigma \to \tau : *$}
-            \end{prooftree} 
+            \end{prooftree}
             We can also proof things like
             \begin{equation*}
                 \sigma : *, \tau : * \vdash (\sigma \to \sigma) \to \tau \to \sigma : *
             \end{equation*}
-            and 
+            and
             \begin{equation*}
                 \tau : *, \sigma : *, f : \sigma \to \tau, g : \tau \to \tau, x : \sigma \vdash g(g(f(x))) : \tau.
             \end{equation*}
             }
         \item {
-            Consider $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (\square, *)\}$. 
+            Consider $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (\square, *)\}$.
             This is called \alert{system F}.
-            We can now derive $\vdash \prod \alpha : *. \alpha \to \alpha : *$. 
-            The last step of that derivation is 
+            We can now derive $\vdash \prod \alpha : *. \alpha \to \alpha : *$.
+            The last step of that derivation is
             \begin{prooftree}
                 \AxiomC{$\vdots$}
                 \UnaryInfC{$\vdash * : \square$}
@@ -119,25 +119,25 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
                 \LeftLabel{prod}
                 \BinaryInfC{$\vdash \prod \alpha : *, \alpha \to \alpha : *$}
             \end{prooftree}
-            This is a \alert{polymorphic type}. 
-            An inhabitant of this type is $\lambda \alpha : *. \lambda x : \alpha. x$. 
-            This is called the \alert{polymorphic identity function}. 
+            This is a \alert{polymorphic type}.
+            An inhabitant of this type is $\lambda \alpha : *. \lambda x : \alpha. x$.
+            This is called the \alert{polymorphic identity function}.
             The word ``\alert{polymorphic}'' means ``for all types at the same time''.
-            
-            We can give impredicative encodings of connectives. 
+
+            We can give impredicative encodings of connectives.
             For example, $\bot \coloneq \prod_{\alpha : *} \alpha$ and $A \wedge B \coloneq \prod_{\alpha : *}(A \to B \to \alpha) \to \alpha$.
         }
         \item {
             Let $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (*, \square)\}$.
             This is called \alert{$\lambda$P}.
-            In this system $\alpha : * \vdash \alpha \to * : \square$. 
-            This system is where real dependent types start to show up. 
-            See this partial derivation: 
+            In this system $\alpha : * \vdash \alpha \to * : \square$.
+            This system is where real dependent types start to show up.
+            See this partial derivation:
             \begin{prooftree}
                 \AxiomC{$\vdots$}
                 \UnaryInfC{$\alpha : * \vdash \alpha : *$}
                 \AxiomC{$\vdots$}
-                \UnaryInfC{$\alpha : * \vdash * : \square$}
+                \UnaryInfC{$\alpha : *, x : \alpha \vdash * : \square$}
                 \LeftLabel{prod}
                 \BinaryInfC{$\alpha : * \vdash \alpha \to * : \square$}
                 \LeftLabel{var}
@@ -145,13 +145,13 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
                 \UnaryInfC{$\vdots$}
                 \UnaryInfC{$\alpha : *, \beta : \alpha \to * \vdash \prod x : \alpha. \beta x : *$}
             \end{prooftree}
-            We can also show 
+            We can also show
             \begin{equation*}
                 \alpha : *, \beta : \alpha \to *, \gamma : \alpha \to *, f : \prod_{x : \alpha} \beta x, g : \prod_{x : \alpha} \beta x \to \gamma x \vdash \lambda x : \alpha. gx(fx): \prod_{x : \alpha} \gamma x.
             \end{equation*}
         }
         \item {
-            Consider $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (\square, \square)\}$. 
+            Consider $\fS = \{ *,  \square\}$, $\fA = \{* : \square\}$ and $\fR = \{(*, *), (\square, \square)\}$.
             This is called \alert{$\lambda \underline{\omega}$}.
             In this system we can derive $\vdash * \to * : \square$ and $\vdash \lambda \alpha : *. \alpha \to \alpha : *$.
             If we add $(\square, *)$ to $\fR$, we can derive
@@ -165,22 +165,22 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 
         }
         \item{
-            Lean's type theory has the following rules for sorts and function types: 
+            Lean's type theory has the following rules for sorts and function types:
             \begin{align*}
                 \fS &= \{\proptype\} \cup \{ \typeu{u} \mid u \in \bN\} \\
                 \fA &= \{\proptype : \typeu{0}\} \cup \{\typeu{u} : \typeu{(u + 1)} \mid u \in \bN\} \\
                 \fR &= \{ (\typeu{u}, \typeu{v}, \typeu{(\max u\ v)}) \mid u,v \in \bN\} \cup \{(s, \proptype, \proptype) \mid s \in \fS\}
             \end{align*}
             If $A : \typeu{u}$ and $B : \typeu{v}$, then $A \to B : \typeu{(\max u\ v)}$.
-            If $P : A \to \proptype$, then $\forall x : A. Px : \proptype$. 
+            If $P : A \to \proptype$, then $\forall x : A. Px : \proptype$.
             If $A : \typeu{u}$ and $C : A \to \typeu{v}$, then $\prod_{x : A} Cx : \typeu{(\max u \ v)}$.
             $\proptype$ is called an \alert{impredicative universe}.
         }
         \item {
-            Consider $\fS = \{*\}$, $\fA = \{* :*\}$, $\fR = \{(*, *)\}$. 
-            We can construct a term of type $\prod_{\alpha : *} \alpha$. 
-            This system is \alert{inconsistent}, i.e.\ every type is inhabited. 
-            In this system, weak normalization fails. 
+            Consider $\fS = \{*\}$, $\fA = \{* :*\}$, $\fR = \{(*, *)\}$.
+            We can construct a term of type $\prod_{\alpha : *} \alpha$.
+            This system is \alert{inconsistent}, i.e.\ every type is inhabited.
+            In this system, weak normalization fails.
         }
     \end{enumerate}
 \end{example}
@@ -194,11 +194,11 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \end{boxprop}
 
 \begin{conj}
-    If a PTS is weakly normalizing, then it is strongly normalizing. 
+    If a PTS is weakly normalizing, then it is strongly normalizing.
 \end{conj}
 
 \begin{boxprop}\label{prop:PTS}
-    In any PTS 
+    In any PTS
     \begin{enumerate}
         \item If $\Gamma \vdash M : A$, then $\Gamma \vdash A : s$ or $A = s$.
         \item (Substitution) If $\Gamma, x : A, \Delta \vdash M : B$ and $\Gamma \vdash N : A$, then $\Gamma, \Delta[N/x] \vdash M[N/x] : B[N/x]$.
@@ -211,7 +211,7 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \end{rem}
 
 \begin{boxdefi}
-    A PTS is \alert{functional} if 
+    A PTS is \alert{functional} if
     \begin{enumerate}
         \item If $(s_1, s_2), (s_1, s_2') \in \fA$, then $s_2 =s_2'$.
         \item If $(r_1, r_2, r_3), (r_1, r_2, r_3') \in \fR$, then $r_3 = r_3'$.
@@ -223,21 +223,21 @@ For $s : \sigma$, we get $ts : \tau[s/x]$.
 \end{boxthm}
 
 \begin{rem}
-    In Lean, $\bN, \bR, \bR^\bR : \typeu{0}$. 
+    In Lean, $\bN, \bR, \bR^\bR : \typeu{0}$.
     The category of groups in $\typeu{u}$ has type $\typeu{(u + 1)}$.
 \end{rem}
 
 \subsection{Inductive types}
 
-For concreteness we will stick to Lean's type theory. 
-Instead of providing the very general and complicated definition of an inductive type, we will be explaining them mostly by example. 
+For concreteness we will stick to Lean's type theory.
+Instead of providing the very general and complicated definition of an inductive type, we will be explaining them mostly by example.
 
 \begin{rem}
     To make talking about $\proptype$ and $\type$ easier, we define $\alert{\sort}$ as $\sortu{0} \coloneq \proptype$ and $\sortu{(u + 1)} \coloneq \typeu{u}$.
 \end{rem}
 
 \begin{boxdefi}
-    New type formers can be specified using constants and several rules: 
+    New type formers can be specified using constants and several rules:
     \begin{enumerate}
         \item \alert{formation rule}: specifying when a type is well-formed
         \item \alert{introduction rules}: specifying how to form an element of the type (using constructors)
@@ -249,11 +249,11 @@ Instead of providing the very general and complicated definition of an inductive
 
 \begin{example}
     Not only inductive types follow this schema.
-    For example, the dependent product type can be defined in this way: (prod) is the formation rule, (abs) the introduction rule, (app) an elimination rule, $\beta$-reduction is a computation rule, and $\eta$-reduction $\lambda x : A.fx \etred f$ is a uniqueness principle. 
+    For example, the dependent product type can be defined in this way: (prod) is the formation rule, (abs) the introduction rule, (app) an elimination rule, $\beta$-reduction is a computation rule, and $\eta$-reduction $\lambda x : A.fx \etred f$ is a uniqueness principle.
 \end{example}
 
 \begin{boxdefi}
-    \alert{Cartesian products} can now be defined inductively: 
+    \alert{Cartesian products} can now be defined inductively:
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : \typeu{v}$} \BinaryInfC{$\Gamma \vdash A \times B : \typeu{(\maxx{u}{v})}$} \DisplayProof
     \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \AxiomC{$\Gamma \vdash b : B$} \BinaryInfC{$\Gamma \vdash (a, b) : A \times B$} \DisplayProof
@@ -275,7 +275,7 @@ Instead of providing the very general and complicated definition of an inductive
 \end{boxdefi}
 
 \begin{rem}
-    The formation rule in the above definition could equivalently be stated as 
+    The formation rule in the above definition could equivalently be stated as
     \begin{prooftree}
         \AxiomC{$\Gamma \vdash A : \typeu{u}$}
         \AxiomC{$\Gamma, x : A \vdash B : \typeu{v}$}
@@ -284,14 +284,14 @@ Instead of providing the very general and complicated definition of an inductive
 \end{rem}
 
 \begin{rem}
-    Notice that for $(a, b) : \sum_{a : A} B(a)$, we have $\piproj{2}{a, b} : B(\piproj{1}{a, b})$ and $b : B(a)$. 
+    Notice that for $(a, b) : \sum_{a : A} B(a)$, we have $\piproj{2}{a, b} : B(\piproj{1}{a, b})$ and $b : B(a)$.
     But since $B(\piproj{1}{a, b})$ and $B(a)$ are $\beta$-equivalent, $\piproj{2}{a, b}$ and $b$ have the same type by Definition \ref{def:pts} (conv).
 \end{rem}
 
 \begin{example}
     A \alert{magma} is a set (or type) with a binary operation and no axioms.
-    We can write this using $\Sigma$-types. 
-    The type of magmas is $\sum_{A : \typeu{u}} (A \to A \to A) : \typeu{(u + 1)}$. 
+    We can write this using $\Sigma$-types.
+    The type of magmas is $\sum_{A : \typeu{u}} (A \to A \to A) : \typeu{(u + 1)}$.
     The type of pointed magmas is $\sum_{A : \typeu{u}} (A \to A \to A) \times A : \typeu{(u + 1)}$.
 \end{example}
 
@@ -301,10 +301,10 @@ Instead of providing the very general and complicated definition of an inductive
     \begin{enumerate}
         \item Given $C : \sortu{w}$, when is $A \times B \to C$ inhabited?
         \item Given $C : A \times B \to \sortu{w}$, when is $\prod_{v : A \times B} C(v)$ inhabited?
-    \end{enumerate} 
-    For (i), we need $f : A \to B \to C$, which then gives us $g : A \times B \to C, v \mapsto f(\piproj{1}{v})(\piproj{2}{v})$. 
+    \end{enumerate}
+    For (i), we need $f : A \to B \to C$, which then gives us $g : A \times B \to C, v \mapsto f(\piproj{1}{v})(\piproj{2}{v})$.
     For (ii), we need $f : \prod_{a : A}\prod_{b : B}C(a, b)$ to give us $g : \prod_{v : A \times B} C(v), v \mapsto f(\piproj{1}{v})(\piproj{2}{v})$.
-    Thus, there is a derivable recursion principle 
+    Thus, there is a derivable recursion principle
     \begin{equation*}
         \rec{A \times B} : (A \to B \to C) \to A \times B \to C
     \end{equation*}
@@ -323,12 +323,12 @@ Instead of providing the very general and complicated definition of an inductive
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash B : \typeu{v}$} \BinaryInfC{$\Gamma \vdash A + B : \typeu{(\maxx{u}{v})}$} \DisplayProof
         \item introduction rules: \AxiomC{$\Gamma \vdash a : A$} \UnaryInfC{$\Gamma \vdash \inl(a) : A + B$} \DisplayProof and\AxiomC{$\Gamma \vdash b : B$}\UnaryInfC{$\inr(b) : A + B$} \DisplayProof
-        \item {elimination rule: 
+        \item {elimination rule:
 
             \def\defaultHypSeparation{\hskip .1in}
             \AxiomC{$\Gamma \vdash C : A + B \to \sortu{w}$} \AxiomC{$\Gamma \vdash f : \prod_{a : A}C(\inl(a))$} \AxiomC{$\Gamma \vdash g : \prod_{b : B} C(\inr(b))$} \TrinaryInfC{$\Gamma \vdash \ind{A + B}(C, f, g) : \prod_{v : A + B}C(v)$} \DisplayProof}
             \def\defaultHypSeparation{\hskip.2in}
-        \item computation rules: 
+        \item computation rules:
 
         $\ind{A + B}(C, f, g)(\inl a) \iored f(a)$ and $\ind{A + B}(C, f, g)(\inr b) \iored g(b)$
         \item there is no uniqueness rule
@@ -336,12 +336,12 @@ Instead of providing the very general and complicated definition of an inductive
 \end{boxdefi}
 
 \begin{boxdefi}
-    We can also define the \alert{natural numbers}: 
+    We can also define the \alert{natural numbers}:
     \begin{enumerate}
         \item formation rule: \AxiomC{}\UnaryInfC{$\Gamma \vdash \bN : \typeu{0}$}\DisplayProof
         \item introduction rules: \AxiomC{}\UnaryInfC{$\Gamma \vdash 0 : \bN$}\DisplayProof and \AxiomC{$\Gamma \vdash n : \bN$}\UnaryInfC{$\Gamma \vdash \ssuc{n} : \bN$}\DisplayProof
-        \item {elimination rule: 
-        
+        \item {elimination rule:
+
         \AxiomC{$\Gamma \vdash C : \bN \to \sortu{w}$}\AxiomC{$\Gamma \vdash f_0 : C(0)$}\AxiomC{$\Gamma \vdash f_{\ssucOP} : \prod_{n : \bN} C(n) \to C(\ssuc{n})$}\TrinaryInfC{$\Gamma \vdash \ind{\bN}(C, f_0, f_{\ssucOP}) : \prod_{n : \bN} C(n)$}\DisplayProof}
         \item computation rules: $\ind{\bN}(C, f_0, f_{\ssucOP})(0) \iored f_0$ and $\ind{\bN}(C, f_0, f_{\ssucOP})(\ssuc{n}) \iored f_{\ssucOP}(n)(\ind{\bN}(c, f_0, f_{\ssucOP})(n))$
     \end{enumerate}
@@ -352,37 +352,37 @@ Instead of providing the very general and complicated definition of an inductive
 \end{rem}
 
 \begin{rem}
-    To define $g : \prod_{n : \bN} C(n)$ we need $g(0) \colonequiv_{\iota} f_0 : C(0)$ and $g(\ssuc{n}) \colonequiv_\iota f_{\ssucOP}(n, g(n)) : C (\ssuc{n})$. 
+    To define $g : \prod_{n : \bN} C(n)$ we need $g(0) \colonequiv_{\iota} f_0 : C(0)$ and $g(\ssuc{n}) \colonequiv_\iota f_{\ssucOP}(n, g(n)) : C (\ssuc{n})$.
     This way of defining terms is called \alert{pattern matching}.
 \end{rem}
 
 \begin{boxdefi}
-    We can define \alert{addition} on $\bN$ using pattern matching: 
+    We can define \alert{addition} on $\bN$ using pattern matching:
     to define $n + {-} : \bN \to \bN$ we set $n + 0 \coloneq n$ and $n + \ssuc{m} = \ssuc{n + m}$.
 \end{boxdefi}
 
 \begin{boxdefi}
-    We define the \alert{equality type} (also called \alert{identity type}) as the smallest reflexive relation: 
+    We define the \alert{equality type} (also called \alert{identity type}) as the smallest reflexive relation:
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \sortu{u}$}\AxiomC{$\Gamma \vdash x : A$}\AxiomC{$\Gamma \vdash y : A$}\TrinaryInfC{$\Gamma \vdash x \mathrel{=_A} y : \proptype$}\DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash x : A$}\UnaryInfC{$\Gamma \vdash \refl{x} : x \mathrel{=_A} x$}\DisplayProof
-        \item elimination rule: 
-        
+        \item elimination rule:
+
         \AxiomC{$\Gamma \vdash C : A \to \sortu{w}$}\AxiomC{$\Gamma \vdash v : C(x)$}\AxiomC{$\Gamma \vdash h : x \mathrel{=_A} y$}\TrinaryInfC{$\Gamma \vdash \rec{=_A}(C, v, h) : C(y)$}\DisplayProof
         \item computation rule: $\rec{=}(C, v, \refl{x}) \iored v$
     \end{enumerate}
 \end{boxdefi}
 
 \begin{rem}
-    We could have also used \AxiomC{}\UnaryInfC{$\Gamma \vdash \prod_{A : \typeu{u}}\prod_{x : A}x \mathrel{=_A} x$}\DisplayProof as the introduction rule in the above definition. 
+    We could have also used \AxiomC{}\UnaryInfC{$\Gamma \vdash \refl{} : \prod_{A : \typeu{u}}\prod_{x : A}x \mathrel{=_A} x$}\DisplayProof as the introduction rule in the above definition.
 \end{rem}
 
 \begin{rem}
-    Inductive types are the least/initial types generated by their introduction rules. 
+    Inductive types are the least/initial types generated by their introduction rules.
 \end{rem}
 
 \begin{rem}
-    Lean additionally has: 
+    Lean additionally has:
     \begin{enumerate}
         \item universes
         \item a general scheme for inductive types
@@ -399,31 +399,31 @@ Instead of providing the very general and complicated definition of an inductive
 
 \begin{example}
     $\delta$- and $\zeta$-reduction relate to unfolding definitions.
-    For the definition 
+    For the definition
     \begin{center}
         {\ttfamily def two : $\bN$ := s(s(0))}
-    \end{center} 
-    we get {\ttfamily two $\mathrel{\to_\delta}$ s(s(0))}. 
-    Within a definition you might write 
+    \end{center}
+    we get {\ttfamily two $\mathrel{\to_\delta}$ s(s(0))}.
+    Within a definition you might write
     \begin{center}
-        {\ttfamily let two := s(s(0))}, 
+        {\ttfamily let two := s(s(0))},
     \end{center}
     then {\ttfamily two $\to_{\zeta}$ s(s(0))}.
 \end{example}
 
 \begin{boxdefi}
-    While \alert{quotient types} are not inductive types, they can be defined using the same schema: 
+    While \alert{quotient types} are not inductive types, they can be defined using the same schema:
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash R : A \to A \to \proptype$} \BinaryInfC{$\Gamma \vdash A/R : \typeu{u}$} \DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash a : A$} \UnaryInfC{$\Gamma \vdash \llbracket a \rrbracket : A / R$} \DisplayProof
         \item equality introduction rule: \AxiomC{$\Gamma \vdash h : R a b$} \UnaryInfC{$\Gamma \vdash \operatorname{sound}(h) : \llbracket a \rrbracket \mathrel{=_{A/R} \llbracket b \rrbracket}$} \DisplayProof
         \item{ elimination rules:
 
-                (rec) 
+                (rec)
                 \def\defaultHypSeparation{\hskip 1mm}
-                \AxiomC{$\Gamma \vdash C : \typeu{w}$} 
-                \AxiomC{$\Gamma \vdash f : A \to C$} 
-                \AxiomC{$\Gamma \vdash h : \prod_{a, b : A} Rab \to f(a) \mathrel{=_C} f(b)$} 
+                \AxiomC{$\Gamma \vdash C : \typeu{w}$}
+                \AxiomC{$\Gamma \vdash f : A \to C$}
+                \AxiomC{$\Gamma \vdash h : \prod_{a, b : A} Rab \to f(a) \mathrel{=_C} f(b)$}
                 \TrinaryInfC{$\Gamma \vdash \recOp(C, f, h) : A/R \to C$}
                 \DisplayProof
                 \def\defaultHypSeparation{\hskip.2in}
@@ -439,11 +439,11 @@ Instead of providing the very general and complicated definition of an inductive
 
 \subsection{Homotopy type theory}
 
-Instead of thinking of types as sets we now want to think of them as topological spaces. 
-To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{choice}$ and all axioms relating to them. 
+Instead of thinking of types as sets we now want to think of them as topological spaces.
+To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{choice}$ and all axioms relating to them.
 
 \begin{rem}
-    Homotopy type theory is a way to do \alert{synthetic homotopy theory}. 
+    Homotopy type theory is a way to do \alert{synthetic homotopy theory}.
     You might know synthetic geometry, where instead of considering euclidean geometry in the complex plane, the theory is built up from axioms.
 \end{rem}
 
@@ -452,7 +452,7 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
     \begin{enumerate}
         \item formation rule: \AxiomC{$\Gamma \vdash A : \typeu{u}$} \AxiomC{$\Gamma \vdash x, y : A$} \BinaryInfC{$\Gamma \vdash x \mathrel{=_A} y : \typeu{u}$} \DisplayProof
         \item introduction rule: \AxiomC{$\Gamma \vdash x : A$} \UnaryInfC{$\Gamma \vdash \refl{x} : x \mathrel{=_A} x$} \DisplayProof
-        \item elimination rule (\alert{path induction}): 
+        \item elimination rule (\alert{path induction}):
 
             \def\defaultHypSeparation{\hskip -1mm}
             \AxiomC{$\Gamma \vdash C : \prod_{x, y: A} (x \mathrel{=_A} y \to \typeu{w})$} \AxiomC{$\Gamma \vdash r : \prod_{x : A} C(x, x, \refl{x})$} \AxiomC{$\Gamma \vdash p : x \mathrel{=_A} y$} \TrinaryInfC{$\Gamma \vdash \ind{=}(C, r, p) : C(x, y, p)$} \DisplayProof
@@ -463,7 +463,7 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxdefi}
 
 \begin{rem}
-    We interpret this type theory as follows: 
+    We interpret this type theory as follows:
     \begin{enumerate}
         \item $A, B : \typeu{u}$ as topological spaces
         \item $x : A$ as a point in $A$
@@ -477,26 +477,26 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
     There is a function $\alert{({-})^{-1}} : x \mathrel{=_A} y \to y \mathrel{=_A} x$, $p \mapsto p^{-1}$ such that $\refl{x}^{-1} \equiv \refl{x}$.
 \end{boxlem}
 \begin{proof}
-    We define $({-})^{-1}$ using path induction. 
-    Let 
+    We define $({-})^{-1}$ using path induction.
+    Let
     \begin{equation*}
         C \coloneq (\lambda x,y :A, p : x \mathrel{=_A} y. y \mathrel{=_A} x) : \prod_{x, y : A} x \mathrel{=_A} y \to \typeu{u}
     \end{equation*}
-    and 
+    and
     \begin{equation*}
         r \coloneq (\lambda x : A. \refl{x}) : \prod_{x : A} C(x, x, \refl{x})
     \end{equation*}
-    where the typing is correct because of the conversion rule. 
+    where the typing is correct because of the conversion rule.
     Define $p^{-1} \coloneq \ind{=}(C, r, p) : y \mathrel{=_A} x$.
     Then $\refl{x}^{-1} \equiv \ind{=}(C, r, \refl{x}) \equiv r(x) \equiv \refl{x}$.
 \end{proof}
 
 \begin{proof}[Informal version of the proof]
-    Given $p : x \mathrel{=_A} y$. 
-    By path induction, we may assume that $p$ is $\refl{x}$ and $y$ is $x$. 
-    Here we are using that the endpoints of $p$ are distinct variables. 
-    Now we have to construct an element of type $x \mathrel{=_A} x$. 
-    Define $p^{-1} \equiv \refl{x}^{-1} \colonequiv \refl{x}$. 
+    Given $p : x \mathrel{=_A} y$.
+    By path induction, we may assume that $p$ is $\refl{x}$ and $y$ is $x$.
+    Here we are using that the endpoints of $p$ are distinct variables.
+    Now we have to construct an element of type $x \mathrel{=_A} x$.
+    Define $p^{-1} \equiv \refl{x}^{-1} \colonequiv \refl{x}$.
 \end{proof}
 
 \begin{rem}
@@ -508,12 +508,12 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxlem}
 
 \begin{proof}
-    By path induction on $q$, we may assume that $z$ is $y$ and $q$ is $\refl{y}$. 
-    Now we have to construct $p \cdot\refl{y} : x \mathrel{=_A} y$ which we define as $p$. 
+    By path induction on $q$, we may assume that $z$ is $y$ and $q$ is $\refl{y}$.
+    Now we have to construct $p \cdot\refl{y} : x \mathrel{=_A} y$ which we define as $p$.
 \end{proof}
 
 \begin{boxlem}\label{lem:paths}
-    Let $p : x \mathrel{=_A} y$, $q : y \mathrel{=_A} z$ and $r : z \mathrel{=_A} w$. 
+    Let $p : x \mathrel{=_A} y$, $q : y \mathrel{=_A} z$ and $r : z \mathrel{=_A} w$.
     Then
     \begin{enumerate}
         \item $p \cdot p^{-1} \mathrel{=_{x \mathrel{=_A} x}} \refl{x}$.
@@ -524,20 +524,20 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxlem}
 
 \begin{proof}
-    Let us proof (iii). 
-    The rest of the lemma is an exercise. 
-    By path induction we may assume that $y$ is $x$ and $p$ is $\refl{x}$, so we have to prove $(\refl{x}^{-1})^{-1} = \refl{x}$. 
+    Let us proof (iii).
+    The rest of the lemma is an exercise.
+    By path induction we may assume that $y$ is $x$ and $p$ is $\refl{x}$, so we have to prove $(\refl{x}^{-1})^{-1} = \refl{x}$.
     We saw that $(\refl{x}^{-1})^{-1} \equiv \refl{x}^{-1} \equiv \refl{x}$.
     So $\refl{\refl{x}} : (\refl{x}^{-1})^{-1} = \refl{x}$.
 \end{proof}
 
 \begin{rem}
-    This same proof doesn't work to prove $p^{-1} = p$ for $p : x \mathrel{=_A} y$ because already for typing reasons that isn't a valid statement. 
+    This same proof doesn't work to prove $p^{-1} = p$ for $p : x \mathrel{=_A} y$ because already for typing reasons that isn't a valid statement.
     For $p : x \mathrel{=_A} x$ this still does not work because the endpoints of the path agree and we therefore cannot use path induction.
 \end{rem}
 
 \begin{rem}
-    Each identity type also has higher coherence rules like in Lemma \ref{lem:paths}. 
+    Each identity type also has higher coherence rules like in Lemma \ref{lem:paths}.
     All these coherence rules together give each type the structure of an $\infty$-groupoid.
 \end{rem}
 
@@ -550,9 +550,9 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxlem}
 
 \begin{rem}
-    In the lemma above, $P$ gives us a space $\sum_{x : A} P(x)$. 
-    We get a fibration $\mathop{\pi_1} : \sum_{x : A} P(x) \twoheadrightarrow A$. 
-    Every $f : \sum_{x : A} P(x)$ is a section of that fibration. 
+    In the lemma above, $P$ gives us a space $\sum_{x : A} P(x)$.
+    We get a fibration $\mathop{\pi_1} : \sum_{x : A} P(x) \twoheadrightarrow A$.
+    Every $f : \sum_{x : A} P(x)$ is a section of that fibration.
 \end{rem}
 
 \begin{boxdefi}
@@ -560,7 +560,7 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxdefi}
 
 \begin{rem}
-    Remember that we interpret all functions as continuous maps, so an element of $f \sim g$ assigns paths continuously. 
+    Remember that we interpret all functions as continuous maps, so an element of $f \sim g$ assigns paths continuously.
 \end{rem}
 
 \begin{boxdefi}
@@ -576,7 +576,7 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxlem}
 
 \begin{boxdefi}
-    We add the following axioms: 
+    We add the following axioms:
     \begin{enumerate}
         \item \alert{function extentionality}: $(f \mathrel{=_{\Pi_{x : A}P(x)}} g) \simeq (f \sim g)$ is inhabited.
         \item \alert{univalence}: $(A \mathrel{=_{\typeu{u}}} B) \simeq (A \simeq B)$ is inhabited.
@@ -588,18 +588,18 @@ To do that we use Lean's type theory but remove $\proptype$ and $\operatorname{c
 \end{boxthm}
 
 \begin{rem}
-    With univalence we can prove that there are path spaces with more than one element: 
-    consider $2 : \typeu{0}$, the type with two elements. 
-    Note that $2 \simeq 2$ simply consists of the bijections from $2$ to itself and thus has two elements. 
+    With univalence we can prove that there are path spaces with more than one element:
+    consider $2 : \typeu{0}$, the type with two elements.
+    Note that $2 \simeq 2$ simply consists of the bijections from $2$ to itself and thus has two elements.
     By univalence, $2 \mathrel{=_{\typeu{0}}} 2$ has two distinct elements.
 \end{rem}
 
 
 \begin{rem}
-    Using higher inductive types we can construct spheres, suspensions, pullbacks and pushouts. 
+    Using higher inductive types we can construct spheres, suspensions, pullbacks and pushouts.
 \end{rem}
 
 \begin{rem}
-    The are categorical models of homotopy type theory such as the simplicial set model. 
+    The are categorical models of homotopy type theory such as the simplicial set model.
 \end{rem}
 
